@@ -9,11 +9,11 @@ Please note that this is a work in progress! The library currently only supports
 ## 🚀 Getting Started
 You can install either via [npm](https://www.npmjs.com/package/@cawfree/react-native-redux-form-by-config):
 ```
-npm install --save react-native-redux-form-by-config
+npm install --save @cawfree/react-native-redux-form-by-config
 ```
 Or alternatively by using [yarn](https://www.npmjs.com/package/@cawfree/react-native-redux-form-by-config):
 ```
-yarn add react-native-redux-form-by-config
+yarn add @cawfree/react-native-redux-form-by-config
 ```
 Finally, ensure your application has been hooked up to `redux-form` in your master `reducer`. This will look something along the lines of:
 
@@ -44,7 +44,7 @@ import {
   Text,
 } from 'react-native';
 
-import getFormByConfig from 'react-native-redux-form-by-config';
+import getFormByConfig from '@cawfree/react-native-redux-form-by-config';
 
 const styles = StyleSheet.create(
   container: {
