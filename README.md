@@ -34,7 +34,7 @@ export default buildReducer;
 ```
 
 ## ✍️ Usage
-```
+```javascript
 import React from 'react';
 import {
   Alert,
