@@ -6,6 +6,7 @@ import {
   TextInput,
   StyleSheet,
   Animated,
+  Dimensions,
 } from 'react-native';
 // TODO: Make this configurable at the invocation level.
 import {
