@@ -14,6 +14,7 @@ import {
   reduxForm,
   getFormSyncErrors,
 } from 'redux-form/immutable';
+import isEqual from 'lodash.equal';
 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Collapsible from 'react-native-collapsible';
@@ -236,8 +237,11 @@ class DynamicFields extends React.Component {
       formSyncErrors,
       onHandleFormSyncErrors,
     } = nextProps;
-    const syncErrorsChanged = formSyncErrors !== this.props.formSyncErrors;
-    if (formSyncErrors && onHandleFormSyncErrors) {
+    const syncErrorsChanged = !isEqual(
+      formSyncErrors,
+      this.props.formSyncErrors,
+    );
+    if (syncErrorsChanged && onHandleFormSyncErrors) {
       onHandleFormSyncErrors(
         formSyncErrors,
       );
