@@ -11,8 +11,10 @@ import {
 // TODO: Make this configurable at the invocation level.
 import {
   Field,
+  reduxForm,
+  getFormSubmitErrors,
 } from 'redux-form/immutable';
-import { reduxForm } from 'redux-form/immutable';
+
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Collapsible from 'react-native-collapsible';
 
@@ -229,6 +231,18 @@ class DynamicFields extends React.Component {
       onHandleSubmit(handleSubmit);
     }
   }
+  componentWillUpdate(nextProps, nextState) {
+    const {
+      formSubmitErrors,
+      onHandleFormSubmitErrors,
+    } = nextProps;
+    const submitErrorsChanged = formSubmitErrors !== this.props.formSubmitErrors;
+    if (submitErrorsChanged && onHandleFormSubmitErrors) {
+      onHandleFormSubmitErrors(
+        formSubmitErrors,
+      );
+    }
+  }
   render() {
     const {
       fields,
@@ -250,6 +264,7 @@ function getFieldsByConfig(
   const mapStateToProps = (state, ownProps) => {
     return ({
       config,
+      formSubmitErrors: getFormSubmitErrors(form)(state),
     });
   };
   const mapDispatchToProps = (dispatch, ownProps) => {
