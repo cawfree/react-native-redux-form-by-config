@@ -12,7 +12,7 @@ import {
 import {
   Field,
   reduxForm,
-  getFormSubmitErrors,
+  getFormSyncErrors,
 } from 'redux-form/immutable';
 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
@@ -233,13 +233,13 @@ class DynamicFields extends React.Component {
   }
   componentWillUpdate(nextProps, nextState) {
     const {
-      formSubmitErrors,
-      onHandleFormSubmitErrors,
+      formSyncErrors,
+      onHandleFormSyncErrors,
     } = nextProps;
-    const submitErrorsChanged = formSubmitErrors !== this.props.formSubmitErrors;
-    if (submitErrorsChanged && onHandleFormSubmitErrors) {
-      onHandleFormSubmitErrors(
-        formSubmitErrors,
+    const syncErrorsChanged = formSyncErrors !== this.props.formSyncErrors;
+    if (formSyncErrors && onHandleFormSyncErrors) {
+      onHandleFormSyncErrors(
+        formSyncErrors,
       );
     }
   }
@@ -264,7 +264,7 @@ function getFieldsByConfig(
   const mapStateToProps = (state, ownProps) => {
     return ({
       config,
-      formSubmitErrors: getFormSubmitErrors(form)(state),
+      formSyncErrors: getFormSyncErrors(form)(state),
     });
   };
   const mapDispatchToProps = (dispatch, ownProps) => {
