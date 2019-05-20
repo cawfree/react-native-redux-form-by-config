@@ -14,7 +14,7 @@ import {
   reduxForm,
   getFormSyncErrors,
 } from 'redux-form/immutable';
-import isEqual from 'lodash.equal';
+import isEqual from 'lodash.isequal';
 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Collapsible from 'react-native-collapsible';
