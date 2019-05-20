@@ -8,6 +8,7 @@ import {
   Animated,
   Dimensions,
 } from 'react-native';
+import PropTypes from 'prop-types';
 // TODO: Make this configurable at the invocation level.
 import {
   Field,
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const renderTextInput = config => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
+const renderTextInput = (config, renderFieldError) => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
   const {
     numberOfLines,
     placeholder,
@@ -96,11 +97,7 @@ const renderTextInput = config => ({ input: { onChange, value, ...restInput }, m
           }}
         >
           {(!!touched && !!error) && (
-            <FontAwesomeIcon
-              name="exclamation-triangle"
-              size={17}
-              color="lightgrey"
-            />
+            renderFieldError()
           )}
         </View>
       </View>
@@ -170,18 +167,32 @@ const getValidationByConfig = (config) => {
   return [];
 };
 
-const getComponentByConfig = (config) => {
+const getComponentByConfig = (config, renderFieldError) => {
   const {
     type,
   } = config;
   if (type === 'text') {
     return renderTextInput(
       config,
+      renderFieldError,
     );
   }
 };
 
 class DynamicFields extends React.Component {
+  static propTypes = {
+    renderFieldError: PropTypes.func,
+  }
+  static defaultProps = {
+    // TODO: Should delegate useful props for custom validation rules.
+    renderFieldError: () => (
+      <FontAwesomeIcon
+        name="exclamation-triangle"
+        size={17}
+        color="lightgrey"
+      />
+    ),
+  }
   constructor(nextProps) {
     super(nextProps);
     const {
@@ -214,7 +225,10 @@ class DynamicFields extends React.Component {
               ...arr,
               <Field
                 name={key}
-                component={getComponentByConfig(el)}
+                component={getComponentByConfig(
+                  el,
+                  nextProps.renderFieldError,
+                )}
                 validate={validate}
               />
             ]);
