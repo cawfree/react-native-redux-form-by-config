@@ -271,44 +271,47 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
             checked={resolvedValue}
           />
         </TouchableOpacity>
-        {(shouldUseHyperlink) ? (
-          <Hyperlink
-            onPress={(url) => {
-              return Linking.canOpenURL(url)
-                .then((supported) => {
-                  if (supported) {
-                    return Linking
-                      .openURL(url);
-                  }
-                  return Promise.reject(
-                    new Error(
-                      `Failed to open "${url}".`,
-                    ),
-                  );
-                });
-            }}
-            linkStyle={{
-              color: '#2980b9',
-            }}
-            linkText={() => resolvedDescription[1]}
-          >
+        <View
+        >
+          {(shouldUseHyperlink) ? (
+            <Hyperlink
+              onPress={(url) => {
+                return Linking.canOpenURL(url)
+                  .then((supported) => {
+                    if (supported) {
+                      return Linking
+                        .openURL(url);
+                    }
+                    return Promise.reject(
+                      new Error(
+                        `Failed to open "${url}".`,
+                      ),
+                    );
+                  });
+              }}
+              linkStyle={{
+                color: '#2980b9',
+              }}
+              linkText={() => resolvedDescription[1]}
+            >
+              <Text
+                style={{
+                  ...resolvedStyle,
+                }}
+              >
+                {resolvedDescription[0]}
+              </Text>
+            </Hyperlink>
+          ) : (
             <Text
               style={{
                 ...resolvedStyle,
               }}
             >
-              {resolvedDescription[0]}
+              {resolvedDescription}
             </Text>
-          </Hyperlink>
-        ) : (
-          <Text
-            style={{
-              ...resolvedStyle,
-            }}
-          >
-            {resolvedDescription}
-          </Text>
-        )}
+          )}
+        </View>
       </View>
     </FieldContainer>
   );
