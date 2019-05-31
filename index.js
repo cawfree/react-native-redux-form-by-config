@@ -127,7 +127,7 @@ class FieldContainer extends React.Component {
       collapsed,
       ...extraProps
     } = this.props;
-    const shouldShowError = (!!touched && !!error) || !collapsed;
+    const shouldShowError = (!!touched && !!error);// || !collapsed;
     const shouldRenderFieldError = !!renderFieldError;
     return (
       <View
