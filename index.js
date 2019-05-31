@@ -255,7 +255,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
           paddingLeft: marginShort,
           width: screenWidth - (6 * marginShort),
           flexDirection: 'row',
-          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <TouchableOpacity
