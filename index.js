@@ -133,6 +133,7 @@ class FieldContainer extends React.Component {
       <View
         style={{
           flex: 1,
+          minHeight: 40,
         }}
       >
         <View
