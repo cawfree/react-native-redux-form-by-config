@@ -23,7 +23,7 @@ import {
 import isEqual from 'lodash.isequal';
 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-//import Collapsible from 'react-native-collapsible';
+import Collapsible from 'react-native-collapsible';
 
 // TODO: Expose properties and rendering/animation interfaces, that kind of stuff.
 const {
@@ -165,7 +165,9 @@ class FieldContainer extends React.Component {
             </View>
           )}
         </View>
-        {(!!shouldShowError) && (
+        <Collapisble
+          collapsed={!shouldShowError}
+        >
           <View
             style={styles.fieldErrorCaption}
           >
@@ -181,7 +183,7 @@ class FieldContainer extends React.Component {
               </View>
             )}
           </View>
-        )}
+        </Collapsible>
       </View>
     );
   }
@@ -209,22 +211,28 @@ const renderTextInput = (config, renderFieldError) => ({ input: { onChange, valu
       renderFieldError={renderFieldError}
       collapsed={collapsed}
     >
-      <TextInput
-        ref={ref}
+      <View
         style={{
-          height: 40,
-          fontSize: 16,
-          ...resolvedStyle,
+          justifyContent: 'center',
         }}
-        value={value}
-        onChangeText={onChange}
-        numberOfLines={resolvedNumberOfLines}
-        multiline={multiline}
-        placeholder={placeholder || ''}
-        underlineColorAndroid="transparent"
-        secureTextEntry={secureTextEntry}
-        textContentType={textContentType}
-      />
+      >
+        <TextInput
+          ref={ref}
+          style={{
+            height: 40,
+            fontSize: 16,
+            ...resolvedStyle,
+          }}
+          value={value}
+          onChangeText={onChange}
+          numberOfLines={resolvedNumberOfLines}
+          multiline={multiline}
+          placeholder={placeholder || ''}
+          underlineColorAndroid="transparent"
+          secureTextEntry={secureTextEntry}
+          textContentType={textContentType}
+        />
+      </View>
     </FieldContainer>
   );
 };
