@@ -183,6 +183,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
       collapsed={collapsed}
     >
       <CheckBox
+        ref={ref}
         style={resolvedStyle}
         onClick={()=> onChange(!resolvedValue)}
         isChecked={resolvedValue}
@@ -237,6 +238,7 @@ const getComponentByConfig = (config, renderFieldError) => {
       renderFieldError,
     );
   } else if (type === 'boolean') {
+    return (<View/>);
     return renderBooleanInput(
       config,
       renderFieldError,
