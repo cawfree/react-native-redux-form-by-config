@@ -132,7 +132,7 @@ class FieldContainer extends React.Component {
     return (
       <View
         style={{
-          flex: 1,
+          minHeight: 40,
         }}
       >
         <View
@@ -257,7 +257,6 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
     >
       <View
         style={{
-          flex: 1,
           width: screenWidth - (2 * marginShort),
           flexDirection: 'row',
           alignItems: 'center',
