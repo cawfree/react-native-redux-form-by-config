@@ -168,7 +168,7 @@ class FieldContainer extends React.Component {
         </View>
         <Collapsible
           style={{
-            flex: 1,
+            height: 40,
           }}
           collapsed={!shouldShowError}
         >
