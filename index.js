@@ -188,8 +188,13 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
       renderFieldError={renderFieldError}
       collapsed={collapsed}
     >
-      <View/>
-      
+      <CheckBox
+        style={{flex: 1, padding: 10}}
+        onClick={()=>{
+        }}
+        isChecked
+        leftText="some description"
+    />
     </FieldContainer>
   );
 };
