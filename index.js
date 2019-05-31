@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
+  Alert,
   View,
   Text,
   TextInput,
@@ -17,7 +18,7 @@ import {
   getFormSyncErrors,
 } from 'redux-form/immutable';
 import isEqual from 'lodash.isequal';
-import CheckBox from 'react-native-check-box';
+import CheckBox from 'react-native-checkbox';
 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Collapsible from 'react-native-collapsible';
@@ -175,8 +176,8 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
     ...restConfig
   } = config;
   const resolvedStyle = style || {};
-  const resolvedValue = value || `${false}`;
   const resolvedDescription = description || '';
+  const resolvedValue = !!value;
   return (
     <FieldContainer
       backgroundColor="transparent"
@@ -185,23 +186,25 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
       renderFieldError={null}
       collapsed={collapsed}
     >
-      <TouchableOpacity
-        onPress={() => onChange(`${!(resolvedValue === 'true')}`)}
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}
       >
         <CheckBox
-          style={{
-            flex: 1,
-            ...resolvedStyle,
-          }}
-          pointerEvents="none"
-          isChecked={resolvedValue === 'true'}
-          rightText={resolvedDescription}
-          rightTextStyle={{
-            flex: 1,
-            ...resolvedStyle,
-          }}
+          onChange={checked => onChange(checked)}
+          checked={resolvedValue}
         />
-      </TouchableOpacity>
+        <Text
+          style={{
+            ...resolvedStyle,
+          }}
+        >
+          {resolvedDescription}
+        </Text>
+      </View>
     </FieldContainer>
   );
 };
