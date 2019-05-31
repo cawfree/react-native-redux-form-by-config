@@ -101,6 +101,10 @@ class CheckBox extends React.Component {
         onPress={() => onRequestChange(!checked)}
       >
         <Animation
+          style={{
+            flex: 1,
+            backgroundColor: 'yellow',
+          }}
           source={require('./res/checkbox.json')}
           progress={animProgress}
         />
