@@ -78,7 +78,7 @@ class FieldContainer extends React.Component {
         >
           <View
             style={{
-              width: screenWidth - shouldRenderFieldError ? (50 + (2 * marginShort)) : 0,
+              width: screenWidth - (shouldRenderFieldError ? (50 + (2 * marginShort)) : 0),
               minHeight: 40,
             }}
           >
@@ -186,11 +186,13 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
     >
       <CheckBox
         style={{
+          flex: 1,
           ...resolvedStyle,
         }}
         onClick={() => onChange(!!resolvedValue)}
         isChecked={resolvedValue}
         rightText={resolvedDescription}
+        rightTextStyle={{ flex: 1 }}
       />
     </FieldContainer>
   );
