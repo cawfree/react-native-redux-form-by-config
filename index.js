@@ -163,13 +163,7 @@ const renderTextInput = (config, renderFieldError) => ({ input: { onChange, valu
     </FieldContainer>
   );
 };
-//<CheckBox
-//        ref={ref}
-//        style={resolvedStyle}
-//        onClick={()=> onChange(!resolvedValue)}
-//        isChecked={resolvedValue}
-//        leftText={description}
-//      />
+
 const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
   const {
     collapsed,
@@ -180,21 +174,23 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
   } = config;
   const resolvedStyle = style || {};
   const resolvedValue = (!!value);
+  const resolvedDescription = description || '';
   return (
     <FieldContainer
-      backgroundColor="#FFFFFFFF"
+      backgroundColor="transparent"
       touched={touched}
       error={error}
       renderFieldError={renderFieldError}
       collapsed={collapsed}
     >
       <CheckBox
-        style={{flex: 1, padding: 10}}
-        onClick={()=>{
+        style={{
+          ...resolvedStyle,
         }}
-        isChecked
-        leftText="some description"
-    />
+        onClick={() => onChange(!!resolvedValue)}
+        isChecked={resolvedValue}
+        leftText={resolvedDescription}
+      />
     </FieldContainer>
   );
 };
