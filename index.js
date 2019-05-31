@@ -22,6 +22,7 @@ import Collapsible from 'react-native-collapsible';
 
 // TODO: Expose properties and rendering/animation interfaces, that kind of stuff.
 const {
+  // TODO: Allow the caller to define a custom width.
   width: screenWidth,
 } = Dimensions.get('window');
 
@@ -33,17 +34,87 @@ const styles = StyleSheet.create({
     height: 25,
     color: '#FF0000FF',
   },
-  textInput: {
-    backgroundColor: 'white',
-    height: 50,
-    flex: 1,
-    borderTopLeftRadius: marginExtraShort,
-    borderBottomLeftRadius: marginExtraShort,
+  fieldContainer: {
+    borderRadius: marginShort,
+    overflow: 'hidden',
+    backgroundColor,
+    flexDirection: 'row',
   },
-  field: {
-
+  fieldChild: {
+    width: (screenWidth - 50) - (2 * marginShort),
+    minHeight: 40,
+  },
+  fieldError: {
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  fieldErrorCaption: {
+    width: screenWidth,
+    height: 30,
+    flexDirection: 'row',
+  },
+  fieldErrorCaptionContainer: {
+    width: screenWidth - (2 * marginShort),
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
 });
+
+class FieldContainer extends React.Component {
+  render() {
+    const {
+      backgroundColor,
+      children,
+      touched,
+      error,
+      renderFieldError,
+      ...extraProps
+    } = this.props;
+    const shouldShowError = (!!touched && !!error) || !collapsed;
+    return (
+      <View
+      >
+        <View
+          style={styles.fieldContainer}
+        >
+          <View
+            style={styles.fieldChild}
+          >
+            {children}
+          </View>
+          <View
+            style={styles.fieldError}
+          >
+            {(!!touched && !!error) && (
+              renderFieldError()
+            )}
+          </View>
+        </View>
+        <Collapsible
+          collapsed={!shouldShowError}
+        >
+          <View
+            style={fieldErrorCaption}
+          >
+            {(!!touched && !!error) && (
+              <View
+                style={styles.fieldErrorCaptionContainer}
+              >
+                <Text
+                  style={styles.error}
+                >
+                  {error}
+                </Text>
+              </View>
+            )}
+          </View>
+        </Collapsible>
+      </View>
+    );
+  }
+}
 
 const renderTextInput = (config, renderFieldError) => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
   const {
@@ -59,76 +130,30 @@ const renderTextInput = (config, renderFieldError) => ({ input: { onChange, valu
   const resolvedNumberOfLines = numberOfLines || 1;
   const resolvedStyle = style || {};
   const multiline = resolvedNumberOfLines > 1;
-  const shouldShowError = (!!touched && !!error) || !collapsed;
   return (
-    <View
+    <FieldContainer
+      backgroundColor="#FFFFFFFF"
+      touched={touched}
+      error={error}
+      renderFieldError={renderFieldError}
     >
-      <View
+      <TextInput
+        ref={ref}
         style={{
-          borderRadius: marginShort,
-          overflow: 'hidden',
-          backgroundColor: '#FFFFFFFF',
-          flexDirection: 'row',
+          flex: 1,
+          fontSize: 16,
+          ...resolvedStyle,
         }}
-      >
-        <TextInput
-          ref={ref}
-          style={{
-            width: (screenWidth - 50) - (2 * marginShort),
-            minHeight: 40,
-            fontSize: 16,
-            ...resolvedStyle,
-          }}
-          value={value}
-          onChangeText={onChange}
-          numberOfLines={resolvedNumberOfLines}
-          multiline={multiline}
-          placeholder={placeholder || ''}
-          underlineColorAndroid="transparent"
-          secureTextEntry={secureTextEntry}
-          textContentType={textContentType}
-        />
-        <View
-          style={{
-            width: 50,
-            height: 50,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {(!!touched && !!error) && (
-            renderFieldError()
-          )}
-        </View>
-      </View>
-      <Collapsible
-        collapsed={!shouldShowError}
-      >
-        <View
-          style={{
-            width: screenWidth,
-            height: 30,
-            flexDirection: 'row',
-          }}
-        >
-          {(!!touched && !!error) && (
-            <View
-              style={{
-                width: screenWidth - (2 * marginShort),
-                alignItems: 'flex-end',
-                justifyContent: 'center',
-              }}
-            >
-              <Text
-                style={styles.error}
-              >
-                {error}
-              </Text>
-            </View>
-          )}
-        </View>
-      </Collapsible>
-    </View>
+        value={value}
+        onChangeText={onChange}
+        numberOfLines={resolvedNumberOfLines}
+        multiline={multiline}
+        placeholder={placeholder || ''}
+        underlineColorAndroid="transparent"
+        secureTextEntry={secureTextEntry}
+        textContentType={textContentType}
+      />
+    </FieldContainer>
   );
 };
 
