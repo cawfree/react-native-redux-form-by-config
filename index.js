@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
+  Animated,
   Alert,
   View,
   Text,
@@ -10,6 +11,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
+import Animation from 'lottie-react-native';
 import PropTypes from 'prop-types';
 // TODO: Make this configurable at the invocation level.
 import {
@@ -18,7 +20,6 @@ import {
   getFormSyncErrors,
 } from 'redux-form/immutable';
 import isEqual from 'lodash.isequal';
-import CheckBox from 'react-native-checkbox';
 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Collapsible from 'react-native-collapsible';
@@ -53,6 +54,61 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+class CheckBox extends React.Component {
+  state = {
+    animProgress: new Animated.Value(0),
+  }
+  componentDidMount() {
+    const {
+      checked,
+    } = this.props;
+    if (checked) {
+      return this.__animate(checked);
+    }
+    return Promise
+      .resolve();
+  }
+  componentWillUpdate(nextProps, nextState) {
+    const {
+      checked,
+    } = nextProps;
+    if (checked !== this.props.checked) {
+      return this.__animate(checked);
+    }
+    return Promise
+      .resolve();
+  }
+  __animate(checked) {
+    const {
+      animProgress,
+    } = this.state;
+    return new Promise(resolve => Animated.timing(
+      animProgress,
+      {
+        toValue: checked ? 1.0 : 0.0,
+        duration: 800,
+      },
+    ).start(resolve));
+  }
+  render() {
+    const {
+      checked,
+      onRequestChange,
+    } = this.props;
+    const { animProgress } = this.state;
+    return (
+      <TouchableOpacity
+        onPress={() => onRequestChange(!checked)}
+      >
+        <Animation
+          source={require('./res/checkbox.json')}
+          progress={animProgress}
+        />
+      </TouchableOpacity>
+    );
+  }
+}
 
 class FieldContainer extends React.Component {
   render() {
@@ -198,13 +254,11 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
           style={{
             width: 50,
             height: 50,
-            alignItems: 'center',
-            justifyContent: 'center',
           }}
           onPress={() => onChange(!resolvedValue) }
         >
           <CheckBox
-            label=""
+            onRequestChange={checked => onChange(checked)}
             checked={resolvedValue}
           />
         </TouchableOpacity>
