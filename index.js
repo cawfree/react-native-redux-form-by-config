@@ -131,6 +131,9 @@ class FieldContainer extends React.Component {
     const shouldRenderFieldError = !!renderFieldError;
     return (
       <View
+        style={{
+          flex: 1,
+        }}
       >
         <View
           style={[
