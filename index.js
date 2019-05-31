@@ -281,7 +281,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
                   }
                   return Promise.reject(
                     new Error(
-                      'Failed to open "${url}".`,
+                      `Failed to open "${url}".`,
                     ),
                   );
                 });
