@@ -101,7 +101,7 @@ class FieldContainer extends React.Component {
           collapsed={!shouldShowError}
         >
           <View
-            style={fieldErrorCaption}
+            style={styles.fieldErrorCaption}
           >
             {(!!touched && !!error) && (
               <View
