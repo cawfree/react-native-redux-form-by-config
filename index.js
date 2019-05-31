@@ -194,6 +194,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
         }}
       >
         <CheckBox
+          label=""
           onChange={checked => onChange(checked)}
           checked={resolvedValue}
         />
