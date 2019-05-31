@@ -85,7 +85,7 @@ class CheckBox extends React.Component {
     return new Promise(resolve => Animated.timing(
       animProgress,
       {
-        toValue: checked ? 0.7 : 0.1,
+        toValue: checked ? 0.6 : 0.1,
         duration: 800,
       },
     ).start(resolve));
