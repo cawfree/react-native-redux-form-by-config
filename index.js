@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Animated,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
 // TODO: Make this configurable at the invocation level.
@@ -181,19 +182,26 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
       backgroundColor="transparent"
       touched={touched}
       error={error}
-      renderFieldError={renderFieldError}
+      renderFieldError={null}
       collapsed={collapsed}
     >
-      <CheckBox
-        style={{
-          flex: 1,
-          ...resolvedStyle,
-        }}
-        onClick={() => onChange(!!resolvedValue)}
-        isChecked={resolvedValue}
-        rightText={resolvedDescription}
-        rightTextStyle={{ flex: 1 }}
-      />
+      <TouchableOpacity
+        onPress={() => onChange(!!resolvedValue)}
+      >
+        <CheckBox
+          style={{
+            flex: 1,
+            ...resolvedStyle,
+          }}
+          pointerEvents="none"
+          isChecked={resolvedValue}
+          rightText={resolvedDescription}
+          rightTextStyle={{
+            flex: 1,
+            ...resolvedStyle,
+          }}
+        />
+      </TouchableOpacity>
     </FieldContainer>
   );
 };
