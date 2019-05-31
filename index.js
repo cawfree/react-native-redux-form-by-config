@@ -171,16 +171,15 @@ class FieldContainer extends React.Component {
           <View
             style={styles.fieldErrorCaption}
           >
-            {(!!touched && !!error) && (
-              <View
-                style={styles.fieldErrorCaptionContainer}
+            <View
+              style={styles.fieldErrorCaptionContainer}
+            >
+              <Text
+                style={styles.error}
               >
-                <Text
-                  style={styles.error}
-                >
-                  {error}
-                </Text>
-              </View>
+                {error}
+              </Text>
+            </View>
           </View>
         </Collapsible>
       </View>
