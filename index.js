@@ -16,6 +16,7 @@ import {
   getFormSyncErrors,
 } from 'redux-form/immutable';
 import isEqual from 'lodash.isequal';
+import CheckBox from 'react-native-check-box';
 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Collapsible from 'react-native-collapsible';
@@ -163,6 +164,34 @@ const renderTextInput = (config, renderFieldError) => ({ input: { onChange, valu
   );
 };
 
+const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
+  const {
+    collapsed,
+    ref,
+    style,
+    description,
+    ...restConfig
+  } = config;
+  const resolvedStyle = style || {};
+  const resolvedValue = (!!value);
+  return (
+    <FieldContainer
+      backgroundColor="#FFFFFFFF"
+      touched={touched}
+      error={error}
+      renderFieldError={renderFieldError}
+      collapsed={collapsed}
+    >
+      <CheckBox
+        style={resolvedStyle}
+        onClick={()=> onChange(!resolvedValue)}
+        isChecked={resolvedValue}
+        leftText={description}
+      />
+    </FieldContainer>
+  );
+};
+
 const isRequired = label => value => value ? undefined : `${label} is required.`;
 
 const maxLength = (label, max) => value =>
@@ -204,6 +233,11 @@ const getComponentByConfig = (config, renderFieldError) => {
   } = config;
   if (type === 'text') {
     return renderTextInput(
+      config,
+      renderFieldError,
+    );
+  } else if (type === 'boolean') {
+    return renderBooleanInput(
       config,
       renderFieldError,
     );
