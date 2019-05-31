@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
   fieldContainer: {
     borderRadius: marginShort,
     overflow: 'hidden',
-    backgroundColor,
     flexDirection: 'row',
   },
   fieldChild: {
@@ -77,7 +76,12 @@ class FieldContainer extends React.Component {
       <View
       >
         <View
-          style={styles.fieldContainer}
+          style={[
+            styles.fieldContainer,
+            {
+              backgroundColor,
+            },
+          ]}
         >
           <View
             style={styles.fieldChild}
