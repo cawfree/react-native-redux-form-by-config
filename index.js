@@ -252,6 +252,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
       <View
         style={{
           flex: 1,
+          paddingLeft: marginShort,
           width: screenWidth - (6 * marginShort),
           flexDirection: 'row',
           justifyContent: 'center',
