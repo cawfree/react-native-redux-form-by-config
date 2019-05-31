@@ -175,7 +175,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
     ...restConfig
   } = config;
   const resolvedStyle = style || {};
-  const resolvedValue = (!!value);
+  const resolvedValue = value || `${false}`;
   const resolvedDescription = description || '';
   return (
     <FieldContainer
@@ -186,7 +186,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
       collapsed={collapsed}
     >
       <TouchableOpacity
-        onPress={() => onChange(!!resolvedValue)}
+        onPress={() => onChange(`${!(resolvedValue === 'true')}`)}
       >
         <CheckBox
           style={{
@@ -194,7 +194,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
             ...resolvedStyle,
           }}
           pointerEvents="none"
-          isChecked={resolvedValue}
+          isChecked={resolvedValue === 'true'}
           rightText={resolvedDescription}
           rightTextStyle={{
             flex: 1,
