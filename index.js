@@ -69,6 +69,7 @@ class FieldContainer extends React.Component {
       touched,
       error,
       renderFieldError,
+      collapsed,
       ...extraProps
     } = this.props;
     const shouldShowError = (!!touched && !!error) || !collapsed;
@@ -140,6 +141,7 @@ const renderTextInput = (config, renderFieldError) => ({ input: { onChange, valu
       touched={touched}
       error={error}
       renderFieldError={renderFieldError}
+      collapsed={collapsed}
     >
       <TextInput
         ref={ref}
