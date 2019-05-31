@@ -182,6 +182,13 @@ class FieldContainer extends React.Component {
             </View>
           </View>
         </Collapsible>
+        {(!shouldShowError) && (
+          <View
+            style={{
+              height: marginShort,
+            }}
+          />
+        )}
       </View>
     );
   }
