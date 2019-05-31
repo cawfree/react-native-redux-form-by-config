@@ -92,12 +92,14 @@ class CheckBox extends React.Component {
   }
   render() {
     const {
+      style,
       checked,
       onRequestChange,
     } = this.props;
     const { animProgress } = this.state;
     return (
       <TouchableOpacity
+        style={style}
         onPress={() => onRequestChange(!checked)}
       >
         <Animation
@@ -261,6 +263,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
           onPress={() => onChange(!resolvedValue) }
         >
           <CheckBox
+            style={{ flex: 1 }}
             onRequestChange={checked => onChange(checked)}
             checked={resolvedValue}
           />
