@@ -189,25 +189,25 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
       <View
         style={{
           flex: 1,
-          paddingHorizontal: marginShort,
+          paddingHorizontal: (2 * marginShort),
           flexDirection: 'row',
           justifyContent: 'center',
         }}
       >
-        <View
+        <TouchableOpacity
           style={{
             width: 50,
             height: 50,
             alignItems: 'center',
             justifyContent: 'center',
           }}
+          onPress={() => onChange(!resolvedValue) }
         >
           <CheckBox
             label=""
-            onChange={checked => onChange(checked)}
             checked={resolvedValue}
           />
-        </View>
+        </TouchableOpacity>
         <Text
           style={{
             ...resolvedStyle,
