@@ -293,7 +293,8 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
           >
             <Text
               style={{
-                color: '#FFFFFFAA',
+                color: resolvedStyle.color,
+                textAlign: resolvedStyle.textAlign,
               }}
             >
               {resolvedDescription[0]}
