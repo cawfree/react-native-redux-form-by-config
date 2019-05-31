@@ -225,7 +225,7 @@ const renderTextInput = (config, renderFieldError) => ({ input: { onChange, valu
         <TextInput
           ref={ref}
           style={{
-            height: 40,
+            minHeight: 40,
             fontSize: 16,
             ...resolvedStyle,
           }}
