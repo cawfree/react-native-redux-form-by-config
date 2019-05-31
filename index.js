@@ -422,9 +422,6 @@ class DynamicFields extends React.Component {
             return ([
               ...arr,
               <View
-                style={{
-                  flex: 1,
-                }}
               >
                 <Field
                   name={key}
