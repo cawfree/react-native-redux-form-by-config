@@ -181,7 +181,6 @@ class FieldContainer extends React.Component {
                   {error}
                 </Text>
               </View>
-            )}
           </View>
         </Collapsible>
       </View>
@@ -214,6 +213,7 @@ const renderTextInput = (config, renderFieldError) => ({ input: { onChange, valu
       <View
         style={{
           justifyContent: 'center',
+          flex:1,
         }}
       >
         <TextInput
