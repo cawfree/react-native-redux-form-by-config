@@ -23,7 +23,7 @@ import {
 import isEqual from 'lodash.isequal';
 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import Collapsible from 'react-native-collapsible';
+//import Collapsible from 'react-native-collapsible';
 
 // TODO: Expose properties and rendering/animation interfaces, that kind of stuff.
 const {
@@ -166,12 +166,7 @@ class FieldContainer extends React.Component {
             </View>
           )}
         </View>
-        <Collapsible
-          style={{
-            height: 40,
-          }}
-          collapsed={!shouldShowError}
-        >
+        {(!!shouldShowError) && (
           <View
             style={styles.fieldErrorCaption}
           >
@@ -187,7 +182,7 @@ class FieldContainer extends React.Component {
               </View>
             )}
           </View>
-        </Collapsible>
+        )}
       </View>
     );
   }
