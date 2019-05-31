@@ -80,7 +80,7 @@ class FieldContainer extends React.Component {
         >
           <View
             style={{
-              width: screenWidth - (shouldRenderFieldError ? (50 + (2 * marginShort)) : 0),
+              width: screenWidth - ((2 * marginShort ) + (shouldRenderFieldError ? (50) : 0)),
               minHeight: 40,
             }}
           >
