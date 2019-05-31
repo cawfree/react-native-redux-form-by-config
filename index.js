@@ -309,7 +309,12 @@ const getValidationByConfig = (config) => {
       min && minLength(label, min),
       textContentType === 'emailAddress' && isEmail,
     ])
-      .filter((e) => (!!e));
+      .filter(e => !!e);
+  } else if (type === 'boolean') {
+    return [
+      required && isRequired(label),
+    ]
+      .filter(e => !!e);
   }
   return [];
 };
