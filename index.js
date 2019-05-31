@@ -131,62 +131,55 @@ class FieldContainer extends React.Component {
     const shouldRenderFieldError = !!renderFieldError;
     return (
       <View
-        style={{
-          flex: 1,
-          minHeight: 40,
-        }}
+        style={[
+          styles.fieldContainer,
+          {
+            backgroundColor,
+          },
+        ]}
       >
         <View
-          style={[
-            styles.fieldContainer,
-            {
-              backgroundColor,
-            },
-          ]}
+          style={{
+            width: screenWidth - ((2 * marginShort) + (shouldRenderFieldError ? (50) : 0)),
+            minHeight: 40,
+          }}
         >
+          {children}
+        </View>
+        {(shouldRenderFieldError) && (
           <View
             style={{
-              width: screenWidth - ((2 * marginShort) + (shouldRenderFieldError ? (50) : 0)),
-              minHeight: 40,
+              width: 50,
+              height: 50,
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
-            {children}
+            {(!!touched && !!error) && (
+              renderFieldError()
+            )}
           </View>
-          {(shouldRenderFieldError) && (
+        )}
+      </View>
+      <Collapsible
+        collapsed={!shouldShowError}
+      >
+        <View
+          style={styles.fieldErrorCaption}
+        >
+          {(!!touched && !!error) && (
             <View
-              style={{
-                width: 50,
-                height: 50,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+              style={styles.fieldErrorCaptionContainer}
             >
-              {(!!touched && !!error) && (
-                renderFieldError()
-              )}
+              <Text
+                style={styles.error}
+              >
+                {error}
+              </Text>
             </View>
           )}
         </View>
-        <Collapsible
-          collapsed={!shouldShowError}
-        >
-          <View
-            style={styles.fieldErrorCaption}
-          >
-            {(!!touched && !!error) && (
-              <View
-                style={styles.fieldErrorCaptionContainer}
-              >
-                <Text
-                  style={styles.error}
-                >
-                  {error}
-                </Text>
-              </View>
-            )}
-          </View>
-        </Collapsible>
-      </View>
+      </Collapsible>
     );
   }
 }
@@ -425,14 +418,20 @@ class DynamicFields extends React.Component {
             );
             return ([
               ...arr,
-              <Field
-                name={key}
-                component={getComponentByConfig(
-                  el,
-                  nextProps.renderFieldError,
-                )}
-                validate={validate}
-              />
+              <View
+                style={{
+                  flex: 1,
+                }}
+              >
+                <Field
+                  name={key}
+                  component={getComponentByConfig(
+                    el,
+                    nextProps.renderFieldError,
+                  )}
+                  validate={validate}
+                />
+              </View>
             ]);
           },
           [],
