@@ -131,55 +131,58 @@ class FieldContainer extends React.Component {
     const shouldRenderFieldError = !!renderFieldError;
     return (
       <View
-        style={[
-          styles.fieldContainer,
-          {
-            backgroundColor,
-          },
-        ]}
       >
         <View
-          style={{
-            width: screenWidth - ((2 * marginShort) + (shouldRenderFieldError ? (50) : 0)),
-            minHeight: 40,
-          }}
+          style={[
+            styles.fieldContainer,
+            {
+              backgroundColor,
+            },
+          ]}
         >
-          {children}
-        </View>
-        {(shouldRenderFieldError) && (
           <View
             style={{
-              width: 50,
-              height: 50,
-              alignItems: 'center',
-              justifyContent: 'center',
+              width: screenWidth - ((2 * marginShort) + (shouldRenderFieldError ? (50) : 0)),
+              minHeight: 40,
             }}
           >
-            {(!!touched && !!error) && (
-              renderFieldError()
-            )}
+            {children}
           </View>
-        )}
-      </View>
-      <Collapsible
-        collapsed={!shouldShowError}
-      >
-        <View
-          style={styles.fieldErrorCaption}
-        >
-          {(!!touched && !!error) && (
+          {(shouldRenderFieldError) && (
             <View
-              style={styles.fieldErrorCaptionContainer}
+              style={{
+                width: 50,
+                height: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
             >
-              <Text
-                style={styles.error}
-              >
-                {error}
-              </Text>
+              {(!!touched && !!error) && (
+                renderFieldError()
+              )}
             </View>
           )}
         </View>
-      </Collapsible>
+        <Collapsible
+          collapsed={!shouldShowError}
+        >
+          <View
+            style={styles.fieldErrorCaption}
+          >
+            {(!!touched && !!error) && (
+              <View
+                style={styles.fieldErrorCaptionContainer}
+              >
+                <Text
+                  style={styles.error}
+                >
+                  {error}
+                </Text>
+              </View>
+            )}
+          </View>
+        </Collapsible>
+      </View>
     );
   }
 }
