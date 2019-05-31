@@ -252,7 +252,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
       <View
         style={{
           flex: 1,
-          width: screenWidth - 50,
+          width: screenWidth - (2 * marginShort),
           flexDirection: 'row',
           alignItems: 'center',
         }}
@@ -271,6 +271,9 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
           />
         </TouchableOpacity>
         <View
+          style={{
+            width: (screenWidth - 50) - (2 * marginShort),
+          }}
         >
           {(shouldUseHyperlink) ? (
             <Hyperlink
