@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     borderRadius: marginShort,
     overflow: 'hidden',
     flexDirection: 'row',
+    flex: 1,
   },
   fieldErrorCaption: {
     width: screenWidth,
@@ -132,6 +133,7 @@ class FieldContainer extends React.Component {
     return (
       <View
         style={{
+          flex: 1,
           minHeight: 40,
         }}
       >
@@ -146,6 +148,7 @@ class FieldContainer extends React.Component {
           <View
             style={{
               width: screenWidth - ((2 * marginShort) + (shouldRenderFieldError ? (50) : 0)),
+              flex: 1,
               minHeight: 40,
             }}
           >
@@ -252,6 +255,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
     >
       <View
         style={{
+          flex: 1,
           width: screenWidth - (2 * marginShort),
           flexDirection: 'row',
           alignItems: 'center',
@@ -421,14 +425,20 @@ class DynamicFields extends React.Component {
             );
             return ([
               ...arr,
-              <Field
-                name={key}
-                component={getComponentByConfig(
-                  el,
-                  nextProps.renderFieldError,
-                )}
-                validate={validate}
-              />
+              <View
+                style={{
+                  flex: 1,
+                }}
+              >
+                <Field
+                  name={key}
+                  component={getComponentByConfig(
+                    el,
+                    nextProps.renderFieldError,
+                  )}
+                  validate={validate}
+                />
+              </View>
             ]);
           },
           [],
