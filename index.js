@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
+  Linking,
   Animated,
   Alert,
   View,
@@ -11,6 +12,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Animation from 'lottie-react-native';
+import Hyperlink from 'react-native-hyperlink'; 
 import PropTypes from 'prop-types';
 // TODO: Make this configurable at the invocation level.
 import {
@@ -238,6 +240,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
   const resolvedStyle = style || {};
   const resolvedDescription = description || '';
   const resolvedValue = !!value;
+  const shouldUseHyperlink = (typeof resolvedDescription !== 'string') && resolvedDescription.length === 2;
   return (
     <FieldContainer
       backgroundColor="transparent"
@@ -267,13 +270,44 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
             checked={resolvedValue}
           />
         </TouchableOpacity>
-        <Text
-          style={{
-            ...resolvedStyle,
-          }}
-        >
-          {resolvedDescription}
-        </Text>
+        {(shouldUseHyperlink) ? (
+          <Hyperlink
+            onPress={(url) => {
+              return Linking.canOpenURL(url)
+                .then((supported) => {
+                  if (supported) {
+                    return Linking
+                      .openURL(url);
+                  }
+                  return Promise.reject(
+                    new Error(
+                      'Failed to open "${url}".`,
+                    ),
+                  );
+                });
+            }}
+            linkStyle={{
+              color: '#2980b9',
+            }}
+            linkText={() => resolvedDescription[1]}
+          >
+            <Text
+              style={{
+                color: '#FFFFFFAA',
+              }}
+            >
+              {resolvedDescription[0]}
+            </Text>
+          </Hyperlink>
+        ) : (
+          <Text
+            style={{
+              ...resolvedStyle,
+            }}
+          >
+            {resolvedDescription}
+          </Text>
+        )}
       </View>
     </FieldContainer>
   );
