@@ -193,11 +193,20 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
           justifyContent: 'center',
         }}
       >
-        <CheckBox
-          label=""
-          onChange={checked => onChange(checked)}
-          checked={resolvedValue}
-        />
+        <View
+          style={{
+            width: 50,
+            height: 50,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CheckBox
+            label=""
+            onChange={checked => onChange(checked)}
+            checked={resolvedValue}
+          />
+        </View>
         <Text
           style={{
             ...resolvedStyle,
