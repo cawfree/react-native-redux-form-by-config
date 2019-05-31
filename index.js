@@ -166,6 +166,13 @@ class FieldContainer extends React.Component {
           )}
         </View>
         <Collapsible
+          collapsed={!!shouldShowError}
+        >
+          <View
+            style={{ height: marginShort }}
+          />
+        </Collapsible>
+        <Collapsible
           collapsed={!shouldShowError}
         >
           <View
@@ -182,13 +189,6 @@ class FieldContainer extends React.Component {
             </View>
           </View>
         </Collapsible>
-        {(!shouldShowError) && (
-          <View
-            style={{
-              height: marginShort,
-            }}
-          />
-        )}
       </View>
     );
   }
