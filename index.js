@@ -40,16 +40,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     flexDirection: 'row',
   },
-  fieldChild: {
-    width: (screenWidth - 50) - (2 * marginShort),
-    minHeight: 40,
-  },
-  fieldError: {
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   fieldErrorCaption: {
     width: screenWidth,
     height: 30,
@@ -74,6 +64,7 @@ class FieldContainer extends React.Component {
       ...extraProps
     } = this.props;
     const shouldShowError = (!!touched && !!error) || !collapsed;
+    const shouldRenderFieldError = !!renderFieldError;
     return (
       <View
       >
@@ -86,17 +77,27 @@ class FieldContainer extends React.Component {
           ]}
         >
           <View
-            style={styles.fieldChild}
+            style={{
+              width: screenWidth - shouldRenderFieldError ? (50 + (2 * marginShort)) : 0,
+              minHeight: 40,
+            }}
           >
             {children}
           </View>
-          <View
-            style={styles.fieldError}
-          >
-            {(!!touched && !!error) && (
-              renderFieldError()
-            )}
-          </View>
+          {(shouldRenderFieldError) && (
+            <View
+              style={{
+                width: 50,
+                height: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              {(!!touched && !!error) && (
+                renderFieldError()
+              )}
+            </View>
+          )}
         </View>
         <Collapsible
           collapsed={!shouldShowError}
@@ -189,7 +190,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
         }}
         onClick={() => onChange(!!resolvedValue)}
         isChecked={resolvedValue}
-        leftText={resolvedDescription}
+        rightText={resolvedDescription}
       />
     </FieldContainer>
   );
