@@ -131,6 +131,9 @@ class FieldContainer extends React.Component {
     const shouldRenderFieldError = !!renderFieldError;
     return (
       <View
+        style={{
+          flex: 1,
+        }}
       >
         <View
           style={[
@@ -164,6 +167,9 @@ class FieldContainer extends React.Component {
           )}
         </View>
         <Collapsible
+          style={{
+            flex: 1,
+          }}
           collapsed={!shouldShowError}
         >
           <View
@@ -421,17 +427,14 @@ class DynamicFields extends React.Component {
             );
             return ([
               ...arr,
-              <View
-              >
-                <Field
-                  name={key}
-                  component={getComponentByConfig(
-                    el,
-                    nextProps.renderFieldError,
-                  )}
-                  validate={validate}
-                />
-              </View>
+              <Field
+                name={key}
+                component={getComponentByConfig(
+                  el,
+                  nextProps.renderFieldError,
+                )}
+                validate={validate}
+              />
             ]);
           },
           [],
@@ -469,6 +472,9 @@ class DynamicFields extends React.Component {
     } = this.state;
     return (
       <View
+        style={{
+          flex: 1,
+        }}
       >
         {fields}
       </View>
