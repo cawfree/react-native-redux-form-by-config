@@ -25,12 +25,6 @@ import isEqual from 'lodash.isequal';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Collapsible from 'react-native-collapsible';
 
-// TODO: Expose properties and rendering/animation interfaces, that kind of stuff.
-const {
-  // TODO: Allow the caller to define a custom width.
-  width: screenWidth,
-} = Dimensions.get('window');
-
 const marginShort = 10;
 const marginExtraShort = 5;
 
@@ -45,12 +39,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   fieldErrorCaption: {
-    width: screenWidth,
     height: 30,
     flexDirection: 'row',
   },
   fieldErrorCaptionContainer: {
-    width: screenWidth - (2 * marginShort),
     alignItems: 'flex-end',
     justifyContent: 'center',
   },
@@ -125,6 +117,7 @@ class FieldContainer extends React.Component {
       error,
       renderFieldError,
       collapsed,
+      width,
       ...extraProps
     } = this.props;
     const shouldShowError = (!!touched && !!error);// || !collapsed;
@@ -145,7 +138,7 @@ class FieldContainer extends React.Component {
         >
           <View
             style={{
-              width: screenWidth - ((2 * marginShort) + (shouldRenderFieldError ? (50) : 0)),
+              width: width - ((2 * marginShort) + (shouldRenderFieldError ? (50) : 0)),
             }}
           >
             {children}
@@ -176,10 +169,20 @@ class FieldContainer extends React.Component {
           collapsed={!shouldShowError}
         >
           <View
-            style={styles.fieldErrorCaption}
+            style={[
+              styles.fieldErrorCaption,
+              {
+                width,
+              },
+            ]}
           >
             <View
-              style={styles.fieldErrorCaptionContainer}
+              style={[
+                styles.fieldErrorCaptionContainer,
+                {
+                  width: width - (2 * marginShort),
+                },
+              ]}
             >
               <Text
                 style={styles.error}
@@ -194,7 +197,7 @@ class FieldContainer extends React.Component {
   }
 }
 
-const renderTextInput = (config, renderFieldError) => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
+const renderTextInput = (config, width, renderFieldError) => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
   const {
     numberOfLines,
     placeholder,
@@ -210,6 +213,7 @@ const renderTextInput = (config, renderFieldError) => ({ input: { onChange, valu
   const multiline = resolvedNumberOfLines > 1;
   return (
     <FieldContainer
+      width={width}
       backgroundColor="#FFFFFFFF"
       touched={touched}
       error={error}
@@ -243,7 +247,7 @@ const renderTextInput = (config, renderFieldError) => ({ input: { onChange, valu
   );
 };
 
-const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
+const renderBooleanInput = (config, width, renderFieldError) => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
   const {
     collapsed,
     ref,
@@ -257,6 +261,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
   const shouldUseHyperlink = (typeof resolvedDescription !== 'string') && resolvedDescription.length === 2;
   return (
     <FieldContainer
+      width={width}
       backgroundColor="transparent"
       touched={touched}
       error={error}
@@ -265,7 +270,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
     >
       <View
         style={{
-          width: screenWidth - (2 * marginShort),
+          width: width - (2 * marginShort),
           flexDirection: 'row',
           alignItems: 'center',
         }}
@@ -286,7 +291,7 @@ const renderBooleanInput = (config, renderFieldError) => ({ input: { onChange, v
         </TouchableOpacity>
         <View
           style={{
-            width: (screenWidth - 50) - (1 * marginShort),
+            width: (width - 50) - (1 * marginShort),
           }}
         >
           {(shouldUseHyperlink) ? (
@@ -373,18 +378,20 @@ const getValidationByConfig = (config) => {
   return [];
 };
 
-const getComponentByConfig = (config, renderFieldError) => {
+const getComponentByConfig = (config, width, renderFieldError) => {
   const {
     type,
   } = config;
   if (type === 'text') {
     return renderTextInput(
       config,
+      width,
       renderFieldError,
     );
   } else if (type === 'boolean') {
     return renderBooleanInput(
       config,
+      width,
       renderFieldError,
     );
   }
@@ -407,6 +414,8 @@ class DynamicFields extends React.Component {
   constructor(nextProps) {
     super(nextProps);
     const {
+      width,
+      renderFieldError,
       config,
     } = nextProps;
     const cleanConfig = config
@@ -438,7 +447,8 @@ class DynamicFields extends React.Component {
                 name={key}
                 component={getComponentByConfig(
                   el,
-                  nextProps.renderFieldError,
+                  width,
+                  renderFieldError,
                 )}
                 validate={validate}
               />
