@@ -453,7 +453,7 @@ class DynamicFields extends React.Component {
                 name={key}
                 component={getComponentByConfig(
                   el,
-                  width,
+                  width || Dimensions.get('window').width,
                   renderFieldError,
                 )}
                 validate={validate}
