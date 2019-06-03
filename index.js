@@ -79,7 +79,7 @@ class CheckBox extends React.Component {
     return new Promise(resolve => Animated.timing(
       animProgress,
       {
-        toValue: checked ? 0.6 : 0.1,
+        toValue: checked ? 0.5 : 0.1,
         duration: 800,
       },
     ).start(resolve));
@@ -231,6 +231,7 @@ const renderTextInput = (config, width, renderFieldError) => ({ input: { onChang
           style={{
             minHeight: 40,
             fontSize: 16,
+            width: width - ((2 * marginShort) + 50),
             ...resolvedStyle,
           }}
           value={value}
@@ -296,6 +297,9 @@ const renderBooleanInput = (config, width, renderFieldError) => ({ input: { onCh
         >
           {(shouldUseHyperlink) ? (
             <Hyperlink
+              style={{
+                width: (width - 50) - (1 * marginShort),
+              }}
               onPress={(url) => {
                 return Linking.canOpenURL(url)
                   .then((supported) => {
@@ -317,6 +321,7 @@ const renderBooleanInput = (config, width, renderFieldError) => ({ input: { onCh
             >
               <Text
                 style={{
+                  width: (width - 50) - (1 * marginShort),
                   ...resolvedStyle,
                 }}
               >
@@ -326,6 +331,7 @@ const renderBooleanInput = (config, width, renderFieldError) => ({ input: { onCh
           ) : (
             <Text
               style={{
+                width: (width - 50) - (1 * marginShort),
                 ...resolvedStyle,
               }}
             >
