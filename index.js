@@ -224,6 +224,7 @@ const renderTextInput = (config, width, renderFieldError) => ({ input: { onChang
         style={{
           justifyContent: 'center',
           flex:1,
+          flexDirection: 'row',
         }}
       >
         <TextInput
@@ -231,7 +232,7 @@ const renderTextInput = (config, width, renderFieldError) => ({ input: { onChang
           style={{
             minHeight: 40,
             fontSize: 16,
-            width: width - ((2 * marginShort) + 50),
+            flex: 1,
             ...resolvedStyle,
           }}
           value={value}
@@ -271,13 +272,14 @@ const renderBooleanInput = (config, width, renderFieldError) => ({ input: { onCh
     >
       <View
         style={{
-          width: width - (2 * marginShort),
+          flex: 1,
           flexDirection: 'row',
           alignItems: 'center',
         }}
       >
         <TouchableOpacity
           style={{
+            flex: 0,
             marginLeft: -1 * marginShort,
             width: 50,
             height: 50,
@@ -292,13 +294,14 @@ const renderBooleanInput = (config, width, renderFieldError) => ({ input: { onCh
         </TouchableOpacity>
         <View
           style={{
-            width: (width - 50) - (1 * marginShort),
+            flex: 1,
+            flexDirection: 'row',
           }}
         >
           {(shouldUseHyperlink) ? (
             <Hyperlink
               style={{
-                width: (width - 50) - (1 * marginShort),
+                flex: 1,
               }}
               onPress={(url) => {
                 return Linking.canOpenURL(url)
@@ -321,7 +324,7 @@ const renderBooleanInput = (config, width, renderFieldError) => ({ input: { onCh
             >
               <Text
                 style={{
-                  width: (width - 50) - (1 * marginShort),
+                  flex: 1,
                   ...resolvedStyle,
                 }}
               >
@@ -331,7 +334,7 @@ const renderBooleanInput = (config, width, renderFieldError) => ({ input: { onCh
           ) : (
             <Text
               style={{
-                width: (width - 50) - (1 * marginShort),
+                flex: 1,
                 ...resolvedStyle,
               }}
             >
