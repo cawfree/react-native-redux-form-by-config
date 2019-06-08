@@ -311,7 +311,7 @@ const renderBooleanInput = (config, width, renderFieldError, linkStyle) => ({ in
             style={styles.checkBox}
             onRequestChange={checked => onChange(checked)}
             checked={resolvedValue}
-            {....restConfig}
+            {...restConfig}
           />
         </TouchableOpacity>
         <View
