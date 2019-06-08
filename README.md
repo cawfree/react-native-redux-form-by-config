@@ -4,7 +4,7 @@ A simple way to generate [Redux Form](https://redux-form.com/8.2.0/) linked layo
 ## 🚡 Overview
 This small utility function can be used to construct forms backed by `redux-form` through the definition of a high-level configuration object. This helps generate forms that connect to your application state faster, without busying yourself with the boilerplate validation logic.
 
-Please note that this is a work in progress! The library currently only supports text input via a `TextInput`, with a fairly limited set of configuration options. If you would like to add anything, *pull requests are more than welcome; they are encouraged!*
+Please note that this is a work in progress! The library currently only supports text input via a `TextInput` and `CheckBox`, with a fairly limited set of configuration options. If you would like to add anything, *pull requests are more than welcome; they are encouraged!*
 
 ## 🚀 Getting Started
 You can install either via [npm](https://www.npmjs.com/package/@cawfree/react-native-redux-form-by-config):
@@ -65,6 +65,7 @@ export default class App extends React.Component {
             key: 'email',
             label: 'E-Mail Address',
             type: 'text',
+            // Non-configuration props are delegated directly to the <TextInput/>.
             placeholder: 'E-Mail Address',
             textContentType: 'emailAddress',
           },
@@ -81,6 +82,26 @@ export default class App extends React.Component {
           },
         ]
     ),
+    // XXX: Now supports booleans with hyperlinked descriptions!
+    SignUpTermsFields: getFormByConfig(
+        'signUpTerms',
+        [
+          {
+            required: true,
+            key: 'terms',
+            type: 'boolean',
+            label: 'Your acceptance',
+            description: [
+              `I accept the http://www.cawfree.com/mapsy/eula/ and promise to be awesome to other users.`,
+              'end user license agreement',
+            ],
+            style: {
+              textAlign: 'justify',
+              color: '#FFFFFFCC',
+            },
+          }
+        ],
+      )
     // XXX: This is the submission invocation provided
     //      by redux-form.
     handleAuthSubmit: null,

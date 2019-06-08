@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import {
   Linking,
   Animated,
@@ -11,22 +10,24 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import Animation from 'lottie-react-native';
-import Hyperlink from 'react-native-hyperlink'; 
 import PropTypes from 'prop-types';
+import Animation from 'lottie-react-native';
+import Collapsible from 'react-native-collapsible';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import Hyperlink from 'react-native-hyperlink'; 
 // TODO: Make this configurable at the invocation level.
 import {
   Field,
   reduxForm,
   getFormSyncErrors,
 } from 'redux-form/immutable';
+import { connect } from 'react-redux';
 import isEqual from 'lodash.isequal';
 
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import Collapsible from 'react-native-collapsible';
-
+const marginStandard = 15;
 const marginShort = 10;
 const marginExtraShort = 5;
+const thumbSize = 50;
 
 const styles = StyleSheet.create({
   error: {
@@ -42,11 +43,59 @@ const styles = StyleSheet.create({
     height: 30,
     flexDirection: 'row',
   },
+  fieldErrorContainer: {
+    width: thumbSize,
+    height: thumbSize,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   fieldErrorCaptionContainer: {
     alignItems: 'flex-end',
     justifyContent: 'center',
   },
+  textInput: {
+    minHeight: 40,
+    fontSize: 16,
+    flex: 1,
+  },
+  row: {
+    justifyContent: 'center',
+    flex:1,
+    flexDirection: 'row',
+  },
+  checkBoxContainer: {
+    flex: 0,
+    marginLeft: -1 * marginShort,
+    width: thumbSize,
+    height: thumbSize,
+  },
+  checkBoxDescription: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  checkBox: {
+    flex: 1,
+  },
+  checkBoxText: {
+    flex: 1,
+  },
+  linkStyle: {
+    color: '#2980b9',
+  },
 });
+
+const openUrl = url => Linking.canOpenURL(url)
+  .then((isSupported) => {
+    if (isSupported) {
+      return Linking
+        .openURL(url);
+    }
+    return Promise.reject(
+      new Error(
+        `Failed to open "${url}".`,
+      ),
+    );
+  });
 
 class CheckBox extends React.Component {
   state = {
@@ -120,7 +169,7 @@ class FieldContainer extends React.Component {
       width,
       ...extraProps
     } = this.props;
-    const shouldShowError = (!!touched && !!error);// || !collapsed;
+    const shouldShowError = (!!touched && !!error);
     const shouldRenderFieldError = !!renderFieldError;
     return (
       <View
@@ -138,19 +187,14 @@ class FieldContainer extends React.Component {
         >
           <View
             style={{
-              width: width - ((2 * marginShort) + (shouldRenderFieldError ? (50) : 0)),
+              width: width - ((2 * marginShort) + (shouldRenderFieldError ? thumbSize : 0)),
             }}
           >
             {children}
           </View>
           {(shouldRenderFieldError) && (
             <View
-              style={{
-                width: 50,
-                height: 50,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+              style={styles.fieldErrorContainer}
             >
               {(!!touched && !!error) && (
                 renderFieldError()
@@ -197,146 +241,98 @@ class FieldContainer extends React.Component {
   }
 }
 
-const renderTextInput = (config, width, renderFieldError) => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
+const renderTextInput = (config, width, renderFieldError, linkStyle) => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
   const {
+    style,
     numberOfLines,
     placeholder,
-    secureTextEntry,
-    textContentType,
     collapsed,
-    ref,
-    style,
     ...restConfig
   } = config;
+  const resolvedStyle = style || styles.textInput;
   const resolvedNumberOfLines = numberOfLines || 1;
-  const resolvedStyle = style || {};
-  const multiline = resolvedNumberOfLines > 1;
+  const resolvedMultiline = resolvedNumberOfLines > 1;
+  const resolvedPlaceholder = placeholder || '';
   return (
     <FieldContainer
+      collapsed={collapsed}
       width={width}
       backgroundColor="#FFFFFFFF"
       touched={touched}
       error={error}
       renderFieldError={renderFieldError}
-      collapsed={collapsed}
     >
       <View
-        style={{
-          justifyContent: 'center',
-          flex:1,
-          flexDirection: 'row',
-        }}
+        style={styles.row}
       >
         <TextInput
-          ref={ref}
-          style={{
-            minHeight: 40,
-            fontSize: 16,
-            flex: 1,
-            ...resolvedStyle,
-          }}
           value={value}
           onChangeText={onChange}
-          numberOfLines={resolvedNumberOfLines}
-          multiline={multiline}
-          placeholder={placeholder || ''}
           underlineColorAndroid="transparent"
-          secureTextEntry={secureTextEntry}
-          textContentType={textContentType}
+          style={resolvedStyle}
+          numberOfLines={resolvedNumberOfLines}
+          multiline={resolvedMultiline}
+          placeholder={resolvedPlaceholder}
+          {...restConfig}
         />
       </View>
     </FieldContainer>
   );
 };
 
-const renderBooleanInput = (config, width, renderFieldError) => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
+const renderBooleanInput = (config, width, renderFieldError, linkStyle) => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
   const {
     collapsed,
-    ref,
     style,
     description,
     ...restConfig
   } = config;
-  const resolvedStyle = style || {};
+  const resolvedStyle = style || styles.checkBoxText;
   const resolvedDescription = description || '';
   const resolvedValue = !!value;
   const shouldUseHyperlink = (typeof resolvedDescription !== 'string') && resolvedDescription.length === 2;
   return (
     <FieldContainer
+      collapsed={collapsed}
       width={width}
       backgroundColor="transparent"
       touched={touched}
       error={error}
       renderFieldError={null}
-      collapsed={collapsed}
     >
       <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
+        style={styles.row}
       >
         <TouchableOpacity
-          style={{
-            flex: 0,
-            marginLeft: -1 * marginShort,
-            width: 50,
-            height: 50,
-          }}
-          onPress={() => onChange(!resolvedValue) }
+          style={styles.checkBoxContainer}
+          onPress={() => onChange(!resolvedValue)}
         >
           <CheckBox
-            style={{ flex: 1 }}
+            style={styles.checkBox}
             onRequestChange={checked => onChange(checked)}
             checked={resolvedValue}
+            {....restConfig}
           />
         </TouchableOpacity>
         <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-          }}
+          style={styles.checkBoxDescription}
         >
           {(shouldUseHyperlink) ? (
             <Hyperlink
-              style={{
-                flex: 1,
-              }}
-              onPress={(url) => {
-                return Linking.canOpenURL(url)
-                  .then((supported) => {
-                    if (supported) {
-                      return Linking
-                        .openURL(url);
-                    }
-                    return Promise.reject(
-                      new Error(
-                        `Failed to open "${url}".`,
-                      ),
-                    );
-                  });
-              }}
-              linkStyle={{
-                color: '#2980b9',
-              }}
+              style={resolvedStyle}
+              onPress={openUrl}
+              linkStyle={linkStyle}
               linkText={() => resolvedDescription[1]}
             >
               <Text
-                style={{
-                  flex: 1,
-                  ...resolvedStyle,
-                }}
+                style={resolvedStyle}
               >
                 {resolvedDescription[0]}
               </Text>
             </Hyperlink>
           ) : (
             <Text
-              style={{
-                flex: 1,
-                ...resolvedStyle,
-              }}
+              style={resolvedStyle}
             >
               {resolvedDescription}
             </Text>
@@ -387,21 +383,26 @@ const getValidationByConfig = (config) => {
   return [];
 };
 
-const getComponentByConfig = (config, width, renderFieldError) => {
+const getComponentByConfig = (config, width, renderFieldError, linkStyle) => {
   const {
     type,
+    // XXX: Use restConfig to limit the scope of props that propagate
+    //      down the the actual element.
+    ...restConfig
   } = config;
   if (type === 'text') {
     return renderTextInput(
-      config,
+      restConfig,
       width,
       renderFieldError,
+      linkStyle,
     );
   } else if (type === 'boolean') {
     return renderBooleanInput(
-      config,
+      restConfig,
       width,
       renderFieldError,
+      linkStyle,
     );
   }
 };
@@ -425,6 +426,7 @@ class DynamicFields extends React.Component {
     const {
       width,
       renderFieldError,
+      linkStyle,
       config,
     } = nextProps;
     const cleanConfig = config
@@ -458,6 +460,7 @@ class DynamicFields extends React.Component {
                   el,
                   width || Dimensions.get('window').width,
                   renderFieldError,
+                  linkStyle || styles.linkStyle,
                 )}
                 validate={validate}
               />
