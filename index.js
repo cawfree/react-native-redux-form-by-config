@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
   checkBoxDescription: {
     flex: 1,
     minHeight: thumbSize,
+    alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
   },
