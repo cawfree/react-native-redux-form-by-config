@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
   checkBoxDescription: {
     flex: 1,
-    minHeight: checkBoxSize,
+    minHeight: thumbSize,
     justifyContent: 'center',
     flexDirection: 'row',
   },
