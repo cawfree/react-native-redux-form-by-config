@@ -13,7 +13,7 @@ import {
 import PropTypes from 'prop-types';
 import Animation from 'lottie-react-native';
 import Collapsible from 'react-native-collapsible';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import FontAwesomeIcon from 'react-native-vector-icons/dist/FontAwesome';
 import Hyperlink from 'react-native-hyperlink'; 
 // TODO: Make this configurable at the invocation level.
 import {
