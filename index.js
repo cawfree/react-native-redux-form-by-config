@@ -101,8 +101,11 @@ const openUrl = url => Linking.canOpenURL(url)
   });
 
 class CheckBox extends React.Component {
-  state = {
-    animProgress: new Animated.Value(0),
+  constructor(nextProps) {
+    super(nextProps);
+    this.state = {
+      animProgress: new Animated.Value(0),
+    };
   }
   componentDidMount() {
     const {
