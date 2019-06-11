@@ -7,7 +7,6 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -177,12 +176,11 @@ class FieldContainer extends React.Component {
   }
 }
 
-const TextInputField = ({ config, renderFieldError, linkStyle, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
+const TextInputField = ({ config, linkStyle, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
   const {
     style,
     numberOfLines,
     placeholder,
-    collapsed,
     ...restConfig
   } = config;
   const resolvedStyle = style || styles.textInput;
@@ -191,34 +189,25 @@ const TextInputField = ({ config, renderFieldError, linkStyle, input: { onChange
   const resolvedPlaceholder = placeholder || '';
   const resolvedValue = value|| '';
   return (
-    <FieldContainer
-      collapsed={collapsed}
-      backgroundColor="#FFFFFFFF"
-      touched={touched}
-      error={error}
-      renderFieldError={renderFieldError}
+    <View
+      style={styles.row}
     >
-      <View
-        style={styles.row}
-      >
-        <TextInput
-          value={resolvedValue}
-          onChangeText={onChange}
-          underlineColorAndroid="transparent"
-          style={resolvedStyle}
-          numberOfLines={resolvedNumberOfLines}
-          multiline={resolvedMultiline}
-          placeholder={resolvedPlaceholder}
-          {...restConfig}
-        />
-      </View>
-    </FieldContainer>
+      <TextInput
+        value={resolvedValue}
+        onChangeText={onChange}
+        underlineColorAndroid="transparent"
+        style={resolvedStyle}
+        numberOfLines={resolvedNumberOfLines}
+        multiline={resolvedMultiline}
+        placeholder={resolvedPlaceholder}
+        {...restConfig}
+      />
+    </View>
   );
 };
 
-const CheckBoxField =  ({ config, renderFieldError, linkStyle, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
+const CheckBoxField =  ({ config, linkStyle, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
   const {
-    collapsed,
     style,
     description,
     ...restConfig
@@ -228,55 +217,47 @@ const CheckBoxField =  ({ config, renderFieldError, linkStyle, input: { onChange
   const resolvedValue = !!value;
   const shouldUseHyperlink = (typeof resolvedDescription !== 'string') && resolvedDescription.length === 2;
   return (
-    <FieldContainer
-      collapsed={collapsed}
-      backgroundColor="transparent"
-      touched={touched}
-      error={error}
-      renderFieldError={null}
+    <View
+      style={{
+        minHeight: 40,
+        flexDirection: 'row',
+      }}
     >
-      <View
-        style={{
-          minHeight: 40,
-          flexDirection: 'row',
-        }}
+      <TouchableOpacity
+        style={styles.checkBoxContainer}
+        onPress={() => onChange(!resolvedValue)}
       >
-        <TouchableOpacity
-          style={styles.checkBoxContainer}
-          onPress={() => onChange(!resolvedValue)}
-        >
-          <FontAwesomeIcon
-            size={20}
-            name={resolvedValue ? 'check-square' : 'square'}
-            {...restConfig}
-          />
-        </TouchableOpacity>
-        <View
-          style={styles.checkBoxDescription}
-        >
-          {(shouldUseHyperlink) ? (
-            <Hyperlink
-              style={resolvedStyle}
-              onPress={openUrl}
-              linkStyle={linkStyle}
-              linkText={() => resolvedDescription[1]}
-            >
-              <Text
-                style={resolvedStyle}
-              >
-                {resolvedDescription[0]}
-              </Text>
-            </Hyperlink>
-          ) : (
+        <FontAwesomeIcon
+          size={20}
+          name={resolvedValue ? 'check-square' : 'square'}
+          {...restConfig}
+        />
+      </TouchableOpacity>
+      <View
+        style={styles.checkBoxDescription}
+      >
+        {(shouldUseHyperlink) ? (
+          <Hyperlink
+            style={resolvedStyle}
+            onPress={openUrl}
+            linkStyle={linkStyle}
+            linkText={() => resolvedDescription[1]}
+          >
             <Text
               style={resolvedStyle}
             >
-              {resolvedDescription}
+              {resolvedDescription[0]}
             </Text>
-          )}
-        </View>
+          </Hyperlink>
+        ) : (
+          <Text
+            style={resolvedStyle}
+          >
+            {resolvedDescription}
+          </Text>
+        )}
       </View>
-    </FieldContainer>
+    </View>
   );
 };
 
@@ -321,31 +302,15 @@ const getValidationByConfig = (config) => {
   return [];
 };
 
-const getComponentByConfig = (config, renderFieldError, linkStyle) => {
+// TODO: by type
+const getComponentByConfig = (config) => {
   const {
     type,
-    // XXX: Use restConfig to limit the scope of props that propagate
-    //      down the the actual element.
-    ...restConfig
   } = config;
   if (type === 'text') {
-    return ({ ...nextProps }) => (
-      <TextInputField
-        {...nextProps}
-        config={restConfig}
-        renderFieldError={renderFieldError}
-        linkStyle={linkStyle}
-      />
-    );
+    return TextInputField;
   } else if (type === 'boolean') {
-    return ({ ...nextProps }) => (
-      <CheckBoxField
-        {...nextProps}
-        config={restConfig}
-        renderFieldError={renderFieldError}
-        linkStyle={linkStyle}
-      />
-    );
+    return CheckBoxField;
   }
   throw new Error(
     `Unrecognized field type "${type}".`,
@@ -396,15 +361,39 @@ class DynamicFields extends React.Component {
             const validate = getValidationByConfig(
               el,
             );
+            const FieldImpl = getComponentByConfig(el);
+            const {
+              collapsed,
+              ...restConfig
+            } = el;
             return ([
               ...arr,
               <Field
                 name={key}
-                component={getComponentByConfig(
-                  el,
-                  renderFieldError,
-                  linkStyle || styles.linkStyle,
-                )}
+                component={(extraProps) => {
+                  const {
+                    meta: {
+                      touched,
+                      error,
+                    },
+                  } = extraProps;
+                  // TODO@ to style
+                  return (
+                    <FieldContainer
+                      collapsed={collapsed}
+                      backgroundColor={type === 'boolean' ? 'transparent' : '#FFFFFFFF'}
+                      touched={touched}
+                      error={error}
+                      renderFieldError={renderFieldError}
+                    >
+                      <FieldImpl
+                        {...extraProps}
+                        config={restConfig}
+                        linkStyle={styles.linkStyle || linkStyle}
+                      />
+                    </FieldContainer>
+                  );
+                }}
                 validate={validate}
               />
             ]);
