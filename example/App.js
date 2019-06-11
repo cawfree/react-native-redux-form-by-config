@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import { reducer as form } from 'redux-form';
+import { reducer as form } from 'redux-form/immutable';
 
 //import getFormByConfig from '@cawfree/react-native-redux-form-by-config';
 import getFormByConfig from './getFormByConfig';
