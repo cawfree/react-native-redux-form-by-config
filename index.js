@@ -241,39 +241,45 @@ const renderBooleanInput = (config, width, renderFieldError, linkStyle) => ({ in
       <View
         style={styles.row}
       >
-        <TouchableOpacity
-          style={styles.checkBoxContainer}
-          onPress={() => onChange(!resolvedValue)}
-        >
-          <FontAwesomeIcon
-            size={20}
-            name={resolvedValue ? 'check-square' : 'square'}
-            {...restConfig}
-          />
-        </TouchableOpacity>
         <View
-          style={styles.checkBoxDescription}
+          style={{
+            minHeight: 40,
+          }}
         >
-          {(shouldUseHyperlink) ? (
-            <Hyperlink
-              style={resolvedStyle}
-              onPress={openUrl}
-              linkStyle={linkStyle}
-              linkText={() => resolvedDescription[1]}
-            >
+          <TouchableOpacity
+            style={styles.checkBoxContainer}
+            onPress={() => onChange(!resolvedValue)}
+          >
+            <FontAwesomeIcon
+              size={20}
+              name={resolvedValue ? 'check-square' : 'square'}
+              {...restConfig}
+            />
+          </TouchableOpacity>
+          <View
+            style={styles.checkBoxDescription}
+          >
+            {(shouldUseHyperlink) ? (
+              <Hyperlink
+                style={resolvedStyle}
+                onPress={openUrl}
+                linkStyle={linkStyle}
+                linkText={() => resolvedDescription[1]}
+              >
+                <Text
+                  style={resolvedStyle}
+                >
+                  {resolvedDescription[0]}
+                </Text>
+              </Hyperlink>
+            ) : (
               <Text
                 style={resolvedStyle}
               >
-                {resolvedDescription[0]}
+                {resolvedDescription}
               </Text>
-            </Hyperlink>
-          ) : (
-            <Text
-              style={resolvedStyle}
-            >
-              {resolvedDescription}
-            </Text>
-          )}
+            )}
+          </View>
         </View>
       </View>
     </FieldContainer>
