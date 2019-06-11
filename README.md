@@ -47,11 +47,13 @@ import {
 import getFormByConfig from '@cawfree/react-native-redux-form-by-config';
 
 const styles = StyleSheet.create(
-  container: {
-    flex: 1,
-  },
-  text: {
-    backgroundColor: 'peachpuff',
+  {
+    container: {
+      flex: 1,
+    },
+    text: {
+      backgroundColor: 'peachpuff',
+    },
   },
 );
 
@@ -101,7 +103,7 @@ export default class App extends React.Component {
             },
           }
         ],
-      )
+      ),
     // XXX: This is the submission invocation provided
     //      by redux-form.
     handleAuthSubmit: null,
