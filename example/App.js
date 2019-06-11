@@ -81,6 +81,7 @@ export default class App extends React.Component {
               textAlign: 'justify',
               color: '#FFFFFFCC',
             },
+            color: '#FFFFFFFF',
           }
         ],
       ),
