@@ -13,7 +13,7 @@ import {
 import PropTypes from 'prop-types';
 import Animation from 'lottie-react-native';
 import Collapsible from 'react-native-collapsible';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import FontAwesomeIcon from 'react-native-vector-icons/dist/FontAwesome';
 import Hyperlink from 'react-native-hyperlink'; 
 // TODO: Make this configurable at the invocation level.
 import {
@@ -65,16 +65,14 @@ const styles = StyleSheet.create({
   },
   checkBoxContainer: {
     flex: 0,
-    marginLeft: -1 * marginShort,
     width: thumbSize,
     height: thumbSize,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   checkBoxDescription: {
     flex: 1,
     flexDirection: 'row',
-  },
-  checkBox: {
-    flex: 1,
   },
   checkBoxText: {
     flex: 1,
@@ -97,65 +95,6 @@ const openUrl = url => Linking.canOpenURL(url)
     );
   });
 
-class CheckBox extends React.Component {
-  state = {
-    animProgress: new Animated.Value(0),
-  }
-  componentDidMount() {
-    const {
-      checked,
-    } = this.props;
-    if (checked) {
-      return this.__animate(checked);
-    }
-    return Promise
-      .resolve();
-  }
-  componentWillUpdate(nextProps, nextState) {
-    const {
-      checked,
-    } = nextProps;
-    if (checked !== this.props.checked) {
-      return this.__animate(checked);
-    }
-    return Promise
-      .resolve();
-  }
-  __animate(checked) {
-    const {
-      animProgress,
-    } = this.state;
-    return new Promise(resolve => Animated.timing(
-      animProgress,
-      {
-        toValue: checked ? 0.5 : 0.1,
-        duration: 800,
-      },
-    ).start(resolve));
-  }
-  render() {
-    const {
-      style,
-      checked,
-      onRequestChange,
-    } = this.props;
-    const { animProgress } = this.state;
-    return (
-      <TouchableOpacity
-        style={style}
-        onPress={() => onRequestChange(!checked)}
-      >
-        <Animation
-          style={{
-            flex: 1,
-          }}
-          source={require('./res/checkbox.json')}
-          progress={animProgress}
-        />
-      </TouchableOpacity>
-    );
-  }
-}
 
 class FieldContainer extends React.Component {
   render() {
@@ -307,10 +246,9 @@ const renderBooleanInput = (config, width, renderFieldError, linkStyle) => ({ in
           style={styles.checkBoxContainer}
           onPress={() => onChange(!resolvedValue)}
         >
-          <CheckBox
-            style={styles.checkBox}
-            onRequestChange={checked => onChange(checked)}
-            checked={resolvedValue}
+          <FontAwesomeIcon
+            size={20}
+            name={resolvedValue ? 'check-square' : 'square'}
             {...restConfig}
           />
         </TouchableOpacity>
