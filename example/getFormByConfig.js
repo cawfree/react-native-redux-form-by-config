@@ -11,7 +11,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import Collapsible from 'react-native-collapsible';
 import FontAwesomeIcon from 'react-native-vector-icons/dist/FontAwesome';
 import Hyperlink from 'react-native-hyperlink'; 
 // TODO: Make this configurable at the invocation level.
@@ -78,7 +77,119 @@ const styles = StyleSheet.create({
   linkStyle: {
     color: '#2980b9',
   },
+  collapsible: {
+    position: 'absolute',
+    flex: 1,
+    flexDirection: 'row',
+  },
 });
+
+class Collapsible extends React.Component {
+  constructor(nextProps) {
+    super(nextProps);
+    this.state = {
+      animValue: new Animated.Value(0),
+      height: 0,
+    };
+    this.__onLayout = this.__onLayout.bind(this);
+  }
+  componentWillUpdate(nextProps, nextState) {
+    const {
+      collapsed,
+      duration,
+    } = nextProps;
+    const {
+      animValue,
+      height,
+    } = nextState;
+    if (!collapsed && this.props.collapsed) {
+      Animated.timing(
+        animValue,
+        {
+          toValue: height,
+          duration,
+        },
+      )
+        .start();
+    } else if (collapsed && !this.props.collapsed) {
+      Animated.timing(
+        animValue,
+        {
+          toValue: 0,
+          duration,
+        },
+      )
+        .start();
+    }
+  }
+  __requestMeasure() {
+    const { child } = this.refs;
+    return new Promise(resolve => child.measure(resolve))
+      .then((ox, oy, width, height, px, py) => height);
+  }
+  __onLayout(e) {
+    const {
+      width,
+      height,
+      duration,
+    } = e.nativeEvent.layout;
+    const shouldInit = !this.state.height;
+    this.setState(
+      {
+        height,
+      },
+      shouldInit && (() => {
+        const { collapsed } = this.props;
+        const { animValue } = this.state;
+        Animated
+          .timing(
+            animValue,
+            {
+              toValue: collapsed ? 0 : height,
+              duration,
+            },
+          )
+          .start();
+      }),
+    );
+  }
+  render() {
+    const { 
+      collapsed,
+      children,
+    } = this.props;
+    const {
+      animValue: height,
+    } = this.state;
+    return (
+      <Animated.View
+        style={{
+          overflow: 'hidden',
+          height,
+        }}
+        removeClippedSubviews={false}
+        collapsable={false}
+        renderToHardwareTextureAndroid
+      >
+        <View
+          ref="child"
+          onLayout={this.__onLayout}
+          style={styles.collapsible}
+        >
+          {children}
+        </View>
+      </Animated.View>
+    );
+  }
+}
+
+Collapsible.propTypes = {
+  duration: PropTypes.number,
+};
+
+Collapsible.defaultProps = {
+  duration: 200,
+};
 
 const openUrl = url => Linking.canOpenURL(url)
   .then((isSupported) => {
@@ -139,40 +250,39 @@ class FieldContainer extends React.Component {
             </View>
           )}
         </View>
-        <Collapsible
-          collapsed={!!shouldShowError}
+        <View
+          style={{
+            minHeight: marginShort,
+          }}
         >
-          <View
-            style={{ height: marginShort }}
-          />
-        </Collapsible>
-        <Collapsible
-          collapsed={!shouldShowError}
-        >
-          <View
-            style={[
-              styles.fieldErrorCaption,
-              {
-                flex: 1,
-              },
-            ]}
+          <Collapsible
+            collapsed={!shouldShowError}
           >
             <View
               style={[
-                styles.fieldErrorCaptionContainer,
+                styles.fieldErrorCaption,
                 {
                   flex: 1,
                 },
               ]}
             >
-              <Text
-                style={styles.error}
+              <View
+                style={[
+                  styles.fieldErrorCaptionContainer,
+                  {
+                    flex: 1,
+                  },
+                ]}
               >
-                {error}
-              </Text>
+                <Text
+                  style={styles.error}
+                >
+                  {error}
+                </Text>
+              </View>
             </View>
-          </View>
-        </Collapsible>
+          </Collapsible>
+        </View>
       </View>
     );
   }

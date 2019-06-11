@@ -10,7 +10,7 @@
     "immutable": "^4.0.0-rc.12",
     "react": "16.8.3",
     "react-native": "0.59.9",
-    "react-native-collapsible": "^1.4.0",
+    "react-native-collapsible": "https://github.com/cawfree/react-native-collapsible",
     "react-native-hyperlink": "^0.0.14",
     "react-native-vector-icons": "^6.5.0",
     "react-redux": "^7.1.0",

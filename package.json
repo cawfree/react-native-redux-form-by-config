@@ -29,7 +29,6 @@
   "peerDependencies": {
     "immutable": "^4.0.0-rc.12",
     "prop-types": "^15.6.1",
-    "react-native-collapsible": "^1.4.0",
     "react-native-hyperlink": "^0.0.14",
     "react-native-vector-icons": "^6.3.0",
     "react-redux": "^6.0.0",
