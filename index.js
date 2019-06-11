@@ -64,7 +64,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   checkBoxContainer: {
-    flex: 0,
     width: thumbSize,
     height: thumbSize,
     alignItems: 'center',
