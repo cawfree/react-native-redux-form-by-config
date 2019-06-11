@@ -177,7 +177,7 @@ class FieldContainer extends React.Component {
   }
 }
 
-const renderTextInput = (config, renderFieldError, linkStyle) => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
+const TextInputField = ({ config, renderFieldError, linkStyle, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
   const {
     style,
     numberOfLines,
@@ -216,7 +216,7 @@ const renderTextInput = (config, renderFieldError, linkStyle) => ({ input: { onC
   );
 };
 
-const renderBooleanInput = (config, renderFieldError, linkStyle) => ({ input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
+const CheckBoxField =  ({ config, renderFieldError, linkStyle, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
   const {
     collapsed,
     style,
@@ -329,18 +329,27 @@ const getComponentByConfig = (config, renderFieldError, linkStyle) => {
     ...restConfig
   } = config;
   if (type === 'text') {
-    return renderTextInput(
-      restConfig,
-      renderFieldError,
-      linkStyle,
+    return ({ ...nextProps }) => (
+      <TextInputField
+        {...nextProps}
+        config={restConfig}
+        renderFieldError={renderFieldError}
+        linkStyle={linkStyle}
+      />
     );
   } else if (type === 'boolean') {
-    return renderBooleanInput(
-      restConfig,
-      renderFieldError,
-      linkStyle,
+    return ({ ...nextProps }) => (
+      <CheckBoxField
+        {...nextProps}
+        config={restConfig}
+        renderFieldError={renderFieldError}
+        linkStyle={linkStyle}
+      />
     );
   }
+  throw new Error(
+    `Unrecognized field type "${type}".`,
+  );
 };
 
 class DynamicFields extends React.Component {
