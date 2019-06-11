@@ -21,7 +21,7 @@ import {
   getFormSyncErrors,
 } from 'redux-form/immutable';
 import { connect } from 'react-redux';
-import isEqual from 'lodash.isequal';
+import { isEqual } from 'lodash';
 
 const marginStandard = 15;
 const marginShort = 10;
