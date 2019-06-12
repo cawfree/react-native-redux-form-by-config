@@ -79,7 +79,6 @@ class Wrapper extends React.Component {
             <View
               style={{
                 width: thumbSize,
-                backgroundColor: 'green',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
