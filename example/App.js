@@ -61,6 +61,20 @@ export default class App extends React.Component {
             textContentType: 'password',
             secureTextEntry: true,
           },
+          {
+            required: true,
+            min: 6,
+            max: 64,
+            key: 'notes',
+            type: 'text',
+            label: 'Notes',
+            placeholder: 'Your notes here',
+            numberOfLines: 3,
+            style: {
+              fontSize: 20,
+              height: 300,
+            },
+          }
         ]
     ),
     // XXX: Now supports booleans with hyperlinked descriptions!

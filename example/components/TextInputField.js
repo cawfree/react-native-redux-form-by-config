@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 const styles = StyleSheet.create(
   {
     container: {
-      flex: 1,
+      flexDirection: 'row',
     },
     textInput: {
       fontSize: 16,
@@ -30,9 +30,8 @@ class TextInputField extends React.Component {
     const {
       thumbSize,
     } = theme;
-    const resolvedStyle = style || {
-      ...styles.textInput,
-      minHeight: thumbSize,
+    const resolvedStyle = {
+      ...(style || styles.textInput),
     };
     const resolvedNumberOfLines = numberOfLines || 1;
     const resolvedMultiline = resolvedNumberOfLines > 1;

@@ -12,7 +12,7 @@ const styles = StyleSheet.create(
   {
     children: {
       flex: 1,
-      minHeight: 40,
+      //minHeight: 40,
     },
     fieldContainer: {
       overflow: 'hidden',
