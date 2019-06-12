@@ -77,17 +77,26 @@ class Wrapper extends React.Component {
           </View>
           {(shouldRenderFieldError) && (
             <View
-              style={[
-                styles.fieldErrorContainer,
-                {
-                  width: thumbSize,
-                  height: thumbSize,
-                },
-              ]}
+              style={{
+                width: thumbSize,
+                backgroundColor: 'green',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
             >
-              {(!!touched && !!error) && (
-                renderFieldError()
-              )}
+              <View
+                style={[
+                  styles.fieldErrorContainer,
+                  {
+                    width: thumbSize,
+                    height: thumbSize,
+                  },
+                ]}
+              >
+                {(!!touched && !!error) && (
+                  renderFieldError()
+                )}
+              </View>
             </View>
           )}
         </View>
