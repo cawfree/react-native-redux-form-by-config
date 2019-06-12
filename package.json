@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/Cawfree/react-native-redux-form-by-config#readme",
   "peerDependencies": {
-    "@cawfree/react-native-collapsible-view": "^1.0.7",
+    "@cawfree/react-native-collapsible-view": "^1.0.8",
     "@callstack/react-theme-provider": "^3.0.0",
     "immutable": "^4.0.0-rc.12",
     "prop-types": "^15.6.1",
