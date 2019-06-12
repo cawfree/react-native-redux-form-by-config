@@ -60,7 +60,8 @@ class Wrapper extends React.Component {
     const shouldShowError = (!!touched && !!error);
     const shouldRenderFieldError = (!!renderFieldError) && (type !== 'boolean');
     return (
-      <View>
+      <View
+      >
         <View
           style={[
             styles.fieldContainer,

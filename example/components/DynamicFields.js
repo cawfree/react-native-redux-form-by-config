@@ -173,6 +173,8 @@ class DynamicFields extends React.Component {
         theme={theme}
       >
         <View
+          style={{
+          }}
         >
           {fields}
         </View>

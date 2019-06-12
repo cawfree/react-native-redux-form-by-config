@@ -9,6 +9,7 @@ import {
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { reducer as form } from 'redux-form/immutable';
+import Collapsible from '@cawfree/react-native-collapsible-view';
 
 import getFormByConfig from './getFormByConfig';
 
@@ -102,10 +103,12 @@ export default class App extends React.Component {
       //      by redux-form.
       handleAuthSubmit: null,
       handleSignUpTermsSubmit: null,
+      showTerms: false,
     };
     this.__onHandleAuthSubmit = this.__onHandleAuthSubmit.bind(this);
     this.__onHandleSignUpTermsSubmit = this.__onHandleSignUpTermsSubmit.bind(this);
     this.__onAuth = this.__onAuth.bind(this);
+    this.__showTerms = this.__showTerms.bind(this);
   }
   __onHandleAuthSubmit(handleAuthSubmit) {
     this.setState(
@@ -149,10 +152,18 @@ export default class App extends React.Component {
       ),
     );
   }
+  __showTerms() {
+    this.setState(
+      {
+        showTerms: !this.state.showTerms,
+      },
+    );
+  }
   render() {
     const {
       AuthFields,
       SignUpTermsFields,
+      showTerms,
     } = this.state;
     return (
       <Provider
@@ -161,12 +172,22 @@ export default class App extends React.Component {
         <View
           style={styles.container}
         >
-          <AuthFields
-            onHandleSubmit={this.__onHandleAuthSubmit}
-          />
-          <SignUpTermsFields
-            onHandleSubmit={this.__onHandleSignUpTermsSubmit}
-          />
+          <Collapsible
+            collapsed={!showTerms}
+          >
+            <View
+              style={{
+                flex: 1,
+              }}
+            >
+              <AuthFields
+                onHandleSubmit={this.__onHandleAuthSubmit}
+              />
+              <SignUpTermsFields
+                onHandleSubmit={this.__onHandleSignUpTermsSubmit}
+              />
+            </View>
+          </Collapsible>
           <TouchableOpacity
             onPress={this.__onAuth}
           >
@@ -174,6 +195,15 @@ export default class App extends React.Component {
               style={styles.text}
             >
               {'Sign In'}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={this.__showTerms}
+          >
+            <Text
+              style={styles.text}
+            >
+              {'Show Terms'}
             </Text>
           </TouchableOpacity>
         </View>
