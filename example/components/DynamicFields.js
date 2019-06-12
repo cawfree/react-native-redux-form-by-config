@@ -6,9 +6,11 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form/immutable';
 import { isEqual } from 'lodash';
 
-import FieldContainer from './FieldContainer';
-import CheckBoxField from './CheckBoxField';
-import TextInputField from './TextInputField';
+import WrapperContainer from './../containers/WrapperContainer';
+import CheckBoxFieldContainer from './../containers/CheckBoxFieldContainer';
+import TextInputFieldContainer from './../containers/TextInputFieldContainer';
+
+import { ThemeProvider } from './../theme';
 
 // TODO: to known package library
 const isRequired = label => value => value ? undefined : `${label} is required.`;
@@ -57,9 +59,9 @@ const getComponentByConfig = (config) => {
     type,
   } = config;
   if (type === 'text') {
-    return TextInputField;
+    return TextInputFieldContainer;
   } else if (type === 'boolean') {
-    return CheckBoxField;
+    return CheckBoxFieldContainer;
   }
   throw new Error(
     `Unrecognized field type "${type}".`,
@@ -70,9 +72,8 @@ class DynamicFields extends React.Component {
   constructor(nextProps) {
     super(nextProps);
     const {
-      renderFieldError,
-      linkStyle,
       config,
+      linkStyle,
     } = nextProps;
     const cleanConfig = config
       .filter((e) => {
@@ -105,27 +106,25 @@ class DynamicFields extends React.Component {
               ...arr,
               <Field
                 name={key}
-                component={(extraProps) => {
+                component={({ ...extraProps }) => {
                   const {
                     meta: {
                       touched,
                       error,
                     },
                   } = extraProps;
-                  // TODO@ to style
                   return (
-                    <FieldContainer
+                    <WrapperContainer
+                      type={type}
                       collapsed={collapsed}
-                      backgroundColor={type === 'boolean' ? 'transparent' : '#FFFFFFFF'}
                       touched={touched}
                       error={error}
-                      renderFieldError={renderFieldError}
                     >
                       <FieldImpl
                         {...extraProps}
                         config={restConfig}
                       />
-                    </FieldContainer>
+                    </WrapperContainer>
                   );
                 }}
                 validate={validate}
@@ -162,16 +161,32 @@ class DynamicFields extends React.Component {
   }
   render() {
     const {
+      theme,
+      ...extraProps
+    } = this.props;
+    const {
       fields,
       ...nextState
     } = this.state;
     return (
-      <View
+      <ThemeProvider
+        theme={theme}
       >
-        {fields}
-      </View>
+        <View
+        >
+          {fields}
+        </View>
+      </ThemeProvider>
     );
   }
 }
+
+DynamicFields.propTypes = {
+  theme: PropTypes.shape({}),
+};
+
+DynamicFields.defaultProps = {
+  theme: undefined,
+};
 
 export default DynamicFields;

@@ -1,9 +1,5 @@
 import React from 'react';
-// TODO: Make this configurable at the invocation level.
-import {
-  reduxForm,
-  getFormSyncErrors,
-} from 'redux-form/immutable';
+import { reduxForm, getFormSyncErrors } from 'redux-form/immutable';
 import { connect } from 'react-redux';
 
 import DynamicFields from './components/DynamicFields';
@@ -13,15 +9,15 @@ function getFieldsByConfig(
   config,
 ) {
   const mapStateToProps = (state, ownProps) => {
-    return ({
+    return {
       config,
       formSyncErrors: getFormSyncErrors(form)(state),
-    });
+    };
   };
   const mapDispatchToProps = (dispatch, ownProps) => {
-    return ({
+    return {
 
-    });
+    };
   };
   return connect(
     mapStateToProps,

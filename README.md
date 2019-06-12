@@ -43,13 +43,18 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import { reducer as form } from 'redux-form/immutable';
 
-import getFormByConfig from '@cawfree/react-native-redux-form-by-config';
+import getFormByConfig from './getFormByConfig';
 
 const styles = StyleSheet.create(
   {
     container: {
       flex: 1,
+      backgroundColor: 'lightgrey',
+      paddingHorizontal: 5,
     },
     text: {
       backgroundColor: 'peachpuff',
@@ -57,11 +62,22 @@ const styles = StyleSheet.create(
   },
 );
 
+const store = createStore(
+  combineReducers(
+    {
+      form,
+    },
+  ),
+  undefined,
+);
+
 export default class App extends React.Component {
-  state = {
-    AuthFields: getFormByConfig(
-      'auth',
-      [
+  constructor(nextProps) {
+    super(nextProps);
+    this.state = {
+      AuthFields: getFormByConfig(
+        'auth',
+        [
           {
             required: true,
             key: 'email',
@@ -101,16 +117,17 @@ export default class App extends React.Component {
               textAlign: 'justify',
               color: '#FFFFFFCC',
             },
+            color: '#FFFFFFFF',
           }
         ],
       ),
-    // XXX: This is the submission invocation provided
-    //      by redux-form.
-    handleAuthSubmit: null,
-  }
-  constructor(nextProps) {
-    super(nextProps);
+      // XXX: This is the submission invocation provided
+      //      by redux-form.
+      handleAuthSubmit: null,
+      handleSignUpTermsSubmit: null,
+    };
     this.__onHandleAuthSubmit = this.__onHandleAuthSubmit.bind(this);
+    this.__onHandleSignUpTermsSubmit = this.__onHandleSignUpTermsSubmit.bind(this);
     this.__onAuth = this.__onAuth.bind(this);
   }
   __onHandleAuthSubmit(handleAuthSubmit) {
@@ -120,16 +137,31 @@ export default class App extends React.Component {
       },
     );
   }
+  __onHandleSignUpTermsSubmit(handleSignUpTermsSubmit) {
+    this.setState(
+      {
+        handleSignUpTermsSubmit,
+      },
+    );
+  }
   __onAuth() {
     const {
       handleAuthSubmit,
+      handleSignUpTermsSubmit,
     } = this.state;
     if (handleAuthSubmit) {
-      return new Promise(
-        (resolve, reject) => handleAuthSubmit(resolve)().catch(reject),
+      return Promise.all(
+        [
+          new Promise(
+            (resolve, reject) => handleAuthSubmit(resolve)(),
+          ),
+          new Promise(
+            (resolve, reject) => handleSignUpTermsSubmit(resolve)(),
+          ),
+        ],
       )
-        .then((results) => {
-          // XXX: Here are your validated results!
+        .then(([ auth, signUpTerms ]) => {
+          //// XXX: Here are your validated results!
           const emailAddress = auth.get('email');
           const password = auth.get('password');
         });
@@ -143,24 +175,32 @@ export default class App extends React.Component {
   render() {
     const {
       AuthFields,
+      SignUpTermsFields,
     } = this.state;
     return (
-      <View
-        style={styles.container}
+      <Provider
+        store={store}
       >
-        <AuthFields
-          onHandleSubmit={this.__onHandleAuthSubmit}
-        />
-        <TouchableOpacity
-          onPress={this.__onAuth}
+        <View
+          style={styles.container}
         >
-          <Text
-            style={styles.text}
+          <AuthFields
+            onHandleSubmit={this.__onHandleAuthSubmit}
+          />
+          <SignUpTermsFields
+            onHandleSubmit={this.__onHandleSignUpTermsSubmit}
+          />
+          <TouchableOpacity
+            onPress={this.__onAuth}
           >
-            {'Sign In'}
-          </Text>
-        </TouchableOpacity>
-      </View>
+            <Text
+              style={styles.text}
+            >
+              {'Sign In'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Provider>
     );
   }
 }

@@ -8,21 +8,13 @@ import PropTypes from 'prop-types';
 import Collapsible from '@cawfree/react-native-collapsible-view';
 import FontAwesomeIcon from 'react-native-vector-icons/dist/FontAwesome';
 
-// TODO: needs theming
-
-const marginShort = 5;
-const thumbSize = 50;
-
 const styles = StyleSheet.create(
   {
-    container: {
-      minHeight: 40,
-    },
     children: {
       flex: 1,
+      minHeight: 40,
     },
     fieldContainer: {
-      borderRadius: 5, // TODO: marginShort, callstack
       overflow: 'hidden',
       flexDirection: 'row',
     },
@@ -32,8 +24,6 @@ const styles = StyleSheet.create(
       flex: 1,
     },
     fieldErrorContainer: {
-      width: thumbSize,
-      height: thumbSize,
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -49,28 +39,34 @@ const styles = StyleSheet.create(
   },
 );
 
-export default class FieldContainer extends React.Component {
+class Wrapper extends React.Component {
   render() {
     const {
-      backgroundColor,
+      type,
+      style,
       children,
       touched,
       error,
       renderFieldError,
       collapsed,
+      theme,
       ...extraProps
     } = this.props;
+    const {
+      marginShort,
+      thumbSize,
+      backgroundColor,
+    } = theme;
     const shouldShowError = (!!touched && !!error);
-    const shouldRenderFieldError = !!renderFieldError;
+    const shouldRenderFieldError = (!!renderFieldError) && (type !== 'boolean');
     return (
-      <View
-        style={styles.container}
-      >
+      <View>
         <View
           style={[
             styles.fieldContainer,
             {
-              backgroundColor,
+              backgroundColor: (type === 'boolean' ? 'transparent' : backgroundColor),
+              borderRadius: marginShort,
             },
           ]}
         >
@@ -81,7 +77,13 @@ export default class FieldContainer extends React.Component {
           </View>
           {(shouldRenderFieldError) && (
             <View
-              style={styles.fieldErrorContainer}
+              style={[
+                styles.fieldErrorContainer,
+                {
+                  width: thumbSize,
+                  height: thumbSize,
+                },
+              ]}
             >
               {(!!touched && !!error) && (
                 renderFieldError()
@@ -117,14 +119,14 @@ export default class FieldContainer extends React.Component {
   }
 }
 
-FieldContainer.propTypes = {
+Wrapper.propTypes = {
   backgroundColor: PropTypes.string,
   touched: PropTypes.bool,
   error: PropTypes.bool,
   renderFieldError: PropTypes.func,
 };
 
-FieldContainer.defaultProps = {
+Wrapper.defaultProps = {
   backgroundColor: '#FFFFFFFF',
   touched: false,
   error: false,
@@ -136,3 +138,5 @@ FieldContainer.defaultProps = {
     />
   ),
 };
+
+export default Wrapper;

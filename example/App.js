@@ -10,7 +10,6 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { reducer as form } from 'redux-form/immutable';
 
-//import getFormByConfig from '@cawfree/react-native-redux-form-by-config';
 import getFormByConfig from './getFormByConfig';
 
 const styles = StyleSheet.create(
@@ -40,8 +39,8 @@ export default class App extends React.Component {
     super(nextProps);
     this.state = {
       AuthFields: getFormByConfig(
-      'auth',
-      [
+        'auth',
+        [
           {
             required: true,
             key: 'email',
@@ -124,8 +123,8 @@ export default class App extends React.Component {
           ),
         ],
       )
-        .then((results) => {
-          // XXX: Here are your validated results!
+        .then(([ auth, signUpTerms ]) => {
+          //// XXX: Here are your validated results!
           const emailAddress = auth.get('email');
           const password = auth.get('password');
         });
