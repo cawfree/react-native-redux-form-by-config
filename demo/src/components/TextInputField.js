@@ -3,6 +3,7 @@ import {
   View,
   TextInput,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -10,6 +11,7 @@ const styles = StyleSheet.create(
   {
     container: {
       flexDirection: 'row',
+      flex: Platform.OS === 'web' ? 1 : undefined,
     },
     textInput: {
       fontSize: 16,

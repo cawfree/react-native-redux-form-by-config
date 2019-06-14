@@ -109,7 +109,7 @@ class App extends React.Component {
     this.__onHandleAuthSubmit = this.__onHandleAuthSubmit.bind(this);
     this.__onHandleSignUpTermsSubmit = this.__onHandleSignUpTermsSubmit.bind(this);
     this.__onAuth = this.__onAuth.bind(this);
-    this.__showTerms = this.__showTerms.bind(this);
+    this.__expand = this.__expand.bind(this);
   }
   __onHandleAuthSubmit(handleAuthSubmit) {
     this.setState(
@@ -145,7 +145,8 @@ class App extends React.Component {
           //// XXX: Here are your validated results!
           const emailAddress = auth.get('email');
           const password = auth.get('password');
-        });
+        })
+        .catch(console.log);
     }
     return Promise.reject(
       new Error(
@@ -153,7 +154,7 @@ class App extends React.Component {
       ),
     );
   }
-  __showTerms() {
+  __expand() {
     this.setState(
       {
         showTerms: !this.state.showTerms,
@@ -188,23 +189,23 @@ class App extends React.Component {
                 onHandleSubmit={this.__onHandleSignUpTermsSubmit}
               />
             </View>
+            <TouchableOpacity
+              onPress={this.__onAuth}
+            >
+              <Text
+                style={styles.text}
+              >
+                {'Sign In'}
+              </Text>
+            </TouchableOpacity>
           </Collapsible>
           <TouchableOpacity
-            onPress={this.__onAuth}
+            onPress={this.__expand}
           >
             <Text
               style={styles.text}
             >
-              {'Sign In'}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={this.__showTerms}
-          >
-            <Text
-              style={styles.text}
-            >
-              {'Show Terms'}
+              {'Expand'}
             </Text>
           </TouchableOpacity>
         </View>
