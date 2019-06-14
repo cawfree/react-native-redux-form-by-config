@@ -1,3 +1,3 @@
-import getFormByConfig from './example/getFormByConfig';
+import getFormByConfig from './demo/src/getFormByConfig';
 
 export default getFormByConfig;
