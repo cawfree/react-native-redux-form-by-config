@@ -1,40 +1,3 @@
-# react-native-redux-form-by-config
-A simple way to generate [Redux Form](https://redux-form.com/8.2.0/) linked layouts using a high-level config object.
-
-## 🚡 Overview
-This small utility function can be used to construct forms backed by `redux-form` through the definition of a high-level configuration object. This helps generate forms that connect to your application state faster, without busying yourself with the boilerplate validation logic.
-
-Please note that this is a work in progress! The library currently only supports text input via a `TextInput` and `CheckBox`, with a fairly limited set of configuration options. If you would like to add anything, *pull requests are more than welcome; they are encouraged!*
-
-## 🚀 Getting Started
-You can install either via [npm](https://www.npmjs.com/package/@cawfree/react-native-redux-form-by-config):
-```
-npm install --save @cawfree/react-native-redux-form-by-config
-```
-Or alternatively by using [yarn](https://www.npmjs.com/package/@cawfree/react-native-redux-form-by-config):
-```
-yarn add @cawfree/react-native-redux-form-by-config
-```
-Finally, ensure your application has been hooked up to `redux-form` in your master `reducer`. This will look something along the lines of:
-
-```
-import { combineReducers } from 'react-redux';
-import { reducer as form } from 'redux-form/immutable';
-
-const buildReducer = (...extraReducers) => combineReducers(
-  {
-    form,
-    // XXX: ... plus some application-specific reducers
-    ...extraReducers,
-  },
-);
-
-export default buildReducer;
-
-```
-
-## ✍️ Usage
-```javascript
 import React from 'react';
 import {
   Alert,
@@ -46,6 +9,7 @@ import {
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { reducer as form } from 'redux-form/immutable';
+import Collapsible from '@cawfree/react-native-collapsible-view';
 
 import getFormByConfig from './getFormByConfig';
 
@@ -98,6 +62,20 @@ export default class App extends React.Component {
             textContentType: 'password',
             secureTextEntry: true,
           },
+          {
+            required: true,
+            min: 6,
+            max: 64,
+            key: 'notes',
+            type: 'text',
+            label: 'Notes',
+            placeholder: 'Your notes here',
+            numberOfLines: 3,
+            style: {
+              fontSize: 20,
+              height: 300,
+            },
+          }
         ]
     ),
     // XXX: Now supports booleans with hyperlinked descriptions!
@@ -125,10 +103,12 @@ export default class App extends React.Component {
       //      by redux-form.
       handleAuthSubmit: null,
       handleSignUpTermsSubmit: null,
+      showTerms: false,
     };
     this.__onHandleAuthSubmit = this.__onHandleAuthSubmit.bind(this);
     this.__onHandleSignUpTermsSubmit = this.__onHandleSignUpTermsSubmit.bind(this);
     this.__onAuth = this.__onAuth.bind(this);
+    this.__showTerms = this.__showTerms.bind(this);
   }
   __onHandleAuthSubmit(handleAuthSubmit) {
     this.setState(
@@ -172,10 +152,18 @@ export default class App extends React.Component {
       ),
     );
   }
+  __showTerms() {
+    this.setState(
+      {
+        showTerms: !this.state.showTerms,
+      },
+    );
+  }
   render() {
     const {
       AuthFields,
       SignUpTermsFields,
+      showTerms,
     } = this.state;
     return (
       <Provider
@@ -184,12 +172,22 @@ export default class App extends React.Component {
         <View
           style={styles.container}
         >
-          <AuthFields
-            onHandleSubmit={this.__onHandleAuthSubmit}
-          />
-          <SignUpTermsFields
-            onHandleSubmit={this.__onHandleSignUpTermsSubmit}
-          />
+          <Collapsible
+            collapsed={!showTerms}
+          >
+            <View
+              style={{
+                flex: 1,
+              }}
+            >
+              <AuthFields
+                onHandleSubmit={this.__onHandleAuthSubmit}
+              />
+              <SignUpTermsFields
+                onHandleSubmit={this.__onHandleSignUpTermsSubmit}
+              />
+            </View>
+          </Collapsible>
           <TouchableOpacity
             onPress={this.__onAuth}
           >
@@ -199,12 +197,17 @@ export default class App extends React.Component {
               {'Sign In'}
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={this.__showTerms}
+          >
+            <Text
+              style={styles.text}
+            >
+              {'Show Terms'}
+            </Text>
+          </TouchableOpacity>
         </View>
       </Provider>
     );
   }
 }
-```
-
-## ✌️ License
-[MIT](https://opensource.org/licenses/MIT).
