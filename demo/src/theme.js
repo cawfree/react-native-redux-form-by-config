@@ -4,11 +4,7 @@ const marginExtraShort = 5;
 const marginShort = 10;
 const marginStandard = 15;
 
-const {
-  ThemeProvider,
-  withTheme,
-  useTheme,
-} = createTheming(
+const theme = createTheming(
   {
     marginExtraShort,
     marginShort,
@@ -21,8 +17,8 @@ const {
   },
 );
 
-module.exports = {
-  ThemeProvider,
-  withTheme,
-  useTheme,
-};
+const { ThemeProvider } = theme;
+
+export const { withTheme, useTheme } = theme;
+
+export default ThemeProvider;

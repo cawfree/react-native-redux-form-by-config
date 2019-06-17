@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
 
+import { withTheme } from './../theme';
+
 import CheckBoxField from './../components/CheckBoxField';
 
-const {
-  withTheme,
-} = require('./../theme');
 
 const mapStateToProps = (state, ownProps) => {
   return {

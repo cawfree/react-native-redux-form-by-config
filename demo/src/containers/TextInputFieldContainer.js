@@ -1,10 +1,8 @@
 import { connect } from 'react-redux';
 
-import TextInputField from './../components/TextInputField';
+import { withTheme } from './../theme';
 
-const {
-  withTheme,
-} = require('./../theme');
+import TextInputField from './../components/TextInputField';
 
 const mapStateToProps = (state, ownProps) => {
   return {

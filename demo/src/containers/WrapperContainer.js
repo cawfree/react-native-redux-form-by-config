@@ -1,10 +1,8 @@
 import { connect } from 'react-redux';
 
-import Wrapper from './../components/Wrapper';
+import { withTheme } from './../theme';
 
-const {
-  withTheme,
-} = require('./../theme');
+import Wrapper from './../components/Wrapper';
 
 const mapStateToProps = (state, ownProps) => {
   return {
