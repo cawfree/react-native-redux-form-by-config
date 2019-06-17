@@ -10,7 +10,7 @@ import WrapperContainer from './../containers/WrapperContainer';
 import CheckBoxFieldContainer from './../containers/CheckBoxFieldContainer';
 import TextInputFieldContainer from './../containers/TextInputFieldContainer';
 
-import { ThemeProvider } from './../theme';
+const { ThemeProvider } = require('./../theme');
 
 // TODO: to known package library
 const isRequired = label => value => value ? undefined : `${label} is required.`;
