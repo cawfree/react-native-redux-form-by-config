@@ -42,7 +42,7 @@ const styles = StyleSheet.create(
   },
 );
 
-const CheckBoxField =  ({ theme, config, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
+const CheckBoxField =  ({ theme, config, disabled, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
   const {
     style,
     description,
@@ -68,6 +68,7 @@ const CheckBoxField =  ({ theme, config, input: { onChange, value, ...restInput 
             height: thumbSize,
           },
         ]}
+        disabled={disabled}
         onPress={() => onChange(!resolvedValue)}
       >
         <FontAwesomeIcon
