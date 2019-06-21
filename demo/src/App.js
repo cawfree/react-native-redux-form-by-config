@@ -11,6 +11,7 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { reducer as form } from 'redux-form/immutable';
 import Collapsible from '@cawfree/react-native-collapsible-view';
+import { defaultTheme } from './theme';
 
 import getFormByConfig from './getFormByConfig';
 
@@ -187,6 +188,13 @@ class App extends React.Component {
               />
               <SignUpTermsFields
                 onHandleSubmit={this.__onHandleSignUpTermsSubmit}
+                theme={{
+                  ...defaultTheme,
+                  errorMessageStyle: {
+                    fontWeight: 'bold',
+                    color: 'green',
+                  },
+                }}
               />
             </View>
             <TouchableOpacity
