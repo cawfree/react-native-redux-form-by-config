@@ -12,6 +12,7 @@ const styles = StyleSheet.create(
     container: {
       flexDirection: 'row',
       flex: Platform.OS === 'web' ? 1 : undefined,
+      paddingLeft: Platform.OS === 'web' ? 5 : undefined,
     },
     textInput: {
       fontSize: 16,
@@ -22,7 +23,7 @@ const styles = StyleSheet.create(
 
 class TextInputField extends React.Component {
   render() {
-    const { config, theme, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta} } = this.props;
+    const { config, theme, disabled, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta} } = this.props;
     const {
       style,
       numberOfLines,
@@ -46,6 +47,7 @@ class TextInputField extends React.Component {
         <TextInput
           value={resolvedValue}
           onChangeText={onChange}
+          editable={!disabled}
           underlineColorAndroid="transparent"
           style={resolvedStyle}
           numberOfLines={resolvedNumberOfLines}

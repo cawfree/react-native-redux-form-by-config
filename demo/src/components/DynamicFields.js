@@ -10,7 +10,7 @@ import WrapperContainer from './../containers/WrapperContainer';
 import CheckBoxFieldContainer from './../containers/CheckBoxFieldContainer';
 import TextInputFieldContainer from './../containers/TextInputFieldContainer';
 
-import { ThemeProvider } from './../theme';
+import ThemeProvider from './../theme';
 
 // TODO: to known package library
 const isRequired = label => value => value ? undefined : `${label} is required.`;
@@ -73,7 +73,7 @@ class DynamicFields extends React.Component {
     super(nextProps);
     const {
       config,
-      linkStyle,
+      disabled,
     } = nextProps;
     const cleanConfig = config
       .filter((e) => {
@@ -122,6 +122,7 @@ class DynamicFields extends React.Component {
                     >
                       <FieldImpl
                         {...extraProps}
+                        disabled={disabled}
                         config={restConfig}
                       />
                     </WrapperContainer>
@@ -173,8 +174,6 @@ class DynamicFields extends React.Component {
         theme={theme}
       >
         <View
-          style={{
-          }}
         >
           {fields}
         </View>
@@ -185,10 +184,12 @@ class DynamicFields extends React.Component {
 
 DynamicFields.propTypes = {
   theme: PropTypes.shape({}),
+  disabled: PropTypes.bool,
 };
 
 DynamicFields.defaultProps = {
   theme: undefined,
+  disabled: false,
 };
 
 export default DynamicFields;

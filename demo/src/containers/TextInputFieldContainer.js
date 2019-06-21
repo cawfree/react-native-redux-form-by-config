@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import { withTheme } from './../theme';
 
 import TextInputField from './../components/TextInputField';
