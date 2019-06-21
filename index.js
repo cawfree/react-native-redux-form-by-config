@@ -1,6 +1,6 @@
 import getFormByConfig from './demo/src/getFormByConfig';
-import { defaultTheme } from './demo/src/theme';
+import { defaultTheme as baseTheme } from './demo/src/theme';
 
-export defaultTheme;
+export const defaultTheme = baseTheme;
 
 export default getFormByConfig;
