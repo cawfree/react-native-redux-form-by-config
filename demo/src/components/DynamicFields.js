@@ -105,6 +105,7 @@ class DynamicFields extends React.Component {
             return ([
               ...arr,
               <Field
+                key={key}
                 name={key}
                 component={({ ...extraProps }) => {
                   const {

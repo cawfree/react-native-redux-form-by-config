@@ -32,10 +32,6 @@ const styles = StyleSheet.create(
       alignItems: 'flex-end',
       justifyContent: 'center',
     },
-    error: {
-      height: 25,
-      color: '#FF0000FF',
-    },
   },
 );
 
@@ -56,6 +52,7 @@ class Wrapper extends React.Component {
       marginShort,
       thumbSize,
       backgroundColor,
+      errorMessageStyle,
     } = theme;
     const shouldShowError = (!!touched && !!error);
     const shouldRenderFieldError = (!!renderFieldError) && (type !== 'boolean');
@@ -115,7 +112,7 @@ class Wrapper extends React.Component {
                 style={styles.fieldErrorCaptionContainer}
               >
                 <Text
-                  style={styles.error}
+                  style={errorMessageStyle}
                 >
                   {error}
                 </Text>
