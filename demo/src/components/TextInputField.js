@@ -28,6 +28,7 @@ class TextInputField extends React.Component {
       style,
       numberOfLines,
       placeholder,
+      Component,
       ...restConfig
     } = config;
     const {
@@ -40,11 +41,12 @@ class TextInputField extends React.Component {
     const resolvedMultiline = resolvedNumberOfLines > 1;
     const resolvedPlaceholder = placeholder || '';
     const resolvedValue = value|| '';
+    const ResolvedComponent = Component || TextInput;
     return (
       <View
         style={styles.container}
       >
-        <TextInput
+        <ResolvedComponent
           value={resolvedValue}
           onChangeText={onChange}
           editable={!disabled}
