@@ -12,7 +12,6 @@ const styles = StyleSheet.create(
   {
     children: {
       flex: 1,
-      //minHeight: 40,
     },
     fieldContainer: {
       overflow: 'hidden',
@@ -53,6 +52,7 @@ class Wrapper extends React.Component {
       thumbSize,
       backgroundColor,
       errorMessageStyle,
+      borderRadius,
     } = theme;
     const shouldShowError = (!!touched && !!error);
     const shouldRenderFieldError = (!!renderFieldError) && (type !== 'boolean');
@@ -64,7 +64,7 @@ class Wrapper extends React.Component {
             styles.fieldContainer,
             {
               backgroundColor: (type === 'boolean' ? 'transparent' : backgroundColor),
-              borderRadius: marginShort,
+              borderRadius,
             },
           ]}
         >

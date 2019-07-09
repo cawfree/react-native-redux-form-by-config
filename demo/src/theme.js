@@ -10,6 +10,7 @@ export const defaultTheme = {
   marginStandard,
   backgroundColor: '#FFFFFFFF',
   thumbSize: 50,
+  borderRadius: marginShort,
   linkStyle: {
     color: '#2980b9',
   },

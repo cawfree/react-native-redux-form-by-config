@@ -31,9 +31,6 @@ class TextInputField extends React.Component {
       Component,
       ...restConfig
     } = config;
-    const {
-      thumbSize,
-    } = theme;
     const resolvedStyle = {
       ...(style || styles.textInput),
     };
