@@ -69,11 +69,16 @@ class Wrapper extends React.Component {
           ]}
         >
           <View
-            style={styles.children}
+            style={[
+              styles.children,
+              {
+                minHeight: thumbSize,
+              },
+            ]}
           >
             {children}
           </View>
-          {(shouldRenderFieldError) && (
+          {(!!shouldRenderFieldError) && (
             <View
               style={{
                 width: thumbSize,
