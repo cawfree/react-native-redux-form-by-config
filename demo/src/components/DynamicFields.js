@@ -74,6 +74,7 @@ class DynamicFields extends React.Component {
     const {
       config,
       disabled,
+      renderFieldError,
     } = nextProps;
     const cleanConfig = config
       .filter((e) => {
@@ -116,6 +117,7 @@ class DynamicFields extends React.Component {
                   } = extraProps;
                   return (
                     <WrapperContainer
+                      renderFieldError={renderFieldError}
                       type={type}
                       collapsed={collapsed}
                       touched={touched}
@@ -186,11 +188,13 @@ class DynamicFields extends React.Component {
 DynamicFields.propTypes = {
   theme: PropTypes.shape({}),
   disabled: PropTypes.bool,
+  renderFieldError: PropTypes.func,
 };
 
 DynamicFields.defaultProps = {
   theme: undefined,
   disabled: false,
+  renderFieldError: undefined,
 };
 
 export default DynamicFields;
