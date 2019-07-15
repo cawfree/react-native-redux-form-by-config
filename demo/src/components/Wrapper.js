@@ -73,6 +73,7 @@ class Wrapper extends React.Component {
               styles.children,
               {
                 minHeight: thumbSize,
+                justifyContent: 'center',
               },
             ]}
           >
