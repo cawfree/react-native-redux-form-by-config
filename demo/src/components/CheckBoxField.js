@@ -10,6 +10,8 @@ import PropTypes from 'prop-types';
 import Hyperlink from 'react-native-hyperlink'; 
 import FontAwesomeIcon from 'react-native-vector-icons/dist/FontAwesome';
 
+import { withTheme } from './../theme';
+
 const openUrl = url => Linking.canOpenURL(url)
   .then((isSupported) => {
     if (isSupported) {
@@ -114,4 +116,6 @@ CheckBoxField.defaultProps = {
   linkStyle: styles.linkStyle,
 };
 
-export default CheckBoxField;
+export default withTheme(
+  CheckBoxField,
+);

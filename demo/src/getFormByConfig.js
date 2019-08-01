@@ -2,6 +2,7 @@ import React from 'react';
 import { reduxForm, getFormSyncErrors } from 'redux-form/immutable';
 import { connect } from 'react-redux';
 
+import ThemeProvider from './theme';
 import DynamicFields from './components/DynamicFields';
 
 function getFieldsByConfig(
@@ -29,7 +30,15 @@ function getFieldsByConfig(
       {
         form,
       },
-    )(DynamicFields),
+    )(({ theme, ...extraProps}) => (
+      <ThemeProvider
+        theme={theme}
+      >
+        <DynamicFields
+          {...extraProps}
+        />
+      </ThemeProvider>
+    )),
   );
 }
 

@@ -6,11 +6,11 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form/immutable';
 import { isEqual } from 'lodash';
 
+import { withTheme } from './../theme';
+
 import WrapperContainer from './../containers/WrapperContainer';
 import CheckBoxFieldContainer from './../containers/CheckBoxFieldContainer';
 import TextInputFieldContainer from './../containers/TextInputFieldContainer';
-
-import ThemeProvider from './../theme';
 
 // TODO: to known package library
 const isRequired = label => value => value ? undefined : `${label} is required.`;
@@ -173,14 +173,10 @@ class DynamicFields extends React.Component {
       ...nextState
     } = this.state;
     return (
-      <ThemeProvider
-        theme={theme}
+      <View
       >
-        <View
-        >
-          {fields}
-        </View>
-      </ThemeProvider>
+        {fields}
+      </View>
     );
   }
 }
@@ -197,4 +193,6 @@ DynamicFields.defaultProps = {
   renderFieldError: undefined,
 };
 
-export default DynamicFields;
+export default withTheme(
+  DynamicFields,
+);

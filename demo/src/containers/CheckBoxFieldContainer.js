@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 
-import { withTheme } from './../theme';
 
 import CheckBoxField from './../components/CheckBoxField';
 
@@ -17,13 +16,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   };
 };
 
-export default withTheme(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-    null,
-    {
-      withRef: false,
-    },
-  )(CheckBoxField),
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  null,
+  {
+    withRef: false,
+  },
+)(CheckBoxField);
