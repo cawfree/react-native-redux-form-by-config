@@ -8,6 +8,8 @@ import {
 import Collapsible from '@cawfree/react-native-collapsible-view';
 import { Field } from 'redux-form/immutable';
 import { isEqual } from 'lodash';
+import FontAwesomeIcon from 'react-native-vector-icons/dist/FontAwesome';
+
 
 import { withTheme } from './../theme';
 
@@ -24,9 +26,15 @@ const styles = StyleSheet
       defaultBoolean: {
         flex: 1,
       },
+      defaultErrorIcon: {
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
       defaultText: {
         flex: 1,
+        flexDirection: 'row',
         backgroundColor: 'white',
+        alignItems: 'center',
       },
       defaultError: {
         flex: 1,
@@ -49,6 +57,7 @@ const DefaultFieldWrapper = withTheme(
       borderRadius,
       marginShort,
       marginExtraShort,
+      minFieldHeight,
     } = theme;
     const shouldShowError = !!(touched && error);
     return (
@@ -70,11 +79,35 @@ const DefaultFieldWrapper = withTheme(
               styles.defaultText,
               {
                 borderRadius,
-                padding: marginExtraShort,
               },
             ]}
           >
-            {children}
+            <View
+              style={[
+                {
+                  flex: 1,
+                  paddingLeft: marginExtraShort,
+                },
+              ]}
+            >
+              {children}
+            </View>
+            <View
+              style={[
+                styles.defaultErrorIcon,
+                {
+                  width: minFieldHeight,
+                  height: minFieldHeight,
+                  opacity: shouldShowError ? 1 : 0,
+                },
+              ]}
+            >
+              <FontAwesomeIcon
+                name="exclamation-triangle"
+                size={20}
+                color="lightgrey"
+              />
+            </View>
           </View>
         )}
         <View
