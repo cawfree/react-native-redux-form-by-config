@@ -29,6 +29,8 @@ const styles = StyleSheet.create(
   {
     container: {
       flexDirection: 'row',
+      flex: 1,
+      alignItems: 'center',
     },
     touchableOpacity: {
       justifyContent: 'center',
@@ -36,7 +38,6 @@ const styles = StyleSheet.create(
     description: {
       alignItems: 'center',
       flex: 1,
-      flexDirection: 'row',
     },
     text: {
       flex: 1,
@@ -44,14 +45,14 @@ const styles = StyleSheet.create(
   },
 );
 
-const CheckBoxField =  ({ theme, config, disabled, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta}}) => {
+const CheckBoxField =  ({ theme, config, disabled, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta }}) => {
   const {
     style,
     description,
     ...restConfig
   } = config;
   const {
-    thumbSize,
+    minFieldHeight,
     linkStyle,
   } = theme;
   const resolvedStyle = style || styles.text;
@@ -60,14 +61,19 @@ const CheckBoxField =  ({ theme, config, disabled, input: { onChange, value, ...
   const shouldUseHyperlink = (typeof resolvedDescription !== 'string') && resolvedDescription.length === 2;
   return (
     <View
-      style={styles.container}
+      style={[
+        styles.container,
+        {
+          minHeight: minFieldHeight,
+        },
+      ]}
     >
       <TouchableOpacity
         style={[
           styles.touchableOpacity,
           {
-            width: thumbSize * 0.6,
-            height: thumbSize,
+            width: minFieldHeight * 0.6,
+            height: minFieldHeight,
           },
         ]}
         disabled={disabled}
@@ -107,7 +113,6 @@ const CheckBoxField =  ({ theme, config, disabled, input: { onChange, value, ...
   );
 };
 
-// TODO: implement these
 CheckBoxField.propTypes = {
   linkStyle: PropTypes.shape({}),
 };

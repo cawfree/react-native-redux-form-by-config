@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 import ThemeProvider from './theme';
 import DynamicFields from './components/DynamicFields';
 
+import defaultTypes from './types';
+import defaultValidation from './validation';
+
 function getFieldsByConfig(
   form,
   config,
@@ -30,11 +33,14 @@ function getFieldsByConfig(
       {
         form,
       },
-    )(({ theme, ...extraProps}) => (
+    )(({ LayoutComponent, theme, types, validation, ...extraProps}) => (
       <ThemeProvider
         theme={theme}
       >
         <DynamicFields
+          LayoutComponent={LayoutComponent}
+          types={types || defaultTypes}
+          validation={validation || defaultValidation}
           {...extraProps}
         />
       </ThemeProvider>

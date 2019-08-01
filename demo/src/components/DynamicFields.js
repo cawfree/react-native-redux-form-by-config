@@ -1,72 +1,105 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   View,
+  StyleSheet,
+  Text,
 } from 'react-native';
-import PropTypes from 'prop-types';
+import Collapsible from '@cawfree/react-native-collapsible-view';
 import { Field } from 'redux-form/immutable';
 import { isEqual } from 'lodash';
 
 import { withTheme } from './../theme';
 
-import WrapperContainer from './../containers/WrapperContainer';
-import CheckBoxFieldContainer from './../containers/CheckBoxFieldContainer';
-import TextInputFieldContainer from './../containers/TextInputFieldContainer';
-
-// TODO: to known package library
-const isRequired = label => value => value ? undefined : `${label} is required.`;
-
-const maxLength = (label, max) => value =>
-    value && value.length > max ? `${label} must be ${max} characters or less.` : undefined;
-
-const minLength = (label, min) => value =>
-    value && value.length < min ? `${label} must be ${min} characters or more.` : undefined;
-
-const isEmail = value =>
-    value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ?
-      'This E-Mail Address doesn\'t look right.' : undefined
-
-const getValidationByConfig = (config) => {
-  const {
-    type,
-    label,
-    required,
-  } = config;
-  if (type === 'text') {
-    const {
-      min,
-      max,
-      textContentType,
-    } = config;
-    return ([
-      required && isRequired(label),
-      max && maxLength(label, max),
-      min && minLength(label, min),
-      textContentType === 'emailAddress' && isEmail,
-    ])
-      .filter(e => !!e);
-  } else if (type === 'boolean') {
-    return [
-      required && isRequired(label),
-    ]
-      .filter(e => !!e);
-  }
-  return [];
-};
-
-// TODO: by type
-const getComponentByConfig = (config) => {
-  const {
-    type,
-  } = config;
-  if (type === 'text') {
-    return TextInputFieldContainer;
-  } else if (type === 'boolean') {
-    return CheckBoxFieldContainer;
-  }
-  throw new Error(
-    `Unrecognized field type "${type}".`,
+const styles = StyleSheet
+  .create(
+    {
+      defaultLayout: {
+        flex: 1,
+        flexDirection: 'column',
+      },
+      defaultField: {
+        flex: 1,
+      },
+      defaultBoolean: {
+        flex: 1,
+      },
+      defaultText: {
+        flex: 1,
+        backgroundColor: 'white',
+      },
+      defaultError: {
+        flex: 1,
+        backgroundColor: 'orange',
+      },
+      errorText: {
+        flex: 1,
+        backgroundColor: 'green',
+      },
+    },
   );
-};
+
+const DefaultFieldWrapper = withTheme(
+  ({ theme, meta, config, children, ...extraProps }) => {
+    const { type } = config;
+    const {
+      error,
+      touched,
+    } = meta;
+    const {
+      borderRadius,
+      marginShort,
+      marginExtraShort,
+    } = theme;
+    const shouldShowError = !!(touched && error);
+    return (
+      <View
+        style={styles.defaultField}
+      >
+        {(type === 'boolean') && (
+          <View
+            style={[
+              styles.defaultBoolean,
+            ]}
+          >
+            {children}
+          </View>
+        )}
+        {(type !== 'boolean') && (
+          <View
+            style={[
+              styles.defaultText,
+              {
+                borderRadius,
+                padding: marginExtraShort,
+              },
+            ]}
+          >
+            {children}
+          </View>
+        )}
+        <View
+          style={[
+            styles.defaultError,
+            {
+              paddingBottom: marginShort,
+            },
+          ]}
+        >
+          <Collapsible
+            collapsed={!shouldShowError}
+          >
+            <Text
+              style={styles.errorText}
+            >
+              {error}
+            </Text>
+          </Collapsible>
+        </View>
+      </View>
+    );
+  },
+);
 
 class DynamicFields extends React.Component {
   constructor(nextProps) {
@@ -74,69 +107,64 @@ class DynamicFields extends React.Component {
     const {
       config,
       disabled,
-      renderFieldError,
+      types,
+      validation,
+      theme,
+      FieldWrapper,
     } = nextProps;
     const cleanConfig = config
       .filter((e) => {
         const {
           key,
           label,
-          // TODO: validate type
           type,
         } = e;
         return key && type && label;
       });
     this.state = ({
       fields: cleanConfig.reduce(
-          (arr, el, i) => {
-            const {
-              key,
-              type,
-              label,
-            } = el;
-            const resolvedLabel = (label || key);
-            const validate = getValidationByConfig(
-              el,
+        (arr, el, i) => {
+          const {
+            key,
+            type,
+            label,
+            disabled,
+            ...restConfig
+          } = el;
+          const resolvedLabel = (label || key);
+          const validate = (validation[type] || (() => []))(el);
+          const FieldImpl = types[type];
+          if (!FieldImpl) {
+            throw new Error(
+              `Missing implementation of data type "${type}"!`,
             );
-            const FieldImpl = getComponentByConfig(el);
-            const {
-              collapsed,
-              ...restConfig
-            } = el;
-            return ([
-              ...arr,
-              <Field
-                key={key}
-                name={key}
-                component={({ ...extraProps }) => {
-                  const {
-                    meta: {
-                      touched,
-                      error,
-                    },
-                  } = extraProps;
-                  return (
-                    <WrapperContainer
-                      renderFieldError={renderFieldError}
-                      type={type}
-                      collapsed={collapsed}
-                      touched={touched}
-                      error={error}
-                    >
-                      <FieldImpl
-                        {...extraProps}
-                        disabled={disabled}
-                        config={restConfig}
-                      />
-                    </WrapperContainer>
-                  );
-                }}
-                validate={validate}
-              />
-            ]);
-          },
-          [],
-        ),
+          }
+          return ([
+            ...arr,
+            <Field
+              key={key}
+              name={key}
+              component={({ meta, ...extraProps }) => (
+                <FieldWrapper
+                  {...extraProps}
+                  meta={meta}
+                  theme={theme}
+                  config={el}
+                >
+                  <FieldImpl
+                    {...extraProps}
+                    meta={meta}
+                    config={restConfig}
+                    disabled={disabled}
+                  />
+                </FieldWrapper>
+              )}
+              validate={validate}
+            />
+          ]);
+        },
+        [],
+      ),
     });
   }
   componentDidMount() {
@@ -165,6 +193,7 @@ class DynamicFields extends React.Component {
   }
   render() {
     const {
+      LayoutComponent,
       theme,
       ...extraProps
     } = this.props;
@@ -173,24 +202,33 @@ class DynamicFields extends React.Component {
       ...nextState
     } = this.state;
     return (
-      <View
+      <LayoutComponent
       >
         {fields}
-      </View>
+      </LayoutComponent>
     );
   }
 }
 
 DynamicFields.propTypes = {
   theme: PropTypes.shape({}),
+  LayoutComponent: PropTypes.func,
   disabled: PropTypes.bool,
-  renderFieldError: PropTypes.func,
+  LayoutComponent: PropTypes.func,
+  FieldWrapper: PropTypes.func,
 };
 
 DynamicFields.defaultProps = {
   theme: undefined,
   disabled: false,
-  renderFieldError: undefined,
+  LayoutComponent: ({ children }) => (
+    <View
+      style={styles.defaultLayout}
+    >
+      {children}
+    </View>
+  ),
+  FieldWrapper: DefaultFieldWrapper,
 };
 
 export default withTheme(
