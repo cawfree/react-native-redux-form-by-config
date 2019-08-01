@@ -34,7 +34,6 @@ const styles = StyleSheet
       },
       errorText: {
         flex: 1,
-        backgroundColor: 'green',
       },
     },
   );
@@ -90,7 +89,10 @@ const DefaultFieldWrapper = withTheme(
             collapsed={!shouldShowError}
           >
             <Text
-              style={styles.errorText}
+              style={{
+                flex: 1,
+                textAlign: 'right',
+              }}
             >
               {error}
             </Text>
