@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { reduxForm, getFormSyncErrors } from 'redux-form/immutable';
 import { connect } from 'react-redux';
 
@@ -37,12 +38,15 @@ function getFieldsByConfig(
       <ThemeProvider
         theme={theme}
       >
-        <DynamicFields
-          LayoutComponent={LayoutComponent}
-          types={types || defaultTypes}
-          validation={validation || defaultValidation}
-          {...extraProps}
-        />
+        <View
+        >
+          <DynamicFields
+            LayoutComponent={LayoutComponent}
+            types={types || defaultTypes}
+            validation={validation || defaultValidation}
+            {...extraProps}
+          />
+        </View>
       </ThemeProvider>
     )),
   );

@@ -190,27 +190,15 @@ class App extends React.Component {
                 flex: 1,
               }}
             >
-              <View
-                style={{
-                  width: 200,
+              <AuthFields
+                onHandleSubmit={this.__onHandleAuthSubmit}
+              />
+              <SignUpTermsFields
+                onHandleSubmit={this.__onHandleSignUpTermsSubmit}
+                theme={{
+                  ...defaultTheme,
                 }}
-              >
-                <AuthFields
-                  onHandleSubmit={this.__onHandleAuthSubmit}
-                />
-              </View>
-              <View
-                style={{
-                  width: 200,
-                }}
-              >
-                <SignUpTermsFields
-                  onHandleSubmit={this.__onHandleSignUpTermsSubmit}
-                  theme={{
-                    ...defaultTheme,
-                  }}
-                />
-              </View>
+              />
             </View>
             <TouchableOpacity
               onPress={this.__onAuth}
