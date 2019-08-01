@@ -37,5 +37,7 @@
     "redux": "^4.0.1",
     "redux-form": "^8.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@cawfree/react-native-collapsible-view": "^1.0.13"
+  }
 }

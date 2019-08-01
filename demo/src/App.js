@@ -6,12 +6,13 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
+  TextInput,
 } from 'react-native';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { reducer as form } from 'redux-form/immutable';
-import Collapsible from '@cawfree/react-native-collapsible-view';
 import { defaultTheme } from './theme';
+import Collapsible from '@cawfree/react-native-collapsible-view';
 
 import getFormByConfig from './getFormByConfig';
 
@@ -50,8 +51,11 @@ class App extends React.Component {
             label: 'E-Mail Address',
             type: 'text',
             // Non-configuration props are delegated directly to the <TextInput/>.
-            placeholder: 'E-Mail Address',
+            placeholder: 'E-Mail Address Here',
             textContentType: 'emailAddress',
+            style: {
+              fontSize: 20,
+            },
           },
           {
             required: true,
@@ -63,6 +67,9 @@ class App extends React.Component {
             placeholder: 'Password',
             textContentType: 'password',
             secureTextEntry: true,
+            style: {
+              fontSize: 20,
+            },
           },
           {
             required: true,
@@ -183,19 +190,27 @@ class App extends React.Component {
                 flex: 1,
               }}
             >
-              <AuthFields
-                onHandleSubmit={this.__onHandleAuthSubmit}
-              />
-              <SignUpTermsFields
-                onHandleSubmit={this.__onHandleSignUpTermsSubmit}
-                theme={{
-                  ...defaultTheme,
-                  errorMessageStyle: {
-                    fontWeight: 'bold',
-                    color: 'green',
-                  },
+              <View
+                style={{
+                  width: 200,
                 }}
-              />
+              >
+                <AuthFields
+                  onHandleSubmit={this.__onHandleAuthSubmit}
+                />
+              </View>
+              <View
+                style={{
+                  width: 200,
+                }}
+              >
+                <SignUpTermsFields
+                  onHandleSubmit={this.__onHandleSignUpTermsSubmit}
+                  theme={{
+                    ...defaultTheme,
+                  }}
+                />
+              </View>
             </View>
             <TouchableOpacity
               onPress={this.__onAuth}
@@ -216,6 +231,19 @@ class App extends React.Component {
               {'Expand'}
             </Text>
           </TouchableOpacity>
+          <View
+            style={{
+              width: 500,
+              height: 500,
+              backgroundColor: 'green',
+            }}
+          >
+            <TextInput
+              style={{
+                flex: 1,
+              }}
+            />
+          </View>
         </View>
       </Provider>
     );

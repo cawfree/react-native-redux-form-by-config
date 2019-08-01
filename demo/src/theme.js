@@ -1,3 +1,4 @@
+import React from 'react';
 import { createTheming } from '@callstack/react-theme-provider';
 
 const marginExtraShort = 5;
@@ -9,15 +10,11 @@ export const defaultTheme = {
   marginShort,
   marginStandard,
   backgroundColor: '#FFFFFFFF',
-  thumbSize: 50,
   borderRadius: marginShort,
   linkStyle: {
     color: '#2980b9',
   },
-  errorMessageStyle: {
-    height: 25,
-    color: '#FF0000FF',
-  }
+  minFieldHeight: 50,
 };
 
 const theme = createTheming(

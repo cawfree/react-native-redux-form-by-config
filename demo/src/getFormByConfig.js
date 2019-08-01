@@ -2,7 +2,11 @@ import React from 'react';
 import { reduxForm, getFormSyncErrors } from 'redux-form/immutable';
 import { connect } from 'react-redux';
 
+import ThemeProvider from './theme';
 import DynamicFields from './components/DynamicFields';
+
+import defaultTypes from './types';
+import defaultValidation from './validation';
 
 function getFieldsByConfig(
   form,
@@ -29,7 +33,18 @@ function getFieldsByConfig(
       {
         form,
       },
-    )(DynamicFields),
+    )(({ LayoutComponent, theme, types, validation, ...extraProps}) => (
+      <ThemeProvider
+        theme={theme}
+      >
+        <DynamicFields
+          LayoutComponent={LayoutComponent}
+          types={types || defaultTypes}
+          validation={validation || defaultValidation}
+          {...extraProps}
+        />
+      </ThemeProvider>
+    )),
   );
 }
 

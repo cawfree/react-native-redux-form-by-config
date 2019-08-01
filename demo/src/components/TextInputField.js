@@ -6,13 +6,12 @@ import {
   Platform,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { withTheme } from './../theme';
 
 const styles = StyleSheet.create(
   {
     container: {
-      flexDirection: 'row',
-      flex: Platform.OS === 'web' ? 1 : undefined,
-      paddingLeft: Platform.OS === 'web' ? 5 : undefined,
+      flex: 1,
     },
     textInput: {
       fontSize: 16,
@@ -23,12 +22,11 @@ const styles = StyleSheet.create(
 
 class TextInputField extends React.Component {
   render() {
-    const { config, theme, disabled, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta} } = this.props;
+    const { config, theme, disabled, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta } } = this.props;
     const {
       style,
       numberOfLines,
       placeholder,
-      Component,
       ...restConfig
     } = config;
     const resolvedStyle = {
@@ -38,17 +36,18 @@ class TextInputField extends React.Component {
     const resolvedMultiline = resolvedNumberOfLines > 1;
     const resolvedPlaceholder = placeholder || '';
     const resolvedValue = value|| '';
-    const ResolvedComponent = Component || TextInput;
     return (
       <View
-        style={styles.container}
+        style={[
+          styles.container,
+        ]}
       >
-        <ResolvedComponent
+        <TextInput
           value={resolvedValue}
           onChangeText={onChange}
           editable={!disabled}
           underlineColorAndroid="transparent"
-          style={resolvedStyle}
+          style={style || styles.textInput}
           numberOfLines={resolvedNumberOfLines}
           multiline={resolvedMultiline}
           placeholder={resolvedPlaceholder}
@@ -67,4 +66,6 @@ TextInputField.defaultProps = {
 
 };
 
-export default TextInputField;
+export default withTheme(
+  TextInputField,
+);
