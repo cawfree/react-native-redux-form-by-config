@@ -10,6 +10,7 @@ import { isEqual } from 'lodash';
 import { withTheme } from './../theme';
 
 import DefaultFieldWrapper from './DefaultFieldWrapper';
+import DefaultGrouping from './DefaultGrouping';
 
 const styles = StyleSheet
   .create(
@@ -43,6 +44,7 @@ class DynamicFields extends React.Component {
         return key && type && label;
       });
     this.state = ({
+      cleanConfig,
       fields: cleanConfig.reduce(
         (arr, el, i) => {
           const {
@@ -114,18 +116,38 @@ class DynamicFields extends React.Component {
   }
   render() {
     const {
+      grouping,
       LayoutComponent,
+      GroupingComponent,
       theme,
+      // TODO: What to do with extraProps?
       ...extraProps
     } = this.props;
-    const {
-      fields,
-      ...nextState
-    } = this.state;
+    const { cleanConfig, fields } = this.state;
     return (
       <LayoutComponent
       >
-        {fields}
+        {(grouping.length > 0) && (
+          grouping
+            .map(
+              (config) => {
+                const { keys } = config;
+                return (
+                  <GroupingComponent
+                    config={config}
+                  >
+                    {keys
+                      .map(
+                        key => fields[cleanConfig.map(({ key }) => key).indexOf(key)],
+                      )}
+                  </GroupingComponent>
+                );
+              },
+            )
+        )}
+        {(grouping.length <= 0) && (
+          fields
+        )}
       </LayoutComponent>
     );
   }
@@ -135,8 +157,17 @@ DynamicFields.propTypes = {
   theme: PropTypes.shape({}),
   LayoutComponent: PropTypes.func,
   disabled: PropTypes.bool,
-  LayoutComponent: PropTypes.func,
   FieldWrapper: PropTypes.func,
+  GroupingComponent: PropTypes.func,
+  grouping: PropTypes.arrayOf(
+    PropTypes.shape(
+      {
+        keys: PropTypes.arrayOf(
+          PropTypes.string,
+        ),
+      },
+    ),
+  ),
 };
 
 DynamicFields.defaultProps = {
@@ -150,6 +181,8 @@ DynamicFields.defaultProps = {
     </View>
   ),
   FieldWrapper: DefaultFieldWrapper,
+  GroupingComponent: DefaultGrouping,
+  grouping: [],
 };
 
 export default withTheme(

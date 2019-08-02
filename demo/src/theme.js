@@ -14,6 +14,9 @@ export const defaultTheme = {
   linkStyle: {
     color: '#2980b9',
   },
+  errorStyle: {
+    color: 'red',
+  },
   minFieldHeight: 50,
 };
 
