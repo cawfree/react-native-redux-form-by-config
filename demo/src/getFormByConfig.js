@@ -12,10 +12,12 @@ import defaultValidation from './validation';
 function getFieldsByConfig(
   form,
   config,
+  grouping,
 ) {
   const mapStateToProps = (state, ownProps) => {
     return {
       config,
+      grouping,
       formSyncErrors: getFormSyncErrors(form)(state),
     };
   };
@@ -34,7 +36,7 @@ function getFieldsByConfig(
       {
         form,
       },
-    )(({ LayoutComponent, theme, types, validation, ...extraProps}) => (
+    )(({ GroupingComponent, LayoutComponent, theme, types, validation, ...extraProps}) => (
       <ThemeProvider
         theme={theme}
       >
@@ -42,6 +44,7 @@ function getFieldsByConfig(
         >
           <DynamicFields
             LayoutComponent={LayoutComponent}
+            GroupingComponent={GroupingComponent}
             types={types || defaultTypes}
             validation={validation || defaultValidation}
             {...extraProps}

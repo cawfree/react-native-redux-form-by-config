@@ -30,7 +30,6 @@ const styles = StyleSheet
       },
       defaultError: {
         flex: 1,
-        backgroundColor: 'orange',
       },
       errorText: {
         flex: 1,
@@ -115,6 +114,8 @@ const DefaultFieldWrapper = withTheme(
           >
             <Text
               style={{
+                ...theme.errorStyle,
+                marginTop: marginExtraShort,
                 flex: 1,
                 textAlign: 'right',
               }}

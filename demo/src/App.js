@@ -20,8 +20,8 @@ const styles = StyleSheet.create(
   {
     container: {
       flex: 1,
-      backgroundColor: 'lightgrey',
       paddingHorizontal: 5,
+      backgroundColor: 'purple',
     },
     text: {
       backgroundColor: 'peachpuff',
@@ -85,7 +85,17 @@ class App extends React.Component {
               height: 300,
             },
           }
-        ]
+        ],
+        [
+          // XXX: You can optionally specify groups. Any orphaned elements
+          //      that are not referenced by a group will *not* be rendered.
+          {
+            keys: [
+              'password',
+              'notes',
+            ],
+          },
+        ],
     ),
     // XXX: Now supports booleans with hyperlinked descriptions!
     SignUpTermsFields: getFormByConfig(
@@ -117,7 +127,6 @@ class App extends React.Component {
     this.__onHandleAuthSubmit = this.__onHandleAuthSubmit.bind(this);
     this.__onHandleSignUpTermsSubmit = this.__onHandleSignUpTermsSubmit.bind(this);
     this.__onAuth = this.__onAuth.bind(this);
-    this.__expand = this.__expand.bind(this);
   }
   __onHandleAuthSubmit(handleAuthSubmit) {
     this.setState(
@@ -162,13 +171,6 @@ class App extends React.Component {
       ),
     );
   }
-  __expand() {
-    this.setState(
-      {
-        showTerms: !this.state.showTerms,
-      },
-    );
-  }
   render() {
     const {
       AuthFields,
@@ -180,15 +182,15 @@ class App extends React.Component {
         store={store}
       >
         <View
-          style={styles.container}
+          style={{
+            ...StyleSheet.absoluteFillObject,
+            backgroundColor: 'purple',
+          }}
         >
-          <Collapsible
-            collapsed={!showTerms}
+          <View
           >
             <View
-              style={{
-                flex: 1,
-              }}
+              style={styles.container}
             >
               <AuthFields
                 onHandleSubmit={this.__onHandleAuthSubmit}
@@ -209,35 +211,12 @@ class App extends React.Component {
                 {'Sign In'}
               </Text>
             </TouchableOpacity>
-          </Collapsible>
-          <TouchableOpacity
-            onPress={this.__expand}
-          >
-            <Text
-              style={styles.text}
-            >
-              {'Expand'}
-            </Text>
-          </TouchableOpacity>
-          <View
-            style={{
-              width: 500,
-              height: 500,
-              backgroundColor: 'green',
-            }}
-          >
-            <TextInput
-              style={{
-                flex: 1,
-              }}
-            />
           </View>
         </View>
       </Provider>
     );
   }
 }
-
 
 let hotWrapper = () => () => App;
 if (Platform.OS === 'web') {
