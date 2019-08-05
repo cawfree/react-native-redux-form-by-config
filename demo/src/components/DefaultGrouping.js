@@ -18,7 +18,7 @@ const styles = StyleSheet
     },
   );
 
-const DefaultGrouping = ({ config, children, ...extraProps }) => (
+const DefaultGrouping = ({ children, ...extraProps }) => (
   <View
     style={styles.container}
   >

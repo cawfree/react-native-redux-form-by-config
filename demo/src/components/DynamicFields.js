@@ -130,11 +130,14 @@ class DynamicFields extends React.Component {
         {(grouping.length > 0) && (
           grouping
             .map(
-              (config) => {
+              (config, index) => {
                 const { keys } = config;
                 return (
                   <GroupingComponent
-                    config={config}
+                    {
+                      ...config,
+                      index,
+                    }
                   >
                     {keys
                       .map(
