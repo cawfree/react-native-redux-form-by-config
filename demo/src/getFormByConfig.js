@@ -1,6 +1,26 @@
 import React from 'react';
 import { View } from 'react-native';
-import { reduxForm, getFormSyncErrors } from 'redux-form/immutable';
+import {
+  reduxForm,
+  //getFormValues,
+  //formValues,
+  formValueSelector,
+  getFormInitialValues,
+  getFormSyncErrors,
+  getFormMeta,
+  getFormAsyncErrors,
+  getFormSyncWarnings,
+  getFormSubmitErrors,
+  getFormError,
+  getFormNames,
+  isDirty,
+  isPristine,
+  isValid,
+  isInvalid,
+  isSubmitting,
+  hasSubmitSucceeded,
+  hasSubmitFailed
+} from 'redux-form/immutable';
 import { connect } from 'react-redux';
 
 import ThemeProvider from './theme';
@@ -16,9 +36,26 @@ function getFieldsByConfig(
 ) {
   const mapStateToProps = (state, ownProps) => {
     return {
+      ...ownProps,
       config,
       grouping,
+      formValueSelector: key => formValueSelector(form)(state, key),
+      //values: formValues(form)(state),
+      initialValues: getFormInitialValues(form)(state),
       formSyncErrors: getFormSyncErrors(form)(state),
+      fields: getFormMeta(form)(state),
+      formAsyncErrors: getFormAsyncErrors(form)(state),
+      syncWarnings: getFormSyncWarnings(form)(state),
+      submitErrors: getFormSubmitErrors(form)(state),
+      formError: getFormError(form)(state),
+      names: getFormNames()(state),
+      dirty: isDirty(form)(state),
+      pristine: isPristine(form)(state),
+      valid: isValid(form)(state),
+      invalid: isInvalid(form)(state),
+      submitting: isSubmitting(form)(state),
+      submitSucceeded: hasSubmitSucceeded(form)(state),
+      submitFailed: hasSubmitFailed(form)(state)
     };
   };
   const mapDispatchToProps = (dispatch, ownProps) => {

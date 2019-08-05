@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
+  Text,
   StyleSheet,
 } from 'react-native';
 
@@ -18,11 +19,25 @@ const styles = StyleSheet
     },
   );
 
-const DefaultGrouping = ({ children, ...extraProps }) => (
+const DefaultGrouping = ({ values, index, children, ...extraProps }) => (
   <View
     style={styles.container}
   >
-    {children}
+    <Text
+      style={{
+        color: 'white',
+        paddingBottom: 5,
+      }}
+    >
+      {'Hello'}
+    </Text>
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
+      {children}
+    </View>
   </View>
 );
 

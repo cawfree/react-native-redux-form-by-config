@@ -4,6 +4,7 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
+import { Map } from 'immutable';
 import { Field } from 'redux-form/immutable';
 import { isEqual } from 'lodash';
 
@@ -120,6 +121,7 @@ class DynamicFields extends React.Component {
       LayoutComponent,
       GroupingComponent,
       theme,
+      formValueSelector,
       // TODO: What to do with extraProps?
       ...extraProps
     } = this.props;
@@ -132,10 +134,23 @@ class DynamicFields extends React.Component {
             .map(
               (config, index) => {
                 const { keys } = config;
+                const values = Map(
+                  keys
+                    .reduce(
+                      (obj, key) => ({
+                        ...obj,
+                        [key]: formValueSelector(
+                          key,
+                        ),
+                      }),
+                      {},
+                    ),
+                );
                 return (
                   <GroupingComponent
                     {...config}
                     index={index}
+                    values={values}
                   >
                     {keys
                       .map(
