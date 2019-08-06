@@ -34,6 +34,9 @@ class DynamicFields extends React.Component {
       validation,
       theme,
       FieldWrapper,
+      grouping,
+      GroupingComponent,
+      formValueSelector,
     } = nextProps;
     const cleanConfig = config
       .filter((e) => {
@@ -44,27 +47,26 @@ class DynamicFields extends React.Component {
         } = e;
         return key && type && label;
       });
-    this.state = ({
-      cleanConfig,
-      fields: cleanConfig.reduce(
-        (arr, el, i) => {
-          const {
-            key,
-            type,
-            label,
-            disabled,
-            ...restConfig
-          } = el;
-          const resolvedLabel = (label || key);
-          const validate = (validation[type] || (() => []))(el);
-          const FieldImpl = types[type];
-          if (!FieldImpl) {
-            throw new Error(
-              `Missing implementation of data type "${type}"!`,
-            );
-          }
-          return ([
-            ...arr,
+    const baseFields = cleanConfig.reduce(
+      (arr, el, i) => {
+        const {
+          key,
+          type,
+          label,
+          disabled,
+          ...restConfig
+        } = el;
+        const resolvedLabel = (label || key);
+        const validate = (validation[type] || (() => []))(el);
+        const FieldImpl = types[type];
+        if (!FieldImpl) {
+          throw new Error(
+            `Missing implementation of data type "${type}"!`,
+          );
+        }
+        return ([
+          ...arr,
+          ({ ...nextProps}) => (
             <Field
               key={key}
               name={key}
@@ -85,10 +87,50 @@ class DynamicFields extends React.Component {
               )}
               validate={validate}
             />
-          ]);
+          ),
+        ]);
+      },
+      [],
+    );
+    const baseGrouping = grouping
+      .map(
+        (config, index) => {
+          const { keys } = config;
+          const values = Map(
+            keys
+              .reduce(
+                (obj, key) => ({
+                  ...obj,
+                  [key]: formValueSelector(
+                    key,
+                  ),
+                }),
+                {},
+              ),
+          );
+          return (
+            <GroupingComponent
+              {...config}
+              index={index}
+              values={values}
+            >
+              {keys
+                .map(
+                  key => baseFields[cleanConfig.map(({ key }) => key).indexOf(key)],
+                )}
+            </GroupingComponent>
+          );
         },
-        [],
-      ),
+      );
+    this.state = ({
+      baseFields: baseFields
+        .map(
+          BaseField => (
+            <BaseField
+            />
+          ),
+        ),
+      baseGrouping,
     });
   }
   componentDidMount() {
@@ -117,53 +159,18 @@ class DynamicFields extends React.Component {
   }
   render() {
     const {
-      grouping,
       LayoutComponent,
-      GroupingComponent,
       theme,
-      formValueSelector,
+      grouping,
       // TODO: What to do with extraProps?
       ...extraProps
     } = this.props;
-    const { cleanConfig, fields } = this.state;
+    const { baseFields, baseGrouping } = this.state;
     return (
       <LayoutComponent
       >
-        {(grouping.length > 0) && (
-          grouping
-            .map(
-              (config, index) => {
-                const { keys } = config;
-                const values = Map(
-                  keys
-                    .reduce(
-                      (obj, key) => ({
-                        ...obj,
-                        [key]: formValueSelector(
-                          key,
-                        ),
-                      }),
-                      {},
-                    ),
-                );
-                return (
-                  <GroupingComponent
-                    {...config}
-                    index={index}
-                    values={values}
-                  >
-                    {keys
-                      .map(
-                        key => fields[cleanConfig.map(({ key }) => key).indexOf(key)],
-                      )}
-                  </GroupingComponent>
-                );
-              },
-            )
-        )}
-        {(grouping.length <= 0) && (
-          fields
-        )}
+        {(grouping.length > 0) && (baseGrouping)}
+        {(grouping.length <= 0) && (baseFields)}
       </LayoutComponent>
     );
   }

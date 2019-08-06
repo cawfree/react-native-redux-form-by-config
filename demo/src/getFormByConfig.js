@@ -2,8 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 import {
   reduxForm,
-  //getFormValues,
-  //formValues,
   formValueSelector,
   getFormInitialValues,
   getFormSyncErrors,

@@ -19,27 +19,37 @@ const styles = StyleSheet
     },
   );
 
-const DefaultGrouping = ({ values, index, children, ...extraProps }) => (
-  <View
-    style={styles.container}
-  >
-    <Text
-      style={{
-        color: 'white',
-        paddingBottom: 5,
-      }}
-    >
-      {'Hello'}
-    </Text>
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      {children}
-    </View>
-  </View>
-);
+class DefaultGrouping extends React.Component {
+  constructor(props) {
+    super(props);
+    const { children } = props;
+    this.state = {
+      children: children
+        .map(
+          (Child, i) => (
+            <Child
+              key={i}
+            />
+          ),
+        ),
+    };
+  }
+  render() {
+    const {
+      values,
+      index,
+      ...extraProps
+    } = this.props;
+    const { children } = this.state;
+    return (
+      <View
+        style={styles.container}
+      >
+        {children}
+      </View>
+    );
+  }
+}
 
 DefaultGrouping.propTypes = {
   children: PropTypes.arrayOf([]),
