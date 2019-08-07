@@ -72,6 +72,7 @@ class DynamicFields extends React.Component {
               name={key}
               component={({ meta, ...extraProps }) => (
                 <FieldWrapper
+                  {...nextProps}
                   {...extraProps}
                   meta={meta}
                   theme={theme}

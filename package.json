@@ -1,6 +1,6 @@
 {
   "name": "@cawfree/react-native-redux-form-by-config",
-  "version": "1.1.29",
+  "version": "1.1.30",
   "description": "A simple way to generate Redux Form linked layouts using a high-level config object.",
   "main": "index.js",
   "scripts": {
