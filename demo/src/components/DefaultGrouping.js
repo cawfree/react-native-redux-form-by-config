@@ -36,7 +36,7 @@ class DefaultGrouping extends React.Component {
   }
   render() {
     const {
-      values,
+      getFormValues,
       index,
       ...extraProps
     } = this.props;
