@@ -87,23 +87,23 @@ class DynamicFields extends React.Component {
         ]);
       },
       [],
-    );
-    const getFormValues = () => Map(
-      keys
-        .reduce(
-          (obj, key) => ({
-            ...obj,
-            [key]: formValueSelector(
-              key,
-            ),
-          }),
-          {},
-        ),
-    );
+    ); 
     const baseGrouping = grouping
       .map(
         (config, index) => {
           const { keys } = config;
+          const getFormValues = () => Map(
+            keys
+              .reduce(
+                (obj, key) => ({
+                  ...obj,
+                  [key]: formValueSelector(
+                    key,
+                  ),
+                }),
+                {},
+              ),
+          );
           return (
             <GroupingComponent
               {...config}
