@@ -37,6 +37,7 @@ class DynamicFields extends React.Component {
       grouping,
       GroupingComponent,
       formValueSelector,
+      getFormValues,
     } = nextProps;
     const cleanConfig = config
       .filter((e) => {
@@ -92,23 +93,11 @@ class DynamicFields extends React.Component {
       .map(
         (config, index) => {
           const { keys } = config;
-          const getFormValues = () => Map(
-            keys
-              .reduce(
-                (obj, key) => ({
-                  ...obj,
-                  [key]: formValueSelector(
-                    key,
-                  ),
-                }),
-                {},
-              ),
-          );
-          return (
+          return ({ getValuesFor, ...extraProps }) => (
             <GroupingComponent
               {...config}
               index={index}
-              getFormValues={getFormValues}
+              values={getValuesFor(keys)}
             >
               {keys
                 .map(
@@ -158,6 +147,7 @@ class DynamicFields extends React.Component {
       LayoutComponent,
       theme,
       grouping,
+      formValueSelector,
       // TODO: What to do with extraProps?
       ...extraProps
     } = this.props;
@@ -165,7 +155,26 @@ class DynamicFields extends React.Component {
     return (
       <LayoutComponent
       >
-        {(grouping.length > 0) && (baseGrouping)}
+        {(grouping.length > 0) && (baseGrouping
+          .map(
+            (Grouping, i) => (
+              <Grouping
+                key={i}
+                getValuesFor={(keys) => Map(
+                  keys.reduce(
+                    (obj, key) => (
+                      {
+                        ...obj,
+                        [key]: formValueSelector(key),
+                      }
+                    ),
+                    {},
+                  ),
+                )}
+              />
+            ),
+          )
+        )}
         {(grouping.length <= 0) && (baseFields)}
       </LayoutComponent>
     );

@@ -22,7 +22,9 @@ const styles = StyleSheet
 class DefaultGrouping extends React.Component {
   constructor(props) {
     super(props);
-    const { children } = props;
+    const {
+      children,
+    } = props;
     this.state = {
       children: children
         .map(
@@ -36,8 +38,8 @@ class DefaultGrouping extends React.Component {
   }
   render() {
     const {
-      getFormValues,
       index,
+      values,
       ...extraProps
     } = this.props;
     const { children } = this.state;

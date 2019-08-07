@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import {
   reduxForm,
   formValueSelector,
+  //getFormValues,
   getFormInitialValues,
   getFormSyncErrors,
   getFormMeta,
@@ -37,6 +38,8 @@ function getFieldsByConfig(
       ...ownProps,
       config,
       grouping,
+      //getFormValues: () => getFormValues(form)(state),
+      //getFormValues: () => state.form,
       formValueSelector: key => formValueSelector(form)(state, key),
       //values: formValues(form)(state),
       initialValues: getFormInitialValues(form)(state),
