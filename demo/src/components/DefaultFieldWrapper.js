@@ -38,7 +38,7 @@ const styles = StyleSheet
   );
 
 const DefaultFieldWrapper = withTheme(
-  ({ theme, meta, config, children, ...extraProps }) => {
+  ({ theme, meta, disabled, config, children: Child, ...extraProps }) => {
     const { type } = config;
     const {
       error,
@@ -61,7 +61,12 @@ const DefaultFieldWrapper = withTheme(
               styles.defaultBoolean,
             ]}
           >
-            {children}
+            <Child
+              {...extraProps}
+              meta={meta}
+              config={config}
+              disabled={disabled}
+            />
           </View>
         )}
         {(type !== 'boolean') && (
@@ -81,7 +86,12 @@ const DefaultFieldWrapper = withTheme(
                 },
               ]}
             >
-              {children}
+              <Child
+                {...extraProps}
+                meta={meta}
+                config={config}
+                disabled={disabled}
+              />
             </View>
             <View
               style={[

@@ -77,12 +77,7 @@ class DynamicFields extends React.Component {
                   theme={theme}
                   config={el}
                 >
-                  <FieldImpl
-                    {...extraProps}
-                    meta={meta}
-                    config={restConfig}
-                    disabled={disabled}
-                  />
+                  {FieldImpl}
                 </FieldWrapper>
               )}
               validate={validate}
