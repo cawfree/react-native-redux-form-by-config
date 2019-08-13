@@ -11,6 +11,18 @@ export const isEmail = value =>
       'This E-Mail Address doesn\'t look right.' : undefined
 
 export default {
+  date: (config) => {
+    const {
+      label,
+      min,
+      max,
+      required,
+    } = config;
+    return [
+      required && isRequired(label),
+    ]
+      .filter(e => !!label);
+  },
   text: (config) => {
     const {
       label,

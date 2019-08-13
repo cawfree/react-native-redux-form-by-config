@@ -61,7 +61,7 @@ class DynamicFields extends React.Component {
         const validate = (validation[type] || (() => []))(el);
         const FieldImpl = types[type];
         if (!FieldImpl) {
-          throw new Error(
+          console.warn(
             `Missing implementation of data type "${type}"!`,
           );
         }

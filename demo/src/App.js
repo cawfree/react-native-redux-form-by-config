@@ -84,7 +84,13 @@ class App extends React.Component {
               fontSize: 20,
               height: 300,
             },
-          }
+          },
+          {
+            required: true,
+            key: 'birthday',
+            label: 'Birthday',
+            type: 'date',
+          },
         ],
         [
           // XXX: You can optionally specify groups. Any orphaned elements
@@ -93,6 +99,7 @@ class App extends React.Component {
             keys: [
               'password',
               'notes',
+              'birthday',
             ],
           },
         ],
