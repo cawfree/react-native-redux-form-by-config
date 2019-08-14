@@ -49,7 +49,7 @@ class DatePickerField extends React.Component {
         ]}
       >
         <SimpleDatePicker
-          value={(!!value) && (Moment(value, format))}
+          date={(!!value) && (Moment(value, format))}
           onDatePicked={moment => onChange(moment.format(format))}
           renderDescription={null}
         />
