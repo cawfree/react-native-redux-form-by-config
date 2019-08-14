@@ -222,6 +222,7 @@ module.exports = {
               paths.appSrc,
               path.resolve(paths.appNodeModules, "@cawfree/react-native-collapsible-view"),
               path.resolve(paths.appNodeModules, "@cawfree/react-native-simple-date-picker"),
+              path.resolve(paths.appNodeModules, "@cawfree/react-native-modal-provider/RNModalProvider"),
               path.resolve(paths.appNodeModules, "react-native-material-menu"),
             ],
             loader: require.resolve('babel-loader'),

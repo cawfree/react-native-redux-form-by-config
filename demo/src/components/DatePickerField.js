@@ -48,6 +48,7 @@ class DatePickerField extends React.Component {
         ]}
       >
         <SimpleDatePicker
+          renderDescription={null}
         />
       </View>
     );

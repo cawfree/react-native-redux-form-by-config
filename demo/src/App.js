@@ -14,6 +14,9 @@ import { reducer as form } from 'redux-form/immutable';
 import { defaultTheme } from './theme';
 import Collapsible from '@cawfree/react-native-collapsible-view';
 
+import { ModalProvider } from '@cawfree/react-native-modal-provider';
+import MaterialMenuModal from '@cawfree/react-native-modal-provider/RNModalProvider/src/components/MaterialMenuModal';
+
 import getFormByConfig from './getFormByConfig';
 
 const styles = StyleSheet.create(
@@ -188,38 +191,48 @@ class App extends React.Component {
       <Provider
         store={store}
       >
-        <View
-          style={{
-            ...StyleSheet.absoluteFillObject,
-            backgroundColor: 'purple',
-          }}
+        <ModalProvider
+          ModalComponent={MaterialMenuModal}
+          position={({ x, y, width, height }) => ({
+            position: 'absolute',
+            left: x,
+            // XXX: Apply some additional padding.
+            top: y + height + 5,
+          })}
         >
           <View
+            style={{
+              ...StyleSheet.absoluteFillObject,
+              backgroundColor: 'purple',
+            }}
           >
             <View
-              style={styles.container}
             >
-              <AuthFields
-                onHandleSubmit={this.__onHandleAuthSubmit}
-              />
-              <SignUpTermsFields
-                onHandleSubmit={this.__onHandleSignUpTermsSubmit}
-                theme={{
-                  ...defaultTheme,
-                }}
-              />
-            </View>
-            <TouchableOpacity
-              onPress={this.__onAuth}
-            >
-              <Text
-                style={styles.text}
+              <View
+                style={styles.container}
               >
-                {'Sign In'}
-              </Text>
-            </TouchableOpacity>
+                <AuthFields
+                  onHandleSubmit={this.__onHandleAuthSubmit}
+                />
+                <SignUpTermsFields
+                  onHandleSubmit={this.__onHandleSignUpTermsSubmit}
+                  theme={{
+                    ...defaultTheme,
+                  }}
+                />
+              </View>
+              <TouchableOpacity
+                onPress={this.__onAuth}
+              >
+                <Text
+                  style={styles.text}
+                >
+                  {'Sign In'}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </ModalProvider>
       </Provider>
     );
   }

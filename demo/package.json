@@ -20,7 +20,8 @@
   "dependencies": {
     "@callstack/react-theme-provider": "^3.0.0",
     "@cawfree/react-native-collapsible-view": "^1.0.13",
-    "@cawfree/react-native-simple-date-picker": "^1.0.1",
+    "@cawfree/react-native-modal-provider": "^1.0.2",
+    "@cawfree/react-native-simple-date-picker": "^1.0.4",
     "immutable": "^4.0.0-rc.12",
     "moment": "^2.24.0",
     "react": "^16.9.0",
