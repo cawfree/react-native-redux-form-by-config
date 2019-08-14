@@ -53,9 +53,12 @@ class App extends React.Component {
             key: 'email',
             label: 'E-Mail Address',
             type: 'text',
+            // XXX: This is a reserved field for initializing the form state.
+            //value: 'helloooo',
             // Non-configuration props are delegated directly to the <TextInput/>.
             placeholder: 'E-Mail Address Here',
             textContentType: 'emailAddress',
+            value: 'hi',
             style: {
               fontSize: 20,
             },
@@ -65,6 +68,7 @@ class App extends React.Component {
             min: 6,
             max: 64,
             key: 'password',
+            value: 'lol',
             type: 'text',
             label: 'Password',
             placeholder: 'Password',
@@ -80,6 +84,7 @@ class App extends React.Component {
             max: 64,
             key: 'notes',
             type: 'text',
+            value: 'default notes',
             label: 'Notes',
             placeholder: 'Your notes here',
             numberOfLines: 3,
@@ -93,6 +98,7 @@ class App extends React.Component {
             key: 'birthday',
             label: 'Birthday',
             type: 'date',
+            value: '1991/03/07',
             // XXX: Must be moment-compatible.
             format: 'YYYY/MM/DD',
           },
@@ -108,6 +114,7 @@ class App extends React.Component {
                     key: 'someVal',
                     label: 'Nested Example',
                     type: 'text',
+                    value: 'some deeply initialized quantity',
                   },
                 ],
               },
@@ -119,6 +126,7 @@ class App extends React.Component {
           //      that are not referenced by a group will *not* be rendered.
           {
             keys: [
+              'email',
               'password',
               'notes',
               'birthday',
@@ -135,6 +143,7 @@ class App extends React.Component {
             required: true,
             key: 'terms',
             type: 'boolean',
+            value: true,
             label: 'Your acceptance',
             description: [
               `I accept the http://www.cawfree.com/mapsy/eula/ and promise to be awesome to other users.`,

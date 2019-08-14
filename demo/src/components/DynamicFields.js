@@ -80,9 +80,6 @@ class DynamicFields extends React.Component {
       formValueSelector,
       getFormValues,
     } = nextProps;
-    const vectorized = vectorizeConfig(
-      config,
-    );
     const cleanConfig = vectorizeConfig(
       config,
     )
@@ -97,12 +94,17 @@ class DynamicFields extends React.Component {
     const baseFields = cleanConfig.reduce(
       (arr, el, i) => {
         const {
-          key,
           type,
+          key,
           label,
-          disabled,
-          fields,
           ...restConfig
+        } = el;
+        // XXX: These are safe properties we wish to be able to delegate to field instances.
+        const {
+          // XXX: Initial values would already have been processed by this point.
+          value,
+          fields,
+          ...safeProps
         } = el;
         const resolvedLabel = (label || key);
         const validate = (validation[type] || (() => []))(el);
@@ -124,7 +126,7 @@ class DynamicFields extends React.Component {
                   {...extraProps}
                   meta={meta}
                   theme={theme}
-                  config={el}
+                  config={safeProps}
                 >
                   {FieldImpl}
                 </FieldWrapper>

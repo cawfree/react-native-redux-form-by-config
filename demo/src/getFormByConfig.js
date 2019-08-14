@@ -1,4 +1,5 @@
 import React from 'react';
+import { Map } from 'immutable';
 import { View } from 'react-native';
 import {
   reduxForm,
@@ -27,6 +28,45 @@ import DynamicFields from './components/DynamicFields';
 
 import defaultTypes from './types';
 import defaultValidation from './validation';
+
+// TODO: This has a tight relationship with vectorizeConfig.
+//       Should increase coupling.
+function accumulateInitialValues(config = []) {
+  return config
+    .reduce(
+      (obj, e = {}) => {
+        const {
+          key,
+          type,
+          forms,
+          value,
+        } = e;
+        if (typeof key === 'string') {
+          const isNested = (!type) && (forms);
+          const isConfig = (!forms) && (type);
+          if (isNested) {
+            return {
+              ...obj,
+              [key]: accumulateInitialValues(
+                forms,
+              ),
+            };
+          } else if (isConfig) {
+            return {
+              ...obj,
+              [key]: value,
+            };
+          }
+        }
+        throw new Error(
+          `Encountered malformed config object:\n${JSON.stringify(
+            e,
+          )}`,
+        );
+      },
+      {},
+    );
+}
 
 function getFieldsByConfig(
   form,
@@ -64,6 +104,10 @@ function getFieldsByConfig(
 
     };
   };
+  const initialValues = accumulateInitialValues(
+    config,
+  );
+  console.log(initialValues);
   return connect(
     mapStateToProps,
     mapDispatchToProps,
@@ -73,6 +117,9 @@ function getFieldsByConfig(
     reduxForm(
       {
         form,
+        initialValues: accumulateInitialValues(
+          config,
+        ),
       },
     )(({ GroupingComponent, LayoutComponent, theme, types, validation, ...extraProps}) => (
       <ThemeProvider
