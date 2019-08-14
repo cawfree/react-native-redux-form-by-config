@@ -96,6 +96,23 @@ class App extends React.Component {
             // XXX: Must be moment-compatible.
             format: 'YYYY/MM/DD',
           },
+          // TODO: Need to error on shared-level duplicate keys.
+          {
+            key: 'nested',
+            forms: [
+              {
+                key: 'deeplyNested',
+                forms: [
+                  {
+                    required: true,
+                    key: 'someVal',
+                    label: 'Nested Example',
+                    type: 'text',
+                  },
+                ],
+              },
+            ],
+          },
         ],
         [
           // XXX: You can optionally specify groups. Any orphaned elements
@@ -105,6 +122,7 @@ class App extends React.Component {
               'password',
               'notes',
               'birthday',
+              'nested.deeplyNested.someVal',
             ],
           },
         ],
@@ -171,6 +189,7 @@ class App extends React.Component {
         ],
       )
         .then(([ auth, signUpTerms ]) => {
+          console.log(JSON.stringify(auth));
           //// XXX: Here are your validated results!
           //const emailAddress = auth.get('email');
           //const password = auth.get('password');

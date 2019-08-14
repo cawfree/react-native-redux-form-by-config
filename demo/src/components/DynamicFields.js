@@ -23,6 +23,47 @@ const styles = StyleSheet
     },
   );
 
+// Transforms the config into a single dimension list of config elements.
+// Some config options can be nested forms, we use this to extrapolate 
+// the nested quantities as a linear declaration.
+function vectorizeConfig(config = [], keyPfx = '') {
+  return config
+    .reduce(
+      (arr, config = {}) => {
+        const {
+          key,
+          type,
+          forms,
+        } = config;
+        // XXX: key is a required attribute.
+        if (!!key) {
+          const isNested = (!type) && (forms);
+          const isConfig = (!forms) && (type);
+          if (isNested) {
+            return [
+              ...arr,
+              ...vectorizeConfig(
+                forms,
+                `${keyPfx}${key}.`,
+              ),
+            ];
+          } else if (isConfig) {
+            return [
+              ...arr,
+              {
+                ...config,
+                key: `${keyPfx}${key}`,
+              },
+            ];
+          }
+        }
+        throw new Error(
+          `Encountered erroneous form element:\n ${JSON.stringify(config)}`,
+        );
+      },
+      [],
+    );
+}
 
 class DynamicFields extends React.Component {
   constructor(nextProps) {
@@ -39,7 +80,12 @@ class DynamicFields extends React.Component {
       formValueSelector,
       getFormValues,
     } = nextProps;
-    const cleanConfig = config
+    const vectorized = vectorizeConfig(
+      config,
+    );
+    const cleanConfig = vectorizeConfig(
+      config,
+    )
       .filter((e) => {
         const {
           key,
@@ -55,6 +101,7 @@ class DynamicFields extends React.Component {
           type,
           label,
           disabled,
+          fields,
           ...restConfig
         } = el;
         const resolvedLabel = (label || key);
