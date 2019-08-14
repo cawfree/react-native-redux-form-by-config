@@ -93,6 +93,8 @@ class App extends React.Component {
             key: 'birthday',
             label: 'Birthday',
             type: 'date',
+            // XXX: Must be moment-compatible.
+            format: 'YYYY/MM/DD',
           },
         ],
         [
@@ -170,8 +172,10 @@ class App extends React.Component {
       )
         .then(([ auth, signUpTerms ]) => {
           //// XXX: Here are your validated results!
-          const emailAddress = auth.get('email');
-          const password = auth.get('password');
+          //const emailAddress = auth.get('email');
+          //const password = auth.get('password');
+          console.log(auth);
+          console.log(signUpTerms);
         })
         .catch(console.log);
     }

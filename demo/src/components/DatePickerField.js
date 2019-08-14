@@ -37,6 +37,7 @@ class DatePickerField extends React.Component {
       style,
       min,
       max,
+      format,
       //numberOfLines,
       //placeholder,
       ...restConfig
@@ -48,6 +49,8 @@ class DatePickerField extends React.Component {
         ]}
       >
         <SimpleDatePicker
+          value={(!!value) && (Moment(value, format))}
+          onDatePicked={moment => onChange(moment.format(format))}
           renderDescription={null}
         />
       </View>
