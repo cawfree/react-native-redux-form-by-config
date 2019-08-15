@@ -75,24 +75,17 @@ const DefaultFieldWrapper = withTheme(
               styles.defaultText,
               {
                 borderRadius,
+                minHeight: minFieldHeight,
+                paddingLeft: marginExtraShort,
               },
             ]}
           >
-            <View
-              style={[
-                {
-                  flex: 1,
-                  paddingLeft: marginExtraShort,
-                },
-              ]}
-            >
-              <Child
-                {...extraProps}
-                meta={meta}
-                config={config}
-                disabled={disabled}
-              />
-            </View>
+            <Child
+              {...extraProps}
+              meta={meta}
+              config={config}
+              disabled={disabled}
+            />
             <View
               style={[
                 styles.defaultErrorIcon,
