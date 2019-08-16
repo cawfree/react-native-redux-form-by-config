@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Moment from 'moment';
-import { SimpleDatePicker } from '@cawfree/react-native-simple-date-picker';
+import SimplerDatePicker from '@cawfree/react-native-simpler-date-picker';
 
 import { withTheme } from './../theme';
 
@@ -48,10 +48,15 @@ class DatePickerField extends React.Component {
           styles.container,
         ]}
       >
-        <SimpleDatePicker
-          date={(!!value) && (Moment(value, format))}
-          onDatePicked={moment => onChange(moment.format(format))}
-          renderDescription={null}
+        <SimplerDatePicker
+          date={value && (Moment(value, format))}
+          onDatePicked={(moment) => {
+            if (moment) {
+              console.log(moment);
+              return onChange(moment.format(format));
+            }
+            return onChange(null);
+          }}
         />
       </View>
     );

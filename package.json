@@ -1,6 +1,6 @@
 {
   "name": "@cawfree/react-native-redux-form-by-config",
-  "version": "1.1.36",
+  "version": "1.1.37",
   "description": "A simple way to generate Redux Form linked layouts using a high-level config object.",
   "main": "index.js",
   "scripts": {
@@ -39,8 +39,7 @@
   },
   "dependencies": {
     "@cawfree/react-native-collapsible-view": "^1.0.13",
-    "@cawfree/react-native-modal-provider": "^1.0.2",
-    "@cawfree/react-native-simple-date-picker": "^1.0.4",
+    "@cawfree/react-native-simpler-date-picker": "^0.0.2",
     "moment": "^2.24.0",
     "react": "^16.9.0"
   }
