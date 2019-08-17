@@ -1,6 +1,8 @@
 # react-native-redux-form-by-config
 A simple way to generate [Redux Form](https://redux-form.com/8.2.0/) linked layouts using a high-level config object.
 
+⚠️ **Please note that this is a work in progress, and you must expect the configuration spec to change.**
+
 ## 🚡 Overview
 This small utility function can be used to construct forms backed by `redux-form` through the definition of a high-level configuration object. This helps generate forms that connect to your application state faster, without busying yourself with the boilerplate validation logic.
 
