@@ -20,29 +20,8 @@ const styles = StyleSheet
   );
 
 class DefaultGrouping extends React.Component {
-  constructor(props) {
-    super(props);
-    const {
-      children,
-    } = props;
-    this.state = {
-      children: children
-        .map(
-          (Child, i) => (
-            <Child
-              key={i}
-            />
-          ),
-        ),
-    };
-  }
   render() {
-    const {
-      index,
-      values,
-      ...extraProps
-    } = this.props;
-    const { children } = this.state;
+    const { children } = this.props;
     return (
       <View
         style={styles.container}

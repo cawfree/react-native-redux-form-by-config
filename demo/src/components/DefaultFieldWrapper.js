@@ -38,7 +38,7 @@ const styles = StyleSheet
   );
 
 const DefaultFieldWrapper = withTheme(
-  ({ suppressLabels, theme, meta, disabled, config, children: Child, ...extraProps }) => {
+  ({ theme, meta, disabled, config, children: Child, ...extraProps }) => {
     const {
       label,
       type,
@@ -59,18 +59,6 @@ const DefaultFieldWrapper = withTheme(
       <View
         style={styles.defaultField}
       >
-        {(type !== 'boolean') && (!suppressLabels) && (
-          <Text
-            style={[
-              labelStyle,
-              {
-                marginBottom: marginExtraShort,
-              },
-            ]}
-          >
-            {label}
-          </Text>
-        )}
         {(type !== label) && (
           <React.Fragment>
             {(type === 'boolean') && (

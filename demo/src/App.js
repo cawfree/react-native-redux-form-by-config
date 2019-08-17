@@ -225,7 +225,6 @@ class App extends React.Component {
             >
               <AuthFields
                 onHandleSubmit={this.__onHandleAuthSubmit}
-                suppressLabels
               />
               <SignUpTermsFields
                 onHandleSubmit={this.__onHandleSignUpTermsSubmit}
