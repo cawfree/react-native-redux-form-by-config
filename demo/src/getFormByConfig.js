@@ -24,7 +24,12 @@ import {
 import { connect } from 'react-redux';
 
 import ThemeProvider from './theme';
-import DynamicFields from './components/DynamicFields';
+import DynamicFields, {
+  isConfig,
+  isNested,
+  isGrouping,
+  isField,
+}  from './components/DynamicFields';
 
 import defaultTypes from './types';
 import defaultValidation from './validation';
@@ -38,20 +43,33 @@ function accumulateInitialValues(config = []) {
         const {
           key,
           type,
-          forms,
           value,
         } = e;
-        if (typeof key === 'string') {
-          const isNested = (!type) && (forms);
-          const isConfig = (!forms) && (type);
-          if (isNested) {
-            return {
-              ...obj,
-              [key]: accumulateInitialValues(
-                forms,
-              ),
-            };
-          } else if (isConfig) {
+        if (isConfig(e)) {
+          const { forms } = e;
+          const nested = isNested(e);
+          const field = isField(e);
+          if (nested) {
+            const grouping = isGrouping(e);
+            if (grouping) {
+              return {
+                ...obj,
+                ...accumulateInitialValues(
+                  forms,
+                ),
+              };
+            }
+            // XXX: Keys are required attributes for nested fields
+            //      that are not a grouping.
+            if (!!key) {
+              return {
+                ...obj,
+                [key]: accumulateInitialValues(
+                  forms,
+                ),
+              };
+            }
+          } else if (field) {
             return {
               ...obj,
               [key]: value,
@@ -71,13 +89,11 @@ function accumulateInitialValues(config = []) {
 function getFieldsByConfig(
   form,
   config,
-  grouping,
 ) {
   const mapStateToProps = (state, ownProps) => {
     return {
       ...ownProps,
       config,
-      grouping,
       //getFormValues: () => getFormValues(form)(state),
       //getFormValues: () => state.form,
       formValueSelector: key => formValueSelector(form)(state, key),
@@ -107,7 +123,6 @@ function getFieldsByConfig(
   const initialValues = accumulateInitialValues(
     config,
   );
-  console.log(initialValues);
   return connect(
     mapStateToProps,
     mapDispatchToProps,

@@ -25,10 +25,33 @@ const styles = StyleSheet
     },
   );
 
+export const isNested = (config = {}) => {
+  const { type, forms } = config;
+  return (!type) && forms;
+};
+
+// XXX: A specialized yt
+export const isGrouping = (config = {}) => {
+  if (isNested(config)) {
+    const { key } = config;
+    return !key;
+  }
+  return false;
+};
+
+export const isField = (config = {}) => {
+  const { key } = config;
+  return !isNested(config) && !!key;
+};
+
+export const isConfig = (config = {}) => {
+  return isField(config) || isNested(config);
+};
+
 // Transforms the config into a single dimension list of config elements.
 // Some config options can be nested forms, we use this to extrapolate 
 // the nested quantities as a linear declaration.
-function vectorizeConfig(config = [], grouping = [], keyPfx = '') {
+function vectorizeConfig(config = [], keyPfx = '') {
   return config
     .reduce(
       (arr, config = {}) => {
@@ -37,30 +60,32 @@ function vectorizeConfig(config = [], grouping = [], keyPfx = '') {
           type,
           forms,
         } = config;
-        // XXX: key is a required attribute.
-        if (!!key) {
-          const isNested = (!type) && (forms);
-          const isConfig = (!forms) && (type);
-          if (isNested) {
+        const nested = isNested(config);
+        const grouping = isGrouping(config);
+        if (key || nested) {
+          const field = isField(config);
+          if (nested) {
             const { label } = config;
+            // XXX: Elements are considered non-related and part of a group
+            //      if they don't have an owning title.
+            const subPfx = grouping ? keyPfx : `${keyPfx}${key}.`;
             return [
               ...arr,
               // XXX: Generate a dynamic label for the group.
-              (!!label) && (
-                {
-                  key: uuidv4(),
-                  type: 'label',
-                  label,
-                }
-              ),
+              //(!!label) && (
+              //  {
+              //    key: uuidv4(),
+              //    type: 'label',
+              //    label,
+              //  }
+              //),
               ...vectorizeConfig(
                 forms,
-                grouping,
-                `${keyPfx}${key}.`,
+                subPfx,
               ),
             ]
               .filter(e => !!e);
-          } else if (isConfig) {
+          } else if (field) {
             return [
               ...arr,
               {
@@ -88,7 +113,6 @@ class DynamicFields extends React.Component {
       validation,
       theme,
       FieldWrapper,
-      grouping,
       GroupingComponent,
       formValueSelector,
       getFormValues,
@@ -96,7 +120,6 @@ class DynamicFields extends React.Component {
     } = nextProps;
     const cleanConfig = vectorizeConfig(
       config,
-      grouping,
     )
       .filter((e) => {
         const {
@@ -170,24 +193,25 @@ class DynamicFields extends React.Component {
       },
       [],
     ); 
-    const baseGrouping = grouping
-      .map(
-        (config, index) => {
-          const { keys } = config;
-          return ({ getValuesFor, ...extraProps }) => (
-            <GroupingComponent
-              {...config}
-              index={index}
-              values={getValuesFor(keys)}
-            >
-              {keys
-                .map(
-                  key => baseFields[cleanConfig.map(({ key }) => key).indexOf(key)],
-                )}
-            </GroupingComponent>
-          );
-        },
-      );
+    const baseGrouping = [];
+    //const baseGrouping = grouping
+    //  .map(
+    //    (config, index) => {
+    //      const { keys } = config;
+    //      return ({ getValuesFor, ...extraProps }) => (
+    //        <GroupingComponent
+    //          {...config}
+    //          index={index}
+    //          values={getValuesFor(keys)}
+    //        >
+    //          {keys
+    //            .map(
+    //              key => baseFields[cleanConfig.map(({ key }) => key).indexOf(key)],
+    //            )}
+    //        </GroupingComponent>
+    //      );
+    //    },
+    //  );
     this.state = ({
       baseFields: baseFields
         .map(
@@ -231,35 +255,37 @@ class DynamicFields extends React.Component {
       // TODO: What to do with extraProps?
       ...extraProps
     } = this.props;
-    const { baseFields, baseGrouping } = this.state;
+    const { baseFields } = this.state;
     return (
       <LayoutComponent
       >
-        {(baseGrouping.length > 0) && (baseGrouping
-          .map(
-            (Grouping, i) => (
-              <Grouping
-                key={i}
-                getValuesFor={(keys) => Map(
-                  keys.reduce(
-                    (obj, key) => (
-                      {
-                        ...obj,
-                        [key]: formValueSelector(key),
-                      }
-                    ),
-                    {},
-                  ),
-                )}
-              />
-            ),
-          )
-        )}
-        {(baseGrouping.length <= 0) && (baseFields)}
+        {baseFields}
       </LayoutComponent>
     );
   }
 }
+
+//{(baseGrouping.length > 0) && (baseGrouping
+//          .map(
+//            (Grouping, i) => (
+//              <Grouping
+//                key={i}
+//                getValuesFor={(keys) => Map(
+//                  keys.reduce(
+//                    (obj, key) => (
+//                      {
+//                        ...obj,
+//                        [key]: formValueSelector(key),
+//                      }
+//                    ),
+//                    {},
+//                  ),
+//                )}
+//              />
+//            ),
+//          )
+//        )}
+//        {(baseGrouping.length <= 0) && (baseFields)}
 
 DynamicFields.propTypes = {
   theme: PropTypes.shape({}),

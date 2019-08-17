@@ -47,92 +47,83 @@ class App extends React.Component {
         'auth',
         [
           {
-            required: true,
-            key: 'email',
-            label: 'E-Mail Address',
-            type: 'text',
-            // XXX: This is a reserved field for initializing the form state.
-            //value: 'helloooo',
-            // Non-configuration props are delegated directly to the <TextInput/>.
-            placeholder: 'E-Mail Address Here',
-            textContentType: 'emailAddress',
-            value: 'hi',
-            style: {
-              fontSize: 20,
-            },
-          },
-          {
-            required: true,
-            min: 6,
-            max: 64,
-            key: 'password',
-            value: 'lol',
-            type: 'text',
-            label: 'Password',
-            placeholder: 'Password',
-            textContentType: 'password',
-            secureTextEntry: true,
-            style: {
-              fontSize: 20,
-            },
-          },
-          {
-            required: true,
-            min: 6,
-            max: 64,
-            key: 'notes',
-            type: 'text',
-            value: 'default notes',
-            label: 'Notes',
-            placeholder: 'Your notes here',
-            numberOfLines: 3,
-            style: {
-              fontSize: 20,
-              height: 300,
-            },
-          },
-          {
-            required: true,
-            key: 'birthday',
-            label: 'Birthday',
-            type: 'date',
-            // XXX: Must be moment-compatible.
-            format: 'YYYY/MM/DD',
-          },
-          // TODO: Need to error on shared-level duplicate keys.
-          {
-            key: 'nested',
             forms: [
               {
-                key: 'deeplyNested',
-                label: 'hello',
+                required: true,
+                key: 'email',
+                label: 'E-Mail Address',
+                type: 'text',
+                // XXX: This is a reserved field for initializing the form state.
+                //value: 'helloooo',
+                // Non-configuration props are delegated directly to the <TextInput/>.
+                placeholder: 'E-Mail Address Here',
+                textContentType: 'emailAddress',
+                value: 'hi',
+                style: {
+                  fontSize: 20,
+                },
+              },
+              {
+                required: true,
+                min: 6,
+                max: 64,
+                key: 'password',
+                value: 'lol',
+                type: 'text',
+                label: 'Password',
+                placeholder: 'Password',
+                textContentType: 'password',
+                secureTextEntry: true,
+                style: {
+                  fontSize: 20,
+                },
+              },
+              {
+                required: true,
+                min: 6,
+                max: 64,
+                key: 'notes',
+                type: 'text',
+                value: 'default notes',
+                label: 'Notes',
+                placeholder: 'Your notes here',
+                numberOfLines: 3,
+                style: {
+                  fontSize: 20,
+                  height: 300,
+                },
+              },
+              {
+                required: true,
+                key: 'birthday',
+                label: 'Birthday',
+                type: 'date',
+                // XXX: Must be moment-compatible.
+                format: 'YYYY/MM/DD',
+              },
+              // TODO: Need to error on shared-level duplicate keys.
+              {
+                key: 'nested',
                 forms: [
                   {
-                    required: true,
-                    key: 'someVal',
-                    label: 'Nested Example',
-                    type: 'text',
-                    value: 'some deeply initialized quantity',
+                    key: 'deeplyNested',
+                    label: 'hello',
+                    forms: [
+                      {
+                        required: true,
+                        key: 'someVal',
+                        label: 'Nested Example',
+                        type: 'text',
+                        value: 'some deeply initialized quantity',
+                      },
+                    ],
                   },
                 ],
               },
             ],
           },
         ],
-        [
-          // XXX: You can optionally specify groups. Any orphaned elements
-          //      that are not referenced by a group will *not* be rendered.
-          {
-            keys: [
-              'email',
-              'password',
-              'notes',
-              'birthday',
-              'nested.deeplyNested.someVal',
-            ],
-          },
-        ],
-    ),
+      ),
     // XXX: Now supports booleans with hyperlinked descriptions!
     SignUpTermsFields: getFormByConfig(
         'signUpTerms',
