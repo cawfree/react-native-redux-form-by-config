@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  Text,
   View,
   StyleSheet,
 } from 'react-native';
 import { Map } from 'immutable';
 import { Field } from 'redux-form/immutable';
 import { isEqual } from 'lodash';
+import uuidv4 from 'uuid/v4';
 
 import { withTheme } from './../theme';
 
@@ -26,7 +28,7 @@ const styles = StyleSheet
 // Transforms the config into a single dimension list of config elements.
 // Some config options can be nested forms, we use this to extrapolate 
 // the nested quantities as a linear declaration.
-function vectorizeConfig(config = [], keyPfx = '') {
+function vectorizeConfig(config = [], grouping = [], keyPfx = '') {
   return config
     .reduce(
       (arr, config = {}) => {
@@ -40,13 +42,24 @@ function vectorizeConfig(config = [], keyPfx = '') {
           const isNested = (!type) && (forms);
           const isConfig = (!forms) && (type);
           if (isNested) {
+            const { label } = config;
             return [
               ...arr,
+              // XXX: Generate a dynamic label for the group.
+              (!!label) && (
+                {
+                  key: uuidv4(),
+                  type: 'label',
+                  label,
+                }
+              ),
               ...vectorizeConfig(
                 forms,
+                grouping,
                 `${keyPfx}${key}.`,
               ),
-            ];
+            ]
+              .filter(e => !!e);
           } else if (isConfig) {
             return [
               ...arr,
@@ -79,9 +92,11 @@ class DynamicFields extends React.Component {
       GroupingComponent,
       formValueSelector,
       getFormValues,
+      suppressLabels,
     } = nextProps;
     const cleanConfig = vectorizeConfig(
       config,
+      grouping,
     )
       .filter((e) => {
         const {
@@ -109,32 +124,49 @@ class DynamicFields extends React.Component {
         const resolvedLabel = (label || key);
         const validate = (validation[type] || (() => []))(el);
         const FieldImpl = types[type];
-        if (!FieldImpl) {
+        const isLabel = (type === 'label');
+        if (!FieldImpl && !isLabel) {
           console.warn(
             `Missing implementation of data type "${type}"!`,
           );
         }
+        const EvaluateAsField = ({ ...nextProps}) => (
+          <Field
+            key={key}
+            name={key}
+            component={({ meta, ...extraProps }) => (
+              <FieldWrapper
+                {...nextProps}
+                {...extraProps}
+                meta={meta}
+                theme={theme}
+                config={safeProps}
+                suppressLabels={suppressLabels}
+              >
+                {FieldImpl}
+              </FieldWrapper>
+            )}
+            validate={validate}
+          />
+        );
+        const Label = ({ ...extraProps }) => (
+          <Text
+            style={{
+              width: 1000,
+              height: 1000,
+              backgroundColor: 'green',
+            }}
+          >
+            {'yoyoyoyoyoyoyoo'}
+          </Text>
+        );
+        // TODO: label handling...
         return ([
           ...arr,
-          ({ ...nextProps}) => (
-            <Field
-              key={key}
-              name={key}
-              component={({ meta, ...extraProps }) => (
-                <FieldWrapper
-                  {...nextProps}
-                  {...extraProps}
-                  meta={meta}
-                  theme={theme}
-                  config={safeProps}
-                >
-                  {FieldImpl}
-                </FieldWrapper>
-              )}
-              validate={validate}
-            />
-          ),
-        ]);
+          (!isLabel) && EvaluateAsField,
+          (!!isLabel) && Label,
+        ])
+          .filter(e => !!e);
       },
       [],
     ); 
@@ -195,7 +227,6 @@ class DynamicFields extends React.Component {
     const {
       LayoutComponent,
       theme,
-      grouping,
       formValueSelector,
       // TODO: What to do with extraProps?
       ...extraProps
@@ -204,7 +235,7 @@ class DynamicFields extends React.Component {
     return (
       <LayoutComponent
       >
-        {(grouping.length > 0) && (baseGrouping
+        {(baseGrouping.length > 0) && (baseGrouping
           .map(
             (Grouping, i) => (
               <Grouping
@@ -224,7 +255,7 @@ class DynamicFields extends React.Component {
             ),
           )
         )}
-        {(grouping.length <= 0) && (baseFields)}
+        {(baseGrouping.length <= 0) && (baseFields)}
       </LayoutComponent>
     );
   }

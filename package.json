@@ -41,6 +41,7 @@
     "@cawfree/react-native-collapsible-view": "^1.0.13",
     "@cawfree/react-native-simpler-date-picker": "^0.0.2",
     "moment": "^2.24.0",
-    "react": "^16.9.0"
+    "react": "^16.9.0",
+    "uuid": "^3.3.2"
   }
 }

@@ -17,6 +17,11 @@ export const defaultTheme = {
   errorStyle: {
     color: 'red',
   },
+  labelStyle: {
+    fontWeight: 'bold',
+    color: '#FFFFFFFF',
+    fontSize: 16,
+  },
   minFieldHeight: 50,
 };
 

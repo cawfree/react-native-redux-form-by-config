@@ -20,8 +20,9 @@ const styles = StyleSheet.create(
   {
     container: {
       flex: 1,
+      paddingVertical: 5,
       paddingHorizontal: 5,
-      backgroundColor: 'purple',
+      backgroundColor: '#DDDDDD',
     },
     text: {
       backgroundColor: 'peachpuff',
@@ -95,7 +96,6 @@ class App extends React.Component {
             key: 'birthday',
             label: 'Birthday',
             type: 'date',
-            value: '1991/03/07',
             // XXX: Must be moment-compatible.
             format: 'YYYY/MM/DD',
           },
@@ -105,6 +105,7 @@ class App extends React.Component {
             forms: [
               {
                 key: 'deeplyNested',
+                label: 'hello',
                 forms: [
                   {
                     required: true,
@@ -233,6 +234,7 @@ class App extends React.Component {
             >
               <AuthFields
                 onHandleSubmit={this.__onHandleAuthSubmit}
+                suppressLabels
               />
               <SignUpTermsFields
                 onHandleSubmit={this.__onHandleSignUpTermsSubmit}

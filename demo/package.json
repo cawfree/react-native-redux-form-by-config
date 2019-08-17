@@ -33,7 +33,8 @@
     "react-native-web": "^0.10.x",
     "react-redux": "^7.1.0",
     "redux": "^4.0.1",
-    "redux-form": "^8.2.4"
+    "redux-form": "^8.2.4",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@babel/core": "7.1.0",

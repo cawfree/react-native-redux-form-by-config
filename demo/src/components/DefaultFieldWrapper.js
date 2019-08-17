@@ -38,8 +38,11 @@ const styles = StyleSheet
   );
 
 const DefaultFieldWrapper = withTheme(
-  ({ theme, meta, disabled, config, children: Child, ...extraProps }) => {
-    const { type } = config;
+  ({ suppressLabels, theme, meta, disabled, config, children: Child, ...extraProps }) => {
+    const {
+      label,
+      type,
+    } = config;
     const {
       error,
       touched,
@@ -49,60 +52,77 @@ const DefaultFieldWrapper = withTheme(
       marginShort,
       marginExtraShort,
       minFieldHeight,
+      labelStyle,
     } = theme;
     const shouldShowError = !!(touched && error);
     return (
       <View
         style={styles.defaultField}
       >
-        {(type === 'boolean') && (
-          <View
+        {(type !== 'boolean') && (!suppressLabels) && (
+          <Text
             style={[
-              styles.defaultBoolean,
-            ]}
-          >
-            <Child
-              {...extraProps}
-              meta={meta}
-              config={config}
-              disabled={disabled}
-            />
-          </View>
-        )}
-        {(type !== 'boolean') && (
-          <View
-            style={[
-              styles.defaultText,
+              labelStyle,
               {
-                borderRadius,
-                minHeight: minFieldHeight,
-                paddingLeft: marginExtraShort,
+                marginBottom: marginExtraShort,
               },
             ]}
           >
-            <Child
-              {...extraProps}
-              meta={meta}
-              config={config}
-              disabled={disabled}
-            />
-            <View
-              style={[
-                styles.defaultErrorIcon,
-                {
-                  width: minFieldHeight,
-                  height: minFieldHeight,
-                  opacity: shouldShowError ? 1 : 0,
-                },
-              ]}
-            >
-              <FontAwesomeIcon
-                name="exclamation-triangle"
-                size={20}
-                color="lightgrey"
-              />
-            </View>
-          </View>
+            {label}
+          </Text>
+        )}
+        {(type !== label) && (
+          <React.Fragment>
+            {(type === 'boolean') && (
+              <View
+                style={[
+                  styles.defaultBoolean,
+                ]}
+              >
+                <Child
+                  {...extraProps}
+                  meta={meta}
+                  config={config}
+                  disabled={disabled}
+                />
+              </View>
+            )}
+            {(type !== 'boolean') && (
+              <View
+                style={[
+                  styles.defaultText,
+                  {
+                    borderRadius,
+                    minHeight: minFieldHeight,
+                    paddingLeft: marginExtraShort,
+                  },
+                ]}
+              >
+                <Child
+                  {...extraProps}
+                  meta={meta}
+                  config={config}
+                  disabled={disabled}
+                />
+                <View
+                  style={[
+                    styles.defaultErrorIcon,
+                    {
+                      width: minFieldHeight,
+                      height: minFieldHeight,
+                      opacity: shouldShowError ? 1 : 0,
+                    },
+                  ]}
+                >
+                  <FontAwesomeIcon
+                    name="exclamation-triangle"
+                    size={20}
+                    color="lightgrey"
+                  />
+                </View>
+              </View>
+            )}
+          </React.Fragment>
         )}
         <View
           style={[
