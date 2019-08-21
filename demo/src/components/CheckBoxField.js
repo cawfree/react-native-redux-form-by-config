@@ -39,7 +39,6 @@ const styles = StyleSheet.create(
       flex: 1,
     },
     text: {
-      flex: 1,
     },
   },
 );
@@ -87,26 +86,33 @@ const CheckBoxField =  ({ theme, config, disabled, input: { onChange, value, ...
       <View
         style={styles.description}
       >
-        {(shouldUseHyperlink) ? (
-          <Hyperlink
-            style={resolvedStyle}
-            onPress={openUrl}
-            linkStyle={linkStyle}
-            linkText={() => resolvedDescription[1]}
-          >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+          }}
+        >
+          {(shouldUseHyperlink) ? (
+            <Hyperlink
+              style={resolvedStyle}
+              onPress={openUrl}
+              linkStyle={linkStyle}
+              linkText={() => resolvedDescription[1]}
+            >
+              <Text
+                style={resolvedStyle}
+              >
+                {resolvedDescription[0]}
+              </Text>
+            </Hyperlink>
+          ) : (
             <Text
               style={resolvedStyle}
             >
-              {resolvedDescription[0]}
+              {resolvedDescription}
             </Text>
-          </Hyperlink>
-        ) : (
-          <Text
-            style={resolvedStyle}
-          >
-            {resolvedDescription}
-          </Text>
-        )}
+          )}
+        </View>
       </View>
     </View>
   );
