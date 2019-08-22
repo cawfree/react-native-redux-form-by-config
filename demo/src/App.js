@@ -93,15 +93,16 @@ class App extends React.Component {
                   height: 300,
                 },
               },
-              //{
-              //  required: true,
-              //  key: 'birthday',
-              //  label: 'Birthday',
-              //  type: 'date',
-              //  // XXX: Must be moment-compatible.
-              //  format: 'YYYY/MM/DD',
-              //  value: '2018/03/04',
-              //},
+              {
+                required: true,
+                key: 'birthday',
+                label: 'Birthday',
+                type: 'date',
+                // XXX: Must be moment-compatible.
+                format: 'YYYY/MM/DD',
+                value: '2018/03/04',
+                minDate: '2017/03/04',
+              },
               {
                 key: 'nestedArrayContents',
                 forms: [
