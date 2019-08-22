@@ -135,6 +135,7 @@ function getFieldsByConfig(
         initialValues: accumulateInitialValues(
           config,
         ),
+        onSubmit: (...args) => args,
       },
     )(({ GroupingComponent, LayoutComponent, theme, types, validation, ...extraProps}) => (
       <ThemeProvider
