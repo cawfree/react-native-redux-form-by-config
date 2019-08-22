@@ -58,7 +58,7 @@ class App extends React.Component {
                 // Non-configuration props are delegated directly to the <TextInput/>.
                 placeholder: 'E-Mail Address Here',
                 textContentType: 'emailAddress',
-                value: 'hi',
+                value: 'hi@hi.com',
                 style: {
                   fontSize: 20,
                 },
@@ -68,7 +68,7 @@ class App extends React.Component {
                 min: 6,
                 max: 64,
                 key: 'password',
-                value: 'lol',
+                value: 'lololol',
                 type: 'text',
                 label: 'Password',
                 placeholder: 'Password',
@@ -93,13 +93,39 @@ class App extends React.Component {
                   height: 300,
                 },
               },
+              //{
+              //  required: true,
+              //  key: 'birthday',
+              //  label: 'Birthday',
+              //  type: 'date',
+              //  // XXX: Must be moment-compatible.
+              //  format: 'YYYY/MM/DD',
+              //  value: '2018/03/04',
+              //},
               {
-                required: true,
-                key: 'birthday',
-                label: 'Birthday',
-                type: 'date',
-                // XXX: Must be moment-compatible.
-                format: 'YYYY/MM/DD',
+                key: 'nestedArrayContents',
+                forms: [
+                  {
+                    // Numeric keys indicate that we should use an array.
+                    key: 0,
+                    type: 'text',
+                    label: 'some array element',
+                    value: 'some initialized array element',
+                    placeholder: 'hi',
+                  },
+                  {
+                    key: 1,
+                    forms: [
+                      {
+                        key: 'yo',
+                        type: 'text',
+                        label: 'some other array element',
+                        value: 'some other initialized array element',
+                        placeholder: 'other hi',
+                      },
+                    ],
+                  },
+                ],
               },
               // TODO: Need to error on shared-level duplicate keys.
               {
@@ -178,21 +204,18 @@ class App extends React.Component {
     if (handleAuthSubmit) {
       return Promise.all(
         [
-          new Promise(
-            (resolve, reject) => handleAuthSubmit(resolve)(),
-          ),
-          new Promise(
-            (resolve, reject) => handleSignUpTermsSubmit(resolve)(),
-          ),
+          handleAuthSubmit(),
+          handleSignUpTermsSubmit(),
         ],
       )
         .then(([ auth, signUpTerms ]) => {
           console.log(JSON.stringify(auth));
+          console.log(JSON.stringify(signUpTerms));
           //// XXX: Here are your validated results!
           //const emailAddress = auth.get('email');
           //const password = auth.get('password');
-          console.log(auth);
-          console.log(signUpTerms);
+          //console.log(auth);
+          //console.log(signUpTerms);
         })
         .catch(console.log);
     }

@@ -10,11 +10,13 @@ import { Field } from 'redux-form/immutable';
 import { isEqual } from 'lodash';
 import uuidv4 from 'uuid/v4';
 
-import { withTheme } from './../theme';
+import { withTheme } from '../theme';
 
 import DefaultFieldWrapper from './DefaultFieldWrapper';
 import DefaultGrouping from './DefaultGrouping';
 import DefaultLabel from './DefaultLabel';
+
+import defaultTransform from '../transform';
 
 const styles = StyleSheet
   .create(
@@ -35,7 +37,7 @@ export const isNested = (config = {}) => {
 export const isGrouping = (config = {}) => {
   if (isNested(config)) {
     const { key } = config;
-    return !key;
+    return key === undefined;
   }
   return false;
 };
@@ -45,7 +47,7 @@ export const isField = (config = {}) => {
   // XXX: These *do* need a type attribute, but in the interest
   //      of failing safely, missing specifications will return
   //      with a warning.
-  return !isNested(config) && !!key;
+  return !isNested(config) && key !== undefined;
 };
 
 export const isConfig = (config = {}) => {
@@ -182,9 +184,17 @@ class DynamicFields extends React.Component {
     const {
       handleSubmit,
       onHandleSubmit,
+      transform,
     } = this.props;
     if (onHandleSubmit) {
-      onHandleSubmit(handleSubmit);
+      onHandleSubmit(
+        () => Promise
+          .resolve()
+          .then(
+            () => new Promise(resolve => handleSubmit(resolve)()),
+          )
+          .then(transform),
+      );
     }
   }
   componentWillUpdate(nextProps, nextState) {
@@ -235,6 +245,7 @@ DynamicFields.propTypes = {
       },
     ),
   ),
+  transform: PropTypes.func,
 };
 
 DynamicFields.defaultProps = {
@@ -251,6 +262,7 @@ DynamicFields.defaultProps = {
   GroupingComponent: DefaultGrouping,
   grouping: [],
   LabelComponent: DefaultLabel,
+  transform: defaultTransform,
 };
 
 export default withTheme(
