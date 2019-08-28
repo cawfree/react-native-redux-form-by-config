@@ -27,6 +27,8 @@ const shouldRepresentUsingArray = (m = Map({})) => {
 
 // XXX: It's useful to turn things that look like arrays into a natural array.
 const transform = (result = Map({})) => {
+  console.log('transform');
+  console.log(result);
   const shouldUseArray = shouldRepresentUsingArray(
     result,
   );

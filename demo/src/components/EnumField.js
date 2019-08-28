@@ -21,36 +21,7 @@ const styles = StyleSheet.create(
 );
 
 
-const values = [
-  ['Option One', null],
-  ['Option Two', 'hello'],
-];
-
-//<TextInput
-//          value={resolvedValue}
-//          onChangeText={onChange}
-//          editable={!disabled}
-//          underlineColorAndroid="transparent"
-//          style={style || styles.textInput}
-//          numberOfLines={resolvedNumberOfLines}
-//          multiline={resolvedMultiline}
-//          placeholder={resolvedPlaceholder}
-//          {...restConfig}
-//        />
-
 const getPickerItems = () => [];
-
-//<Picker
-//          enabled={!(year < 0)}
-//          style={monthStyle}
-//          mode={mode}
-//          value={month}
-//          selectedValue={month}
-//          onValueChange={(i) => {
-//            const month = Number.parseInt(i);
-//            return this.onMonthPicked(Number.isNaN(month) ? -1 : month);
-//          }}
-//        >
 
 const sanitizeValues = (values = []) => {
   if (Array.isArray(values)) {
@@ -72,10 +43,10 @@ const sanitizeValues = (values = []) => {
       );
     // XXX: Ensure each value corresponds to a unique index.
     const rangeOfValues = baseValues
-      .map(({ value }) => value);
+      .map(({ value }) => value || null);
     return baseValues
       .filter(
-        ({ value }, index) => rangeOfValues.indexOf(value) === index,
+        ({ value }, index) => rangeOfValues.indexOf(value || null) === index,
       );
   }
   return [];
@@ -106,22 +77,24 @@ class EnumField extends React.Component {
       >
         <Picker
           style={resolvedStyle}
-          value={value}
-          selectedValue={value}
-          onValueChange={(value) => {
-            console.log('set value');
-            onChange(value);
+          value={value || null}
+          selectedValue={`${value}`}
+          onValueChange={(value, index) => {
+            onChange(
+              resolvedValues[index].value || null,
+            );
           }}
           enabled={!disabled}
           mode={resolvedMode}
           {...restConfig}
         > 
           {resolvedValues.map(
-            ({ value, label }, index) => (
+            ({ value, label, ...extraProps }, index) => (
               <Picker.Item
                 key={index}
                 label={label}
                 value={value}
+                {...extraProps}
               />
             ),
           )}

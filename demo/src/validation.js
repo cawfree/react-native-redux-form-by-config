@@ -14,14 +14,12 @@ export default {
   date: (config) => {
     const {
       label,
-      min,
-      max,
       required,
     } = config;
     return [
-      required && isRequired(label),
+      (!!required) && isRequired(label),
     ]
-      .filter(e => !!label);
+      .filter(e => !!e);
   },
   text: (config) => {
     const {
