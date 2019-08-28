@@ -70,4 +70,3 @@ const transform = (result = Map({})) => {
 };
 
 export default transform;
-
