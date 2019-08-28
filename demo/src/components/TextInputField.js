@@ -27,6 +27,7 @@ class TextInputField extends React.Component {
       style,
       numberOfLines,
       placeholder,
+      label,
       ...restConfig
     } = config;
     const resolvedStyle = {
@@ -34,8 +35,8 @@ class TextInputField extends React.Component {
     };
     const resolvedNumberOfLines = numberOfLines || 1;
     const resolvedMultiline = resolvedNumberOfLines > 1;
-    const resolvedPlaceholder = placeholder || '';
-    const resolvedValue = value|| '';
+    const resolvedPlaceholder = placeholder || label;
+    const resolvedValue = value || '';
     return (
       <View
         style={[
