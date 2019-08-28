@@ -42,10 +42,6 @@ class DatePickerField extends React.Component {
       maxDate,
       ...restConfig
     } = config;
-    // TODO: needs finishing
-    //minDate={Moment('2016/09/02', 'YYYY/MM/DD')}
-    //maxDate={Moment('2019/09/02', 'YYYY/MM/DD')}
-    // TODO:
     return (
       <View
         style={[
@@ -53,9 +49,9 @@ class DatePickerField extends React.Component {
         ]}
       >
         <SimplerDatePicker
-          minDate={minDate && (Moment(minDate, format))}
-          maxDate={maxDate && (Moment(maxDate, format))}
-          date={value && (Moment(value, format))}
+          minDate={minDate ? Moment(minDate, format) : undefined}
+          maxDate={maxDate ? Moment(maxDate, format) : undefined}
+          date={value ? Moment(value, format) : undefined}
           onDatePicked={(moment) => {
             if (moment) {
               return onChange(moment.format(format));

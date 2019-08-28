@@ -102,7 +102,7 @@ class App extends React.Component {
                 format: 'YYYY/MM/DD',
                 value: '2018/03/04',
                 minDate: '2014/02/03',
-                maxDate: '2014/02/04',
+                maxDate: '2020/02/04',
               },
               {
                 key: 'nestedArrayContents',
