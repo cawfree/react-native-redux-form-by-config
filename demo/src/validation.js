@@ -46,4 +46,11 @@ export default {
     ]
       .filter(e => !!e);
   },
+  enum: (config) => {
+    const { label, required } = config;
+    return [
+      required && isRequired(label),
+    ]
+      .filter(e => !!e);
+  },
 };

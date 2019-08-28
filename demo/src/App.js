@@ -93,17 +93,17 @@ class App extends React.Component {
                   height: 300,
                 },
               },
-              {
-                required: true,
-                key: 'birthday',
-                label: 'Birthday',
-                type: 'date',
-                // XXX: Must be moment-compatible.
-                format: 'YYYY/MM/DD',
-                value: '2018/03/04',
-                minDate: '2014/02/03',
-                maxDate: '2014/02/04',
-              },
+              //{
+              //  required: true,
+              //  key: 'birthday',
+              //  label: 'Birthday',
+              //  type: 'date',
+              //  // XXX: Must be moment-compatible.
+              //  format: 'YYYY/MM/DD',
+              //  value: '2018/03/04',
+              //  minDate: '2014/02/03',
+              //  maxDate: '2014/02/04',
+              //},
               {
                 key: 'nestedArrayContents',
                 forms: [
@@ -143,6 +143,23 @@ class App extends React.Component {
                         label: 'Nested Example',
                         type: 'text',
                         value: 'some deeply initialized quantity',
+                      },
+                    ],
+                  },
+                  {
+                    key: 'enumExample',
+                    label: 'Enum',
+                    required: true,
+                    type: 'enum',
+                    //value: 8,
+                    values: [
+                      {
+                        label: 'Please select something',
+                      },
+                      {
+                        label: 'hi',
+                        value: 8,
+                        // extraProps for pickerItem
                       },
                     ],
                   },
