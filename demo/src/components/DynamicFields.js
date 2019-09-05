@@ -62,6 +62,7 @@ function evaluateToJsx (
   LabelComponent,
   validation = {},
   types = {},
+  formValueSelector,
   keyPfx = '',
 ) {
   return config
@@ -73,10 +74,15 @@ function evaluateToJsx (
           const { forms } = e;
           const grouping = isGrouping(e);
           if (grouping) {
+            const keys = forms
+              .map(({ key }) => key)
+              .filter(e => !!e);
             // TODO: Missing index (position of group) and getValuesFor
             return [
               ...children,
               <GroupingComponent
+                keys={keys}
+                formValueSelector={formValueSelector}
                 {...e}
               >
                 {evaluateToJsx(
@@ -87,6 +93,7 @@ function evaluateToJsx (
                   LabelComponent,
                   validation,
                   types,
+                  formValueSelector,
                   keyPfx,
                 )}
               </GroupingComponent>
@@ -108,6 +115,7 @@ function evaluateToJsx (
               LabelComponent,
               validation,
               types,
+              formValueSelector,
               `${keyPfx}${key}.`,
             ),
           ]
@@ -175,6 +183,7 @@ class DynamicFields extends React.Component {
       LabelComponent,
       validation,
       types,
+      formValueSelector,
     );
     this.state = {
       children,

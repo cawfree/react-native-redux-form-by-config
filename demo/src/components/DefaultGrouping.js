@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   View,
@@ -40,4 +41,30 @@ DefaultGrouping.defaultProps = {
   children: [],
 };
 
-export default DefaultGrouping;
+const mapStateToProps = (state, ownProps) => {
+  const {
+    keys,
+    formValueSelector,
+  } = ownProps;
+  // TODO: understand whether this is appropriate
+  console.log(keys);
+  console.log(formValueSelector(state, 'nestedArrayContents'));
+  return {
+    
+  };
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  null,
+  {
+    withRef: false,
+  },
+)(DefaultGrouping);

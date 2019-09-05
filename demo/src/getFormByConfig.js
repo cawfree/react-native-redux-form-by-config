@@ -96,7 +96,6 @@ function getFieldsByConfig(
       config,
       //getFormValues: () => getFormValues(form)(state),
       //getFormValues: () => state.form,
-      formValueSelector: key => formValueSelector(form)(state, key),
       //values: formValues(form)(state),
       initialValues: getFormInitialValues(form)(state),
       formSyncErrors: getFormSyncErrors(form)(state),
@@ -117,7 +116,7 @@ function getFieldsByConfig(
   };
   const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-
+      formValueSelector: (state, key) => formValueSelector(form)(state, key),
     };
   };
   const initialValues = accumulateInitialValues(
