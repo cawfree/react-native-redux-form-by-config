@@ -56,7 +56,7 @@ export const isConfig = (config = {}) => {
 
 // XXX: Returns the keys of nested forms within the config that are capable of supplying
 //      a value. 
-export const getDescendents = (config = [], keyPfx = '') => {
+export const getDescendents = (config = [], directOnly = false, keyPfx = '') => {
   return config
     .reduce(
       (keys, e) => {
@@ -68,9 +68,16 @@ export const getDescendents = (config = [], keyPfx = '') => {
           if (grouping) {
             return [
               ...keys,
-              ...getDescendents(
-                forms,
-                keyPfx,
+              ...(
+                (!directOnly) ? (
+                  getDescendents(
+                    forms,
+                    directOnly,
+                    keyPfx,
+                  )
+                ) : (
+                  []
+                )
               ),
             ];
           }
@@ -79,6 +86,7 @@ export const getDescendents = (config = [], keyPfx = '') => {
             ...keys,
             ...getDescendents(
               forms,
+              directOnly,
               `${keyPfx}${key}.`,
             ),
           ];
@@ -118,7 +126,7 @@ function evaluateToJsx (
             return [
               ...children,
               <GroupingComponent
-                getDescendents={() => getDescendents(forms, keyPfx)}
+                getDescendents={() => getDescendents(forms, true, keyPfx)}
                 formValueSelector={formValueSelector}
                 {...e}
               >

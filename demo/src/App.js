@@ -116,7 +116,6 @@ class App extends React.Component {
                         key: 'someVal',
                         label: 'Nested Example',
                         type: 'text',
-                        value: 'some deeply initialized quantity',
                       },
                       {
                         //required: true,

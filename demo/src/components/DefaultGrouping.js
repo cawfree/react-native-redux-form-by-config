@@ -7,6 +7,8 @@ import {
   StyleSheet,
 } from 'react-native';
 
+import ProgressIndicator from './ProgressIndicator';
+
 const styles = StyleSheet
   .create(
     {
@@ -22,12 +24,35 @@ const styles = StyleSheet
 
 class DefaultGrouping extends React.Component {
   render() {
-    const { children } = this.props;
+    const {
+      children,
+      numberOfValues,
+      values,
+    } = this.props;
+    const numberSubmitted = values.filter(e => !!e).length;
     return (
       <View
-        style={styles.container}
       >
-        {children}
+        <View
+          style={{
+            flexDirection: 'row',
+            height: 10,
+          }}
+        >
+          <ProgressIndicator
+            value={numberSubmitted}
+            minValue={0}
+            maxValue={numberOfValues}
+          />
+        </View>
+        <View
+          style={styles.container}
+        >
+          <Text
+            children={`${numberSubmitted}/${numberOfValues}`}
+          />
+          {children}
+        </View>
       </View>
     );
   }
@@ -46,15 +71,14 @@ const mapStateToProps = (state, ownProps) => {
     getDescendents,
     formValueSelector,
   } = ownProps;
-  console.log(getDescendents());
-  console.log(
-    getDescendents()
-      .map(
-        key => [key, formValueSelector(state, key)],
-      ),
-  );
+  const descendents = getDescendents();
   return {
-    
+    numberOfValues: descendents
+      .length,
+    values: descendents
+      .map(
+        key => formValueSelector(state, key),
+      ),
   };
 };
 
