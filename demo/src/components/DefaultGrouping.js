@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   View,
-  Text,
   StyleSheet,
 } from 'react-native';
 
@@ -28,11 +27,21 @@ class DefaultGrouping extends React.Component {
       children,
       numberOfValues,
       values,
+      label,
+      LabelComponent,
     } = this.props;
+    // TODO: extrac tthis logic
+    const hasLabel = (typeof label === 'string') && (label.length > 0);
+    // TODO: This needs to match validation rules.
     const numberSubmitted = values.filter(e => !!e).length;
     return (
       <View
       >
+        {(!!hasLabel) && (
+          <LabelComponent
+            label={(`${label} (${numberSubmitted}/${numberOfValues})`)}
+          />
+        )}
         <View
           style={{
             flexDirection: 'row',
@@ -48,9 +57,6 @@ class DefaultGrouping extends React.Component {
         <View
           style={styles.container}
         >
-          <Text
-            children={`${numberSubmitted}/${numberOfValues}`}
-          />
           {children}
         </View>
       </View>

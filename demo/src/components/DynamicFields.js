@@ -118,7 +118,9 @@ function evaluateToJsx (
         const nested = isNested(e);
         const field = isField(e);
         if (nested) {
-          const { forms } = e;
+          const {
+            forms,
+          } = e;
           const grouping = isGrouping(e);
           if (grouping) {
             // TODO: Missing index (position of group) and getValuesFor
@@ -126,6 +128,7 @@ function evaluateToJsx (
             return [
               ...children,
               <GroupingComponent
+                LabelComponent={LabelComponent}
                 getDescendents={() => getDescendents(forms, true, keyPfx)}
                 formValueSelector={formValueSelector}
                 {...e}

@@ -47,6 +47,7 @@ class App extends React.Component {
         'auth',
         [
           {
+            label: 'This is another label',
             forms: [
               {
                 required: true,
@@ -105,11 +106,12 @@ class App extends React.Component {
                 maxDate: '2020/02/04',
               },
               {
+                label: 'label here',
                 // This is a grouped form
                 forms: [
                   {
                     key: 'groupedDeeplyNested',
-                    label: 'these are some grouped nested forms',
+                    //label: 'these are some grouped nested forms',
                     forms: [
                       {
                         required: true,

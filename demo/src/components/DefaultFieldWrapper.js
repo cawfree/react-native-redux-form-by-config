@@ -59,59 +59,57 @@ const DefaultFieldWrapper = withTheme(
       <View
         style={styles.defaultField}
       >
-        {(type !== label) && (
-          <React.Fragment>
-            {(type === 'boolean') && (
+        <React.Fragment>
+          {(type === 'boolean') && (
+            <View
+              style={[
+                styles.defaultBoolean,
+              ]}
+            >
+              <Child
+                {...extraProps}
+                meta={meta}
+                config={config}
+                disabled={disabled}
+              />
+            </View>
+          )}
+          {(type !== 'boolean') && (
+            <View
+              style={[
+                styles.defaultText,
+                {
+                  borderRadius,
+                  minHeight: minFieldHeight,
+                  paddingLeft: marginExtraShort,
+                },
+              ]}
+            >
+              <Child
+                {...extraProps}
+                meta={meta}
+                config={config}
+                disabled={disabled}
+              />
               <View
                 style={[
-                  styles.defaultBoolean,
-                ]}
-              >
-                <Child
-                  {...extraProps}
-                  meta={meta}
-                  config={config}
-                  disabled={disabled}
-                />
-              </View>
-            )}
-            {(type !== 'boolean') && (
-              <View
-                style={[
-                  styles.defaultText,
+                  styles.defaultErrorIcon,
                   {
-                    borderRadius,
-                    minHeight: minFieldHeight,
-                    paddingLeft: marginExtraShort,
+                    width: minFieldHeight,
+                    height: minFieldHeight,
+                    opacity: shouldShowError ? 1 : 0,
                   },
                 ]}
               >
-                <Child
-                  {...extraProps}
-                  meta={meta}
-                  config={config}
-                  disabled={disabled}
+                <FontAwesomeIcon
+                  name="exclamation-triangle"
+                  size={20}
+                  color="lightgrey"
                 />
-                <View
-                  style={[
-                    styles.defaultErrorIcon,
-                    {
-                      width: minFieldHeight,
-                      height: minFieldHeight,
-                      opacity: shouldShowError ? 1 : 0,
-                    },
-                  ]}
-                >
-                  <FontAwesomeIcon
-                    name="exclamation-triangle"
-                    size={20}
-                    color="lightgrey"
-                  />
-                </View>
               </View>
-            )}
-          </React.Fragment>
-        )}
+            </View>
+          )}
+        </React.Fragment>
         <View
           style={[
             styles.defaultError,
