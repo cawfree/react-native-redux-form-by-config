@@ -43,10 +43,16 @@ DefaultGrouping.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => {
   const {
+    getDescendents,
     formValueSelector,
   } = ownProps;
-  // TODO: understand whether this is appropriate
-  console.log(formValueSelector(state, 'birthday'));
+  console.log(getDescendents());
+  console.log(
+    getDescendents()
+      .map(
+        key => [key, formValueSelector(state, key)],
+      ),
+  );
   return {
     
   };

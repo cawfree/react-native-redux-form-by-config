@@ -118,17 +118,8 @@ function evaluateToJsx (
             return [
               ...children,
               <GroupingComponent
-                formValueSelector={(state, key) => {
-                  console.log('my descendents');
-                  console.log(
-                    getDescendents(
-                      forms,
-                      keyPfx,
-                    ),
-                  );
-                  // XXX: so I need to accumulate the values this way
-                  return formValueSelector(state, `groupedDeeplyNested.birthday`);
-                }}
+                getDescendents={() => getDescendents(forms, keyPfx)}
+                formValueSelector={formValueSelector}
                 {...e}
               >
                 {evaluateToJsx(
