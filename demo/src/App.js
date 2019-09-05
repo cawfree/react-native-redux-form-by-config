@@ -105,6 +105,35 @@ class App extends React.Component {
                 maxDate: '2020/02/04',
               },
               {
+                // This is a grouped form
+                forms: [
+                  {
+                    key: 'groupedDeeplyNested',
+                    label: 'these are some grouped nested forms',
+                    forms: [
+                      {
+                        required: true,
+                        key: 'someVal',
+                        label: 'Nested Example',
+                        type: 'text',
+                        value: 'some deeply initialized quantity',
+                      },
+                      {
+                        //required: true,
+                        key: 'birthday',
+                        label: 'Birthday',
+                        type: 'date',
+                        // XXX: Must be moment-compatible.
+                        format: 'YYYY/MM/DD',
+                        value: '2019/03/04',
+                        minDate: '2014/02/03',
+                        maxDate: '2020/02/04',
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
                 key: 'nestedArrayContents',
                 forms: [
                   {
@@ -135,7 +164,7 @@ class App extends React.Component {
                 forms: [
                   {
                     key: 'deeplyNested',
-                    label: 'hello',
+                    label: 'these are some nested forms at the top level group',
                     forms: [
                       {
                         required: true,
@@ -143,6 +172,28 @@ class App extends React.Component {
                         label: 'Nested Example',
                         type: 'text',
                         value: 'some deeply initialized quantity',
+                      },
+                      {
+                        //required: true,
+                        key: 'birthday',
+                        label: 'Birthday',
+                        type: 'date',
+                        // XXX: Must be moment-compatible.
+                        format: 'YYYY/MM/DD',
+                        value: '2019/03/04',
+                        minDate: '2014/02/03',
+                        maxDate: '2020/02/04',
+                      },
+                      {
+                        key: 'evenDeeper',
+                        forms: [
+                          {
+                            key: 'email', // XXX: it is safe to reuse key names if they are nested within a unique grouping
+                            type: 'text',
+                            label: 'this is the deepest nested element',
+                            placeholder: 'this is the deepested nested element, honestly',
+                          },
+                        ],
                       },
                     ],
                   },

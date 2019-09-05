@@ -54,6 +54,45 @@ export const isConfig = (config = {}) => {
   return isField(config) || isNested(config);
 };
 
+// XXX: Returns the keys of nested forms within the config that are capable of supplying
+//      a value. 
+export const getDescendents = (config = [], keyPfx = '') => {
+  return config
+    .reduce(
+      (keys, e) => {
+        const nested = isNested(e);
+        const field = isField(e);
+        if (nested) {
+          const { forms } = e;
+          const grouping = isGrouping(e);
+          if (grouping) {
+            return [
+              ...keys,
+              ...getDescendents(
+                forms,
+                keyPfx,
+              ),
+            ];
+          }
+          const { key } = e;
+          return [
+            ...keys,
+            ...getDescendents(
+              forms,
+              `${keyPfx}${key}.`,
+            ),
+          ];
+        }
+        const { key } = e;
+        return [
+          ...keys,
+          `${keyPfx}${key}`,
+        ];
+      },
+      [],
+    );
+};
+
 function evaluateToJsx (
   config = [],
   theme = {},
@@ -74,15 +113,22 @@ function evaluateToJsx (
           const { forms } = e;
           const grouping = isGrouping(e);
           if (grouping) {
-            const keys = forms
-              .map(({ key }) => key)
-              .filter(e => !!e);
             // TODO: Missing index (position of group) and getValuesFor
+            // XXX: must be scoped
             return [
               ...children,
               <GroupingComponent
-                keys={keys}
-                formValueSelector={formValueSelector}
+                formValueSelector={(state, key) => {
+                  console.log('my descendents');
+                  console.log(
+                    getDescendents(
+                      forms,
+                      keyPfx,
+                    ),
+                  );
+                  // XXX: so I need to accumulate the values this way
+                  return formValueSelector(state, `groupedDeeplyNested.birthday`);
+                }}
                 {...e}
               >
                 {evaluateToJsx(

@@ -43,12 +43,10 @@ DefaultGrouping.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => {
   const {
-    keys,
     formValueSelector,
   } = ownProps;
   // TODO: understand whether this is appropriate
-  console.log(keys);
-  console.log(formValueSelector(state, 'nestedArrayContents'));
+  console.log(formValueSelector(state, 'birthday'));
   return {
     
   };
