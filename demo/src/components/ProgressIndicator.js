@@ -40,8 +40,7 @@ class ProgressIndicator extends React.Component {
         },
       )
       .start(resolve),
-  )
-    .then(() => console.log('animated to '+toValue));
+  );
   async componentDidMount() {
     const {
       minValue,

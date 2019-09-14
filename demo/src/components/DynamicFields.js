@@ -248,7 +248,15 @@ class DynamicFields extends React.Component {
         () => Promise
           .resolve()
           .then(
-            () => new Promise(resolve => handleSubmit(resolve)()),
+            () => new Promise((resolve, reject) => handleSubmit(resolve)().catch(reject)),
+          )
+          .catch(
+            e => Promise
+              .reject(
+                new Error(
+                  'Form did not satisfy validation',
+                ),
+              ),
           )
           .then(transform),
       );
