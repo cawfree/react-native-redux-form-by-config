@@ -318,7 +318,6 @@ DynamicFields.defaultProps = {
   disabled: false,
   LayoutComponent: ({ children }) => (
     <View
-      style={styles.defaultLayout}
     >
       {children}
     </View>

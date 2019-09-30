@@ -140,16 +140,13 @@ function getFieldsByConfig(
       <ThemeProvider
         theme={theme}
       >
-        <View
-        >
-          <DynamicFields
-            LayoutComponent={LayoutComponent}
-            GroupingComponent={GroupingComponent}
-            types={types || defaultTypes}
-            validation={validation || defaultValidation}
-            {...extraProps}
-          />
-        </View>
+        <DynamicFields
+          LayoutComponent={LayoutComponent}
+          GroupingComponent={GroupingComponent}
+          types={types || defaultTypes}
+          validation={validation || defaultValidation}
+          {...extraProps}
+        />
       </ThemeProvider>
     )),
   );
