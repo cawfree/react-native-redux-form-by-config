@@ -1,4 +1,3 @@
-import React from 'react';
 import { createTheming } from '@callstack/react-theme-provider';
 
 const marginExtraShort = 5;

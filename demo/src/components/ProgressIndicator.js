@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Platform,
   View,
   Animated,
   StyleSheet,
-  Alert,
 } from 'react-native';
 
 class ProgressIndicator extends React.Component {
@@ -96,13 +94,9 @@ class ProgressIndicator extends React.Component {
       height,
       animValue,
     } = this.state;
-    const doesHaveLayout = ProgressIndicator
-      .hasLayout(
-        width,
-        height,
-      );
     return (
       <View
+        {...extraProps}
         style={[
           containerStyle,
         ]}

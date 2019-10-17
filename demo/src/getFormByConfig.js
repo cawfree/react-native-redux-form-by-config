@@ -1,6 +1,4 @@
 import React from 'react';
-import { Map } from 'immutable';
-import { View } from 'react-native';
 import {
   reduxForm,
   formValueSelector,
@@ -39,11 +37,7 @@ function accumulateInitialValues(config = []) {
   return config
     .reduce(
       (obj, e = {}) => {
-        const {
-          key,
-          type,
-          value,
-        } = e;
+        const { key, value } = e;
         if (isConfig(e)) {
           const { forms } = e;
           const nested = isNested(e);
@@ -115,9 +109,6 @@ function getFieldsByConfig(
       formValueSelector: (state, key) => formValueSelector(form)(state, key),
     };
   };
-  const initialValues = accumulateInitialValues(
-    config,
-  );
   return connect(
     mapStateToProps,
     mapDispatchToProps,

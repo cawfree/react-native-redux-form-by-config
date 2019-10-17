@@ -39,10 +39,7 @@ const styles = StyleSheet
 
 const DefaultFieldWrapper = withTheme(
   ({ theme, meta, disabled, config, children: Child, ...extraProps }) => {
-    const {
-      label,
-      type,
-    } = config;
+    const { type } = config;
     const {
       error,
       touched,
@@ -52,7 +49,6 @@ const DefaultFieldWrapper = withTheme(
       marginShort,
       marginExtraShort,
       minFieldHeight,
-      labelStyle,
     } = theme;
     const shouldShowError = !!(touched && error);
     return (

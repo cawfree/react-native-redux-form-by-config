@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  TouchableOpacity,
-  Text,
   View,
   StyleSheet,
-  Platform,
-  FlatList,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Moment from 'moment';
@@ -32,15 +28,11 @@ const styles = StyleSheet.create(
 
 class DatePickerField extends React.Component {
   render() {
-    const { config, theme, disabled, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta } } = this.props;
+    const { config, disabled, input: { onChange, value } } = this.props;
     const {
-      style,
-      min,
-      max,
       format,
       minDate,
       maxDate,
-      ...restConfig
     } = config;
     return (
       <View
@@ -49,6 +41,7 @@ class DatePickerField extends React.Component {
         ]}
       >
         <SimplerDatePicker
+          disabled={disabled}
           minDate={minDate ? Moment(minDate, format) : undefined}
           maxDate={maxDate ? Moment(maxDate, format) : undefined}
           date={value ? Moment(value, format) : undefined}

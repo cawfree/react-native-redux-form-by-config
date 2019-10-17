@@ -1,18 +1,15 @@
 import React from 'react';
 import {
   Platform,
-  Alert,
   View,
   StyleSheet,
   TouchableOpacity,
   Text,
-  TextInput,
 } from 'react-native';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { reducer as form } from 'redux-form/immutable';
 import { defaultTheme } from './theme';
-import Collapsible from '@cawfree/react-native-collapsible-view';
 
 import getFormByConfig from './getFormByConfig';
 
@@ -47,8 +44,18 @@ class App extends React.Component {
         'auth',
         [
           {
-            label: 'This is another label',
+            label: 'yo',
             forms: [
+              {
+                label: 'some-test',
+                type: 'text',
+                key: 'hello',
+              },
+            ],
+          }, 
+          {
+            label: 'This is another label',
+            forms: [ 
               {
                 required: true,
                 key: 'email',
@@ -247,7 +254,6 @@ class App extends React.Component {
       //      by redux-form.
       handleAuthSubmit: null,
       handleSignUpTermsSubmit: null,
-      showTerms: false,
     };
     this.__onHandleAuthSubmit = this.__onHandleAuthSubmit.bind(this);
     this.__onHandleSignUpTermsSubmit = this.__onHandleSignUpTermsSubmit.bind(this);
@@ -300,7 +306,6 @@ class App extends React.Component {
     const {
       AuthFields,
       SignUpTermsFields,
-      showTerms,
     } = this.state;
     return (
       <Provider

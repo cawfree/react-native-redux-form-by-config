@@ -15,7 +15,7 @@ const styles = StyleSheet
         flex: 1,
         padding: 5,
         borderRadius: 5,
-        borderWidth: 0.5,
+        borderWidth: 2,
         borderColor: 'lightgrey',
       },
     },
