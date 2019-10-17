@@ -169,7 +169,6 @@ function evaluateToJsx (
           ]
             .filter(e => !!e);
         }
-        // XXX: It must be a field.
         const {
           value,
           ...safeConfig

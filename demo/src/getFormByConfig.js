@@ -4,7 +4,6 @@ import { View } from 'react-native';
 import {
   reduxForm,
   formValueSelector,
-  //getFormValues,
   getFormInitialValues,
   getFormSyncErrors,
   getFormMeta,
@@ -94,9 +93,6 @@ function getFieldsByConfig(
     return {
       ...ownProps,
       config,
-      //getFormValues: () => getFormValues(form)(state),
-      //getFormValues: () => state.form,
-      //values: formValues(form)(state),
       initialValues: getFormInitialValues(form)(state),
       formSyncErrors: getFormSyncErrors(form)(state),
       fields: getFormMeta(form)(state),
@@ -134,6 +130,8 @@ function getFieldsByConfig(
         initialValues: accumulateInitialValues(
           config,
         ),
+        touchOnChange: true,
+        touchOnBlur: true,
         onSubmit: (...args) => args,
       },
     )(({ GroupingComponent, LayoutComponent, theme, types, validation, ...extraProps}) => (
