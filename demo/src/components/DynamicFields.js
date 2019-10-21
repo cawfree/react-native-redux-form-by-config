@@ -1,8 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+} from 'react-native';
+import { Map } from 'immutable';
 import { Field } from 'redux-form/immutable';
 import { isEqual } from 'lodash';
+import uuidv4 from 'uuid/v4';
 
 import { withTheme } from '../theme';
 
@@ -11,6 +17,16 @@ import DefaultGrouping from './DefaultGrouping';
 import DefaultLabel from './DefaultLabel';
 
 import defaultTransform from '../transform';
+
+const styles = StyleSheet
+  .create(
+    {
+      defaultLayout: {
+        flex: 1,
+        flexDirection: 'column',
+      },
+    },
+  );
 
 export const isNested = (config = {}) => {
   const { type, forms } = config;
@@ -45,6 +61,7 @@ export const getDescendents = (config = [], directOnly = false, keyPfx = '') => 
     .reduce(
       (keys, e) => {
         const nested = isNested(e);
+        const field = isField(e);
         if (nested) {
           const { forms } = e;
           const grouping = isGrouping(e);
@@ -99,6 +116,7 @@ function evaluateToJsx (
     .reduce(
       (children, e) => {
         const nested = isNested(e);
+        const field = isField(e);
         if (nested) {
           const {
             forms,
@@ -193,13 +211,16 @@ class DynamicFields extends React.Component {
     super(nextProps);
     const {
       config,
+      disabled,
       types,
       validation,
       theme,
       FieldWrapper,
+      LayoutComponent,
       GroupingComponent,
       LabelComponent,
       formValueSelector,
+      getFormValues,
     } = nextProps;
     const children = evaluateToJsx(
       config,
@@ -294,9 +315,8 @@ DynamicFields.propTypes = {
 DynamicFields.defaultProps = {
   theme: undefined,
   disabled: false,
-  LayoutComponent: ({ children, disabled }) => (
+  LayoutComponent: ({ children }) => (
     <View
-      pointerEvents={disabled ? 'none' : 'auto'}
     >
       {children}
     </View>

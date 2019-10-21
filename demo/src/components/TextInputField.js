@@ -3,7 +3,9 @@ import {
   View,
   TextInput,
   StyleSheet,
+  Platform,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { withTheme } from './../theme';
 
 const styles = StyleSheet.create(
@@ -20,7 +22,7 @@ const styles = StyleSheet.create(
 
 class TextInputField extends React.Component {
   render() {
-    const { config, disabled, input: { onChange, value } } = this.props;
+    const { config, theme, disabled, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta } } = this.props;
     const {
       style,
       numberOfLines,
@@ -28,13 +30,18 @@ class TextInputField extends React.Component {
       label,
       ...restConfig
     } = config;
+    const resolvedStyle = {
+      ...(style || styles.textInput),
+    };
     const resolvedNumberOfLines = numberOfLines || 1;
     const resolvedMultiline = resolvedNumberOfLines > 1;
     const resolvedPlaceholder = placeholder || label;
     const resolvedValue = value || '';
     return (
       <View
-        style={styles.container}
+        style={[
+          styles.container,
+        ]}
       >
         <TextInput
           value={resolvedValue}
@@ -53,11 +60,11 @@ class TextInputField extends React.Component {
 }
 
 TextInputField.propTypes = {
-  ...TextInput.propTypes,
+
 };
 
 TextInputField.defaultProps = {
-  ...TextInput.defaultProps,
+
 };
 
 export default withTheme(

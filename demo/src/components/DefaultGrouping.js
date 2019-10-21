@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-  View,
-  StyleSheet,
-} from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import Chevron from './Chevron';
+import Collapsible from '@cawfree/react-native-collapsible-view';
 
 import ProgressIndicator from './ProgressIndicator';
+import { withTheme } from '../theme';
 
 const styles = StyleSheet
   .create(
@@ -15,49 +15,104 @@ const styles = StyleSheet
         flex: 1,
         padding: 5,
         borderRadius: 5,
-        borderWidth: 2,
+        borderWidth: 0.5,
         borderColor: 'lightgrey',
       },
     },
   );
 
 class DefaultGrouping extends React.Component {
+  constructor(props) {
+    super(props);
+    const { collapsed, collapsible } = props;
+    this.state = {
+      collapsed: !!(collapsed && collapsible),
+    };
+  }
   render() {
     const {
+      theme,
       children,
       numberOfValues,
       values,
       label,
       LabelComponent,
+      collapsible,
+      collapsed,
+      showProgress,
     } = this.props;
-    // TODO: extrac tthis logic
+    const { collapsed: isCollapsed } = this.state;
+    const { marginShort, labelStyle } = theme;
     const hasLabel = (typeof label === 'string') && (label.length > 0);
-    // TODO: This needs to match validation rules.
     const numberSubmitted = values.filter(e => !!e).length;
     return (
       <View
+        style={{
+          padding: marginShort,
+        }}
       >
-        {(!!hasLabel) && (
-          <LabelComponent
-            label={(`${label} (${numberSubmitted}/${numberOfValues})`)}
-          />
-        )}
         <View
           style={{
-            flexDirection: 'row',
-            height: 10,
           }}
         >
-          <ProgressIndicator
-            value={numberSubmitted}
-            minValue={0}
-            maxValue={numberOfValues}
-          />
-        </View>
-        <View
-          style={styles.container}
-        >
-          {children}
+          <View
+            style={{
+              flexDirection: 'row',
+            }}
+          >
+            {(!!hasLabel) && (
+              <View
+                style={{
+                  flex: 1,
+                }}
+              >
+                <LabelComponent
+                  label={(`${label} (${numberSubmitted}/${numberOfValues})`)}
+                />
+              </View>
+            )}
+            {(!!collapsible) && (
+              <Chevron
+                toggled={!isCollapsed}
+                color={labelStyle.color}
+                size={20}
+                onRequestToggle={() => this.setState(
+                  {
+                    collapsed: !isCollapsed,
+                  },
+                )}
+              />
+            )}
+          </View>
+          {(!!showProgress) && (
+            <View
+              style={{ flex: 0, marginBottom: marginShort }}
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  height: 10,
+                }}
+              >
+                <ProgressIndicator
+                  value={numberSubmitted}
+                  minValue={0}
+                  maxValue={numberOfValues}
+                />
+              </View>
+            </View>
+          )} 
+          <Collapsible
+            collapsed={isCollapsed}
+          >
+            <View
+              style={{
+                flex: 1,
+              }}
+            >
+              {children}
+            </View>
+          </Collapsible>
         </View>
       </View>
     );
@@ -101,4 +156,4 @@ export default connect(
   {
     withRef: false,
   },
-)(DefaultGrouping);
+)(withTheme(DefaultGrouping));

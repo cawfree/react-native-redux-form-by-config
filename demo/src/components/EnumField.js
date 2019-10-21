@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Platform,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { withTheme } from './../theme';
 
 const styles = StyleSheet.create(
@@ -18,6 +19,9 @@ const styles = StyleSheet.create(
     },
   },
 );
+
+
+const getPickerItems = () => [];
 
 const sanitizeValues = (values = []) => {
   if (Array.isArray(values)) {
@@ -50,7 +54,7 @@ const sanitizeValues = (values = []) => {
 
 class EnumField extends React.Component {
   render() {
-    const { config, disabled, input: { onChange, value } } = this.props;
+    const { config, theme, disabled, input: { onChange, value, ...restInput }, meta: { touched, error, ...restMeta } } = this.props;
     const {
       style,
       mode,

@@ -52,6 +52,8 @@ const transform = (result = Map({})) => {
         List([]),
       );
   }
+  const keys = result
+    .keySeq();
   return result
     .entrySeq()
     .reduce(
