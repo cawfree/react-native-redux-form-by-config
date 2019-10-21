@@ -123,7 +123,7 @@ class ProgressIndicator extends React.Component {
                 ),
                 height,
                 overflow: 'hidden',
-                borderRadius: 5,
+                borderRadius: 0,
                 backgroundColor: animValue
                   .interpolate(
                     colorRange,

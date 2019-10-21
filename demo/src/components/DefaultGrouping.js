@@ -42,7 +42,11 @@ class DefaultGrouping extends React.Component {
       showProgress,
     } = this.props;
     const { collapsed: isCollapsed } = this.state;
-    const { marginShort, labelStyle } = theme;
+    const {
+      marginExtraShort,
+      marginShort,
+      labelStyle,
+    } = theme;
     const hasLabel = (typeof label === 'string') && (label.length > 0);
     const numberSubmitted = values.filter(e => !!e).length;
     return (
@@ -86,12 +90,16 @@ class DefaultGrouping extends React.Component {
           </View>
           {(!!showProgress) && (
             <View
-              style={{ flex: 0, marginBottom: marginShort }}
+              style={{
+                flex: 0,
+                marginBottom: marginShort,
+                opacity: 0.6,
+              }}
             >
               <View
                 style={{
                   flexDirection: 'row',
-                  height: 10,
+                  height: marginExtraShort,
                 }}
               >
                 <ProgressIndicator
