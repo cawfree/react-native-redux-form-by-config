@@ -30,6 +30,7 @@ class TextInputField extends React.Component {
       label,
       ...restConfig
     } = config;
+    const { placeholderTextColor, textColor } = theme;
     const resolvedStyle = {
       ...(style || styles.textInput),
     };
@@ -48,10 +49,16 @@ class TextInputField extends React.Component {
           onChangeText={onChange}
           editable={!disabled}
           underlineColorAndroid="transparent"
-          style={style || styles.textInput}
+          style={style || [
+            styles.textInput,
+            {
+              color: textColor,
+            },
+          ]}
           numberOfLines={resolvedNumberOfLines}
           multiline={resolvedMultiline}
           placeholder={resolvedPlaceholder}
+          placeholderTextColor={placeholderTextColor}
           {...restConfig}
         />
       </View>
