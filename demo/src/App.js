@@ -47,7 +47,7 @@ class App extends React.Component {
         'auth',
         [
           {
-            label: 'This is another label',
+            label: 'This is another label, going to make it really long just to experiment with interpretation structures and alignments and that kind of thing. This is more like a life story, than anything.',
             showProgress: true,
             collapsible: true,
             collapsed: true,

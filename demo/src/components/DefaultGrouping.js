@@ -62,6 +62,7 @@ class DefaultGrouping extends React.Component {
           <View
             style={{
               flexDirection: 'row',
+              alignItems: 'center',
             }}
           >
             {(!!hasLabel) && (
@@ -76,16 +77,22 @@ class DefaultGrouping extends React.Component {
               </View>
             )}
             {(!!collapsible) && (
-              <Chevron
-                toggled={!isCollapsed}
-                color={labelStyle.color}
-                size={20}
-                onRequestToggle={() => this.setState(
-                  {
-                    collapsed: !isCollapsed,
-                  },
-                )}
-              />
+              <View
+                style={{
+                  marginLeft: marginShort,
+                }}
+              >
+                <Chevron
+                  toggled={!isCollapsed}
+                  color={labelStyle.color}
+                  size={20}
+                  onRequestToggle={() => this.setState(
+                    {
+                      collapsed: !isCollapsed,
+                    },
+                  )}
+                />
+              </View>
             )}
           </View>
           {(!!showProgress) && (
