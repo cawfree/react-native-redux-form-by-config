@@ -15,6 +15,7 @@ import { withTheme } from '../theme';
 import DefaultFieldWrapper from './DefaultFieldWrapper';
 import DefaultGrouping from './DefaultGrouping';
 import DefaultLabel from './DefaultLabel';
+import DefaultSelection from './DefaultSelection';
 
 import defaultTransform from '../transform';
 
@@ -38,6 +39,22 @@ export const isGrouping = (config = {}) => {
   if (isNested(config)) {
     const { key } = config;
     return key === undefined;
+  }
+  return false;
+};
+
+export const isSelection = (config = {}) => {
+  if (isGrouping(config)) {
+    const { forms } = config;
+    if (Array.isArray(forms) && forms.length > 1) {
+      return forms
+        .reduce(
+          (r, e) => (
+            r && isGrouping(e)
+          ),
+          true,
+        );
+    }
   }
   return false;
 };
@@ -106,6 +123,7 @@ function evaluateToJsx (
   theme = {},
   FieldWrapper = DefaultFieldWrapper,
   GroupingComponent,
+  SelectionComponent,
   LabelComponent,
   validation = {},
   types = {},
@@ -118,11 +136,40 @@ function evaluateToJsx (
         const nested = isNested(e);
         const field = isField(e);
         if (nested) {
-          const {
-            forms,
-          } = e;
+          const { forms } = e;
           const grouping = isGrouping(e);
           if (grouping) {
+            const selection = isSelection(e); 
+            if (selection) {
+              const selection = forms
+                .map(
+                  ({ label, forms }) => (
+                    {
+                      label,
+                      children: evaluateToJsx(
+                        forms,
+                        theme,
+                        FieldWrapper,
+                        GroupingComponent,
+                        SelectionComponent,
+                        LabelComponent,
+                        validation,
+                        types,
+                        formValueSelector,
+                        keyPfx,
+                      ),
+                    }
+                  ),
+                );
+              return [
+                ...children,
+                <SelectionComponent
+                  {...e}
+                  LabelComponent={LabelComponent}
+                  selection={selection}
+                />,
+              ];
+            }
             // TODO: Missing index (position of group) and getValuesFor
             // XXX: must be scoped
             return [
@@ -138,6 +185,7 @@ function evaluateToJsx (
                   theme,
                   FieldWrapper,
                   GroupingComponent,
+                  SelectionComponent,
                   LabelComponent,
                   validation,
                   types,
@@ -160,6 +208,7 @@ function evaluateToJsx (
               theme,
               FieldWrapper,
               GroupingComponent,
+              SelectionComponent,
               LabelComponent,
               validation,
               types,
@@ -218,6 +267,7 @@ class DynamicFields extends React.Component {
       FieldWrapper,
       LayoutComponent,
       GroupingComponent,
+      SelectionComponent,
       LabelComponent,
       formValueSelector,
       getFormValues,
@@ -227,6 +277,7 @@ class DynamicFields extends React.Component {
       theme,
       FieldWrapper,
       GroupingComponent,
+      SelectionComponent,
       LabelComponent,
       validation,
       types,
@@ -300,6 +351,7 @@ DynamicFields.propTypes = {
   disabled: PropTypes.bool,
   FieldWrapper: PropTypes.func,
   GroupingComponent: PropTypes.func,
+  SelectionComponent: PropTypes.elementType,
   grouping: PropTypes.arrayOf(
     PropTypes.shape(
       {
@@ -323,6 +375,7 @@ DynamicFields.defaultProps = {
   ),
   FieldWrapper: DefaultFieldWrapper,
   GroupingComponent: DefaultGrouping,
+  SelectionComponent: DefaultSelection,
   grouping: [],
   LabelComponent: DefaultLabel,
   transform: defaultTransform,

@@ -47,6 +47,32 @@ class App extends React.Component {
         'auth',
         [
           {
+            label: 'testing here',
+            forms: [
+              {
+                label: 'hello',
+                forms: [
+                  {
+                    key: 'X',
+                    type: 'text',
+                    label: 'yo',
+                    required: true,
+                  },
+                ],
+              },
+              {
+                label: 'Hai',
+                forms: [
+                  {
+                    key: 'Y',
+                    type: 'text',
+                    label: 'hello',
+                  },
+                ],
+              },
+            ],
+          },
+          {
             label: 'This is another label, going to make it really long just to experiment with interpretation structures and alignments and that kind of thing. This is more like a life story, than anything.',
             showProgress: true,
             collapsible: true,

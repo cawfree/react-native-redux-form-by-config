@@ -134,11 +134,12 @@ function getFieldsByConfig(
         touchOnBlur: true,
         onSubmit: (...args) => args,
       },
-    )(({ GroupingComponent, LayoutComponent, theme, types, validation, ...extraProps}) => (
+    )(({ SelectionComponent, GroupingComponent, LayoutComponent, theme, types, validation, ...extraProps}) => (
       <ThemeProvider
         theme={theme}
       >
         <DynamicFields
+          SelectionComponent={SelectionComponent}
           LayoutComponent={LayoutComponent}
           GroupingComponent={GroupingComponent}
           types={types || defaultTypes}
