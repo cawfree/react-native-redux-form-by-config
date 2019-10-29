@@ -40,6 +40,7 @@ class DefaultGrouping extends React.Component {
       collapsible,
       collapsed,
       showProgress,
+      renderChildren,
     } = this.props;
     const { collapsed: isCollapsed } = this.state;
     const {
@@ -120,13 +121,7 @@ class DefaultGrouping extends React.Component {
           <Collapsible
             collapsed={isCollapsed}
           >
-            <View
-              style={{
-                flex: 1,
-              }}
-            >
-              {children}
-            </View>
+            {renderChildren(children)}
           </Collapsible>
         </View>
       </View>
@@ -136,10 +131,17 @@ class DefaultGrouping extends React.Component {
 
 DefaultGrouping.propTypes = {
   children: PropTypes.arrayOf([]),
+  renderChildren: PropTypes.func,
 };
 
 DefaultGrouping.defaultProps = {
   children: [],
+  renderChildren: children => (
+    <View
+      style={{ flex: 1 }}
+      children={children}
+    />
+  ),
 };
 
 const mapStateToProps = (state, ownProps) => {
