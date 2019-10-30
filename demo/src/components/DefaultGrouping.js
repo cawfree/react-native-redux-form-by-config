@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Chevron from './Chevron';
 import Collapsible from '@cawfree/react-native-collapsible-view';
 
@@ -57,45 +57,48 @@ class DefaultGrouping extends React.Component {
         }}
       >
         <View
-          style={{
-          }}
         >
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
+          <TouchableOpacity
+            onPress={() => this.setState(
+              {
+                collapsed: !isCollapsed,
+              },
+            )}
+            disabled={!collapsible}
           >
-            {(!!hasLabel) && (
-              <View
-                style={{
-                  flex: 1,
-                }}
-              >
-                <LabelComponent
-                  label={(`${label} (${numberSubmitted}/${numberOfValues})`)}
-                />
-              </View>
-            )}
-            {(!!collapsible) && (
-              <View
-                style={{
-                  marginLeft: marginShort,
-                }}
-              >
-                <Chevron
-                  toggled={!isCollapsed}
-                  color={labelStyle.color}
-                  size={20}
-                  onRequestToggle={() => this.setState(
-                    {
-                      collapsed: !isCollapsed,
-                    },
-                  )}
-                />
-              </View>
-            )}
-          </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              {(!!hasLabel) && (
+                <View
+                  style={{
+                    flex: 1,
+                  }}
+                >
+                  <LabelComponent
+                    label={(`${label} (${numberSubmitted}/${numberOfValues})`)}
+                  />
+                </View>
+              )}
+              {(!!collapsible) && (
+                <View
+                  pointerEvents="none"
+                  style={{
+                    marginLeft: marginShort,
+                  }}
+                >
+                  <Chevron
+                    toggled={!isCollapsed}
+                    color={labelStyle.color}
+                    size={20}
+                  />
+                </View>
+              )}
+            </View>
+          </TouchableOpacity>
           {(!!showProgress) && (
             <View
               style={{
