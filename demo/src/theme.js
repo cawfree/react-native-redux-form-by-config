@@ -17,10 +17,14 @@ export const defaultTheme = {
   errorStyle: {
     color: 'red',
   },
-  labelStyle: {
+  groupLabelStyle: {
     fontWeight: 'bold',
     color: '#FFFFFFFF',
     fontSize: 16,
+  },
+  labelStyle: {
+    color: '#FFFFFFFF',
+    fontSize: 12,
   },
   minFieldHeight: 50,
 };

@@ -153,6 +153,7 @@ function evaluateToJsx (
             (!!label) && (
               <LabelComponent
                 label={label}
+                style={theme.groupLabelStyle}
               />
             ),
             ...evaluateToJsx(
@@ -173,7 +174,7 @@ function evaluateToJsx (
           value,
           ...safeConfig
         } = e;
-        const { key, type } = e;
+        const { key, type, label, labelHidden } = e;
         const validate = (validation[type] || (() => []))(e);
         const FieldImpl = types[type];
         const sfx = `${keyPfx}${key}`;
@@ -185,6 +186,12 @@ function evaluateToJsx (
         }
         return [
           ...children,
+          (!!label && !labelHidden) && (
+            <LabelComponent
+              label={label}
+              style={theme.labelStyle}
+            />
+          ),
           <Field
             key={sfx}
             name={sfx}

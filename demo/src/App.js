@@ -48,6 +48,7 @@ class App extends React.Component {
         [
           {
             label: 'This is another label',
+            labelHidden: true,
             showProgress: true,
             collapsible: true,
             collapsed: true,
@@ -55,6 +56,7 @@ class App extends React.Component {
               {
                 required: true,
                 key: 'email',
+                labelHidden: true,
                 label: 'E-Mail Address',
                 type: 'text',
                 // XXX: This is a reserved field for initializing the form state.

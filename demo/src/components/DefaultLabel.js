@@ -1,20 +1,31 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Text } from 'react-native';
 
-import { withTheme } from './../theme';
+import { withTheme, defaultTheme } from './../theme';
+
+const DefaultLabel = ({ label, style, theme: { marginExtraShort, labelStyle }, ...extraProps }) => (
+  <Text
+    style={[
+      style,
+      {
+        marginBottom: marginExtraShort,
+      },
+    ]}
+    {...extraProps}
+  >
+    {label}
+  </Text>
+);
+
+DefaultLabel.propTypes = {
+  style: PropTypes.shape({}),
+};
+
+DefaultLabel.defaultProps = {
+  style: defaultTheme.groupLabelStyle,
+};
 
 export default withTheme(
-  ({ label, theme: { marginExtraShort, labelStyle }, ...extraProps }) => (
-    <Text
-      style={[
-        labelStyle,
-        {
-          marginBottom: marginExtraShort,
-        },
-      ]}
-      {...extraProps}
-    >
-      {label}
-    </Text>
-  ),
+  DefaultLabel,
 );
