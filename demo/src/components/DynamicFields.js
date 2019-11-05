@@ -186,27 +186,29 @@ function evaluateToJsx (
         }
         return [
           ...children,
-          (!!label && !labelHidden) && (
-            <LabelComponent
-              label={label}
-              style={theme.labelStyle}
-            />
-          ),
-          <Field
-            key={sfx}
-            name={sfx}
-            component={({ meta, ...extraProps }) => (
-              <FieldWrapper
-                {...extraProps}
-                meta={meta}
-                theme={theme}
-                config={safeConfig}
-              >
-                {FieldImpl}
-              </FieldWrapper>
+          <>
+            {(!!label && !labelHidden) && (
+              <LabelComponent
+                label={label}
+                style={theme.labelStyle}
+              />
             )}
-            validate={validate}
-          />,
+            <Field
+              key={sfx}
+              name={sfx}
+              component={({ meta, ...extraProps }) => (
+                <FieldWrapper
+                  {...extraProps}
+                  meta={meta}
+                  theme={theme}
+                  config={safeConfig}
+                >
+                  {FieldImpl}
+                </FieldWrapper>
+              )}
+              validate={validate}
+            />
+          </>,
         ];
       },
       [],
