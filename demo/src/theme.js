@@ -11,8 +11,6 @@ export const defaultTheme = {
   marginStandard,
   backgroundColor: '#FFFFFFFF',
   borderRadius: marginShort,
-  textColor: '222222FF',
-  placeholderTextColor: 'lightgrey',
   linkStyle: {
     color: '#2980b9',
   },

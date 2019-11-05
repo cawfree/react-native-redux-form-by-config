@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Chevron from './Chevron';
 import Collapsible from '@cawfree/react-native-collapsible-view';
 
@@ -40,7 +40,6 @@ class DefaultGrouping extends React.Component {
       collapsible,
       collapsed,
       showProgress,
-      renderChildren,
     } = this.props;
     const { collapsed: isCollapsed } = this.state;
     const {
@@ -57,48 +56,38 @@ class DefaultGrouping extends React.Component {
         }}
       >
         <View
+          style={{
+          }}
         >
-          <TouchableOpacity
-            onPress={() => this.setState(
-              {
-                collapsed: !isCollapsed,
-              },
-            )}
-            disabled={!collapsible}
+          <View
+            style={{
+              flexDirection: 'row',
+            }}
           >
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              {(!!hasLabel) && (
-                <View
-                  style={{
-                    flex: 1,
-                  }}
-                >
-                  <LabelComponent
-                    label={(`${label} (${numberSubmitted}/${numberOfValues})`)}
-                  />
-                </View>
-              )}
-              {(!!collapsible) && (
-                <View
-                  pointerEvents="none"
-                  style={{
-                    marginLeft: marginShort,
-                  }}
-                >
-                  <Chevron
-                    toggled={!isCollapsed}
-                    color={labelStyle.color}
-                    size={20}
-                  />
-                </View>
-              )}
-            </View>
-          </TouchableOpacity>
+            {(!!hasLabel) && (
+              <View
+                style={{
+                  flex: 1,
+                }}
+              >
+                <LabelComponent
+                  label={(`${label} (${numberSubmitted}/${numberOfValues})`)}
+                />
+              </View>
+            )}
+            {(!!collapsible) && (
+              <Chevron
+                toggled={!isCollapsed}
+                color={labelStyle.color}
+                size={20}
+                onRequestToggle={() => this.setState(
+                  {
+                    collapsed: !isCollapsed,
+                  },
+                )}
+              />
+            )}
+          </View>
           {(!!showProgress) && (
             <View
               style={{
@@ -124,7 +113,13 @@ class DefaultGrouping extends React.Component {
           <Collapsible
             collapsed={isCollapsed}
           >
-            {renderChildren(children)}
+            <View
+              style={{
+                flex: 1,
+              }}
+            >
+              {children}
+            </View>
           </Collapsible>
         </View>
       </View>
@@ -134,17 +129,10 @@ class DefaultGrouping extends React.Component {
 
 DefaultGrouping.propTypes = {
   children: PropTypes.arrayOf([]),
-  renderChildren: PropTypes.func,
 };
 
 DefaultGrouping.defaultProps = {
   children: [],
-  renderChildren: children => (
-    <View
-      style={{ flex: 1 }}
-      children={children}
-    />
-  ),
 };
 
 const mapStateToProps = (state, ownProps) => {

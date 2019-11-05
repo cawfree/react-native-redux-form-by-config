@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   View,
   StyleSheet,
@@ -37,8 +38,97 @@ const styles = StyleSheet
     },
   );
 
-const DefaultFieldWrapper = withTheme(
-  ({ theme, meta, disabled, config, children: Child, ...extraProps }) => {
+const DefaultFieldWrapper = ({ ErrorComponent, WrapperComponent, theme, meta, disabled, config, children: Child, ...extraProps }) => {
+  const {
+    label,
+    type,
+  } = config;
+  const {
+    error,
+    touched,
+  } = meta;
+  const {
+    borderRadius,
+    marginShort,
+    marginExtraShort,
+    minFieldHeight,
+    labelStyle,
+  } = theme;
+  const shouldShowError = !!(touched && error);
+  return (
+    <View
+      style={styles.defaultField}
+    >
+      <React.Fragment>
+        {(type === 'boolean') && (
+          <View
+            style={[
+              styles.defaultBoolean,
+            ]}
+          >
+            <Child
+              {...extraProps}
+              meta={meta}
+              config={config}
+              disabled={disabled}
+            />
+          </View>
+        )}
+        {(type !== 'boolean') && (
+          <WrapperComponent
+            config={config}
+            meta={meta}
+            theme={theme}
+          >
+            <Child
+              {...extraProps}
+              meta={meta}
+              config={config}
+              disabled={disabled}
+            />
+          </WrapperComponent>
+        )}
+      </React.Fragment>
+      <View
+        style={[
+          styles.defaultError,
+          {
+            paddingBottom: marginShort * 2,
+          },
+        ]}
+      >
+        <Collapsible
+          collapsed={!shouldShowError}
+        >
+          <ErrorComponent
+            theme={theme}
+            error={error}
+          />
+        </Collapsible>
+      </View>
+    </View>
+  );
+};
+
+DefaultFieldWrapper.propTypes = {
+  ErrorComponent: PropTypes.elementType,
+  WrapperComponent: PropTypes.elementType,
+};
+
+DefaultFieldWrapper.defaultProps = {
+  ErrorComponent: ({ theme, error }) => (
+    <Text
+      style={{
+        ...theme.errorStyle,
+        marginTop: theme.marginExtraShort,
+        flex: 1,
+        textAlign: 'right',
+      }}
+    >
+      {error}
+    </Text>
+  ),
+  WrapperComponent: ({ config, meta, theme, children }) => {
     const {
       label,
       type,
@@ -57,85 +147,36 @@ const DefaultFieldWrapper = withTheme(
     const shouldShowError = !!(touched && error);
     return (
       <View
-        style={styles.defaultField}
+        style={[
+          styles.defaultText,
+          {
+            borderRadius,
+            minHeight: minFieldHeight,
+            paddingLeft: marginExtraShort,
+          },
+        ]}
       >
-        <React.Fragment>
-          {(type === 'boolean') && (
-            <View
-              style={[
-                styles.defaultBoolean,
-              ]}
-            >
-              <Child
-                {...extraProps}
-                meta={meta}
-                config={config}
-                disabled={disabled}
-              />
-            </View>
-          )}
-          {(type !== 'boolean') && (
-            <View
-              style={[
-                styles.defaultText,
-                {
-                  borderRadius,
-                  minHeight: minFieldHeight,
-                  paddingLeft: marginExtraShort,
-                },
-              ]}
-            >
-              <Child
-                {...extraProps}
-                meta={meta}
-                config={config}
-                disabled={disabled}
-              />
-              <View
-                style={[
-                  styles.defaultErrorIcon,
-                  {
-                    width: minFieldHeight,
-                    height: minFieldHeight,
-                    opacity: shouldShowError ? 1 : 0,
-                  },
-                ]}
-              >
-                <FontAwesomeIcon
-                  name="exclamation-triangle"
-                  size={20}
-                  color="lightgrey"
-                />
-              </View>
-            </View>
-          )}
-        </React.Fragment>
+        {children}
         <View
           style={[
-            styles.defaultError,
+            styles.defaultErrorIcon,
             {
-              paddingBottom: marginShort * 2,
+              width: minFieldHeight,
+              height: minFieldHeight,
+              opacity: shouldShowError ? 1 : 0,
             },
           ]}
         >
-          <Collapsible
-            collapsed={!shouldShowError}
-          >
-            <Text
-              style={{
-                ...theme.errorStyle,
-                marginTop: marginExtraShort,
-                flex: 1,
-                textAlign: 'right',
-              }}
-            >
-              {error}
-            </Text>
-          </Collapsible>
+          <FontAwesomeIcon
+            name="exclamation-triangle"
+            size={20}
+            color="lightgrey"
+          />
         </View>
       </View>
     );
   },
-);
+};
 
-export default DefaultFieldWrapper;
+
+export default withTheme(DefaultFieldWrapper);
